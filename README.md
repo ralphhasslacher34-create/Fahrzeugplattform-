@@ -1,8 +1,8 @@
-# Fahrzeugplattform 0.4.0-dev
+# Fahrzeugplattform 0.4.1-dev
 
 Entwicklungsstand mit Microsoft-365-/SharePoint-Provisionierung.
 
-Neu in 0.4.0:
+Neu in 0.4.1:
 - OAuth 2.0 Authorization Code + PKCE direkt aus der SPA
 - kein Client-Secret im Browser
 - Microsoft Graph v1.0 für SharePoint-Listen und Spalten

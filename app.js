@@ -1,4 +1,4 @@
-const VERSION='0.4.0-dev';
+const VERSION='0.4.1-dev';
 const P={
   motorboat:{label:'Motorboot',functions:['Skipper','Crew','Gast'],usage:[['Ausfahrt',0],['Törn',1],['Wasserski',0]],events:['Schleuse','Bewegliche Brücke','Hebewerk','Peilung / Landmarke','Besondere Begegnung','Wetter','Wetteränderung','Technische Beobachtung','Freie Notiz'],stays:['Angelegt','Vor Anker','Mooring'],actions:['Kontrolle','Ablegen','Ereignis','Anlegen / Ankern']},
   motorhome:{label:'Wohnmobil',functions:['Fahrer','Beifahrer','Gast'],usage:[['Tagesausflug',0],['Kurztrip',1],['Urlaub',1]],events:['Fähre','Besondere Begegnung','Wetter','Wetteränderung','Technische Beobachtung','Freie Notiz'],stays:['Stellplatz','Campingplatz','Freier Stellplatz'],actions:['Kontrolle','Abfahrt','Ereignis','Ankunft / Aufenthalt']}
@@ -59,7 +59,7 @@ function history(){head('Bisherige Nutzungen');let h=JSON.parse(localStorage.get
 async function m365setup(){
   head('Microsoft 365 Setup','38 Listen · 225 Felder');
   let tok=window.FPAuth.token();
-  app.innerHTML=`<div class="card"><b>Microsoft-Anmeldung</b><p class="muted">Client-ID ist öffentlich und fest hinterlegt. Es gibt kein Client-Secret im Browser.</p><div id="authState">${tok?'✓ Microsoft-Token vorhanden':'Noch nicht mit Microsoft verbunden'}</div>${tok?'<button onclick="FPAuth.logout();render()">Microsoft-Verbindung trennen</button>':'<button class="primary" onclick="FPAuth.login()">Mit Microsoft 365 anmelden</button>'}</div><div class="card"><div class="field"><label>SharePoint-Site-URL</label><input id="spSite" placeholder="https://…sharepoint.com/sites/Fahrzeugplattform" value="${esc(localStorage.getItem('fp_sp_site')||'')}"></div><button class="primary" ${tok?'':'disabled'} onclick="runM365Provision()">Phase-1-Struktur prüfen / anlegen</button><p class="muted">Additiv und wiederholbar: vorhandene Listen/Felder bleiben bestehen, fehlende werden ergänzt.</p></div><div id="m365Result"></div>`;
+  app.innerHTML=`<div class="card"><b>Microsoft-Anmeldung</b><p class="muted">Client-ID ist öffentlich und fest hinterlegt. Es gibt kein Client-Secret im Browser.</p><div id="authState">${tok?'✓ Microsoft-Token vorhanden':'Noch nicht mit Microsoft verbunden'}</div>${tok?'<button onclick="FPAuth.logout();render()">Microsoft-Verbindung trennen</button>':'<button class="primary" onclick="sessionStorage.setItem(\'fp_after_auth\',\'m365setup\');FPAuth.login()">Mit Microsoft 365 anmelden</button>'}</div><div class="card"><div class="field"><label>SharePoint-Site-URL</label><input id="spSite" placeholder="https://…sharepoint.com/sites/Fahrzeugplattform" value="${esc(localStorage.getItem('fp_sp_site')||'')}"></div><button class="primary" ${tok?'':'disabled'} onclick="runM365Provision()">Phase-1-Struktur prüfen / anlegen</button><p class="muted">Additiv und wiederholbar: vorhandene Listen/Felder bleiben bestehen, fehlende werden ergänzt.</p></div><div id="m365Result"></div>`;
 }
 async function runM365Provision(){
   const url=document.querySelector('#spSite').value.trim(); if(!url){alert('Bitte die vollständige SharePoint-Site-URL eintragen.');return;}
@@ -70,6 +70,22 @@ async function runM365Provision(){
 
 function workshop(){head('Werkstatt');app.innerHTML=`<div class="card"><b>Werkstatt</b><p class="muted">Wartung, Reparaturen, Umbauten, Störungen, Prüfungen und technische Dokumente. Grundmaske vorbereitet.</p></div>`}
 function lending(){head('Verleihmodus');app.innerHTML=`<div class="card"><b>Verleihmodus</b><p class="muted">Personenrolle „Leiher“ und fahrzeugbezogene Rechte werden hier verwaltet. Die fachliche Eignung wird zusätzlich über Befähigungen/Nachweise geprüft.</p></div>`}
-function settings(){head('Einstellungen');app.innerHTML=`<div class="card"><b>Einstellungen</b><p class="muted">Persönliche Einstellungen, Einheiten und spätere App-Optionen.</p></div>`}
+function settings(){head('Einstellungen');app.innerHTML=`<div class="grid"><button class="menu" onclick="go('m365setup')"><b>Microsoft 365 Setup</b><span class="muted">Microsoft anmelden · SharePoint verbinden · 38 Listen / 225 Felder prüfen und anlegen</span></button><button class="menu"><b>Persönliche Einstellungen</b><span class="muted">Einheiten und spätere App-Optionen</span></button></div>`}
 function placeholder(){head('Bereich');app.innerHTML='<div class="card">Grundmaske vorbereitet.</div>'}
-render();
+async function bootstrap(){
+  try{
+    const hadCode=new URL(location.href).searchParams.has('code');
+    if(hadCode){
+      await FPAuth.handleRedirect();
+      const target=sessionStorage.getItem('fp_after_auth')||'m365setup';
+      sessionStorage.removeItem('fp_after_auth');
+      S.stack=[]; S.view=target;
+    }
+  }catch(e){
+    bar.hidden=true;
+    app.innerHTML=`<div class="login"><div class="card status-stop"><b>Microsoft-Anmeldung nicht abgeschlossen</b><p>${esc(e.message)}</p><button class="primary" onclick="location.href=FPAuth.cfg.redirectUri">Zur Fahrzeugplattform</button></div></div>`;
+    return;
+  }
+  render();
+}
+bootstrap();

@@ -1,4 +1,4 @@
-/* Fahrzeugplattform M365 Setup 0.4.0 via Microsoft Graph v1.0 */
+/* Fahrzeugplattform M365 Setup 0.4.1 via Microsoft Graph v1.0 */
 window.FPGraphSetup = class {
   constructor(token, siteUrl, schema){ this.token=token; this.siteUrl=siteUrl.replace(/\/$/,''); this.schema=schema; this.base='https://graph.microsoft.com/v1.0'; }
   async req(path,opt={}){ const r=await fetch(this.base+path,{...opt,headers:{Authorization:`Bearer ${this.token}`,'Content-Type':'application/json',...(opt.headers||{})}}); const t=await r.text(); let j=null; try{j=t?JSON.parse(t):null}catch{} if(!r.ok) throw new Error(`${r.status} ${r.statusText}${j?.error?.message?': '+j.error.message:t?': '+t:''}`); return j; }
