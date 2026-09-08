@@ -11,3 +11,7 @@ Neu in 0.4.3:
 - additive/idempotente Provisionierung
 
 Hinweis: Für die Ziel-Site-Auflösung wird delegiert `Sites.Read.All` benötigt; für das Erstellen von Listen/Spalten `Sites.Manage.All`.
+
+
+## 0.6.0-dev
+Konfiguration ausgebaut: Fahrzeugausstattung/Komponenten, Merkmale, fahrzeugspezifische Nutzungsarten, Prüfpunkte/Intervalle, allgemeine Fahrzeugkosten sowie echte SharePoint-Seiten für Personen, Funktionen, Befähigungen, Gebiete/Reviere, Anforderungen und Reisecheck.
