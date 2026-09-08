@@ -1,4 +1,4 @@
-/* Fahrzeugplattform OAuth/PKCE 0.4.2 - kein Client-Secret im Browser */
+/* Fahrzeugplattform OAuth/PKCE 0.4.3 - kein Client-Secret im Browser */
 window.FPAuth = (() => {
   const cfg = {
     clientId: '80d881f4-943f-4465-bba2-e9a7a1b02edc',

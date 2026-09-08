@@ -1,4 +1,4 @@
-# Fahrzeugplattform – Microsoft 365 Setup 0.4.2
+# Fahrzeugplattform – Microsoft 365 Setup 0.4.3
 
 Diese Version kann sich aus GitHub Pages per OAuth 2.0 Authorization Code + PKCE mit Microsoft Entra anmelden und die Phase-1-SharePoint-Struktur via Microsoft Graph v1.0 provisionieren.
 
