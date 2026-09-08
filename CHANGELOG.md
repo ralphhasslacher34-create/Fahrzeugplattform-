@@ -1,5 +1,23 @@
 # Fahrzeugplattform / MOBIMORY – Build-Historie
 
+## 1.0.2-dev – Sackgassen-/Stabilitätsfix
+
+### Behoben
+- Zentrale Profilnormalisierung: Motorboot/Motorboat und Wohnmobil/Motorhome werden überall auf dieselben internen Schlüssel abgebildet.
+- Abstürze bei `functions` und `events` beseitigt.
+- Ereignis, Aufenthalt, Cockpit, Besatzung und Fortsetzen verwenden dieselbe Profilauflösung.
+- Fortsetzen einer Nutzung erzeugt keinen ungültigen Profilwert mehr.
+- Besatzung ändern auf touchfähige Auswahl umgestellt.
+- SharePoint-Listenauflösung versteht internen und sichtbaren Namen sowie Umlaut-/Ue-Varianten; `UeberlassungsPersonen` wird damit auch als `Überlassungspersonen` gefunden.
+- Microsoft-365-Setup prüft nach dem Provisionieren, ob wirklich alle erwarteten Listen für die App erreichbar sind. Ein falsches „Setup abgeschlossen“ wird verhindert.
+
+### Testziel
+- Verleihmodus öffnen.
+- Ereignis öffnen/speichern.
+- Besatzung ändern.
+- Aktive mehrtägige Nutzung fortsetzen.
+
+
 ## 1.0.1-dev – erster Durchspiel-Bugfix
 
 ### Behoben
