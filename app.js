@@ -1,4 +1,4 @@
-const VERSION='0.4.3-dev';
+const VERSION='0.5.0-dev';
 const P={
   motorboat:{label:'Motorboot',functions:['Skipper','Crew','Gast'],usage:[['Ausfahrt',0],['Törn',1],['Wasserski',0]],events:['Schleuse','Bewegliche Brücke','Hebewerk','Peilung / Landmarke','Besondere Begegnung','Wetter','Wetteränderung','Technische Beobachtung','Freie Notiz'],stays:['Angelegt','Vor Anker','Mooring'],actions:['Kontrolle','Ablegen','Ereignis','Anlegen / Ankern']},
   motorhome:{label:'Wohnmobil',functions:['Fahrer','Beifahrer','Gast'],usage:[['Tagesausflug',0],['Kurztrip',1],['Urlaub',1]],events:['Fähre','Besondere Begegnung','Wetter','Wetteränderung','Technische Beobachtung','Freie Notiz'],stays:['Stellplatz','Campingplatz','Freier Stellplatz'],actions:['Kontrolle','Abfahrt','Ereignis','Ankunft / Aufenthalt']}
@@ -31,13 +31,51 @@ let S={view:'login',stack:[],vehicle:null,usage:null,day:null};
 const app=document.querySelector('#app'),bar=document.querySelector('#bar'),title=document.querySelector('#title'),sub=document.querySelector('#sub');
 function head(t,s=''){bar.hidden=false;title.textContent=t;sub.textContent=s}
 function go(v){S.stack.push(S.view);S.view=v;render()}
-function back(){if(S.stack.length){S.view=S.stack.pop();render()}}
-function show(v){go(v)}
+function back(){if(S.stack.length){S.view=S.stack.pop();render();return}if(S.view!=='main'){S.view='main';render()}}
+function show(v){if(S.view===v)return;go(v)}
 function esc(v=''){return String(v).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]))}
-function render(){({login,main,start,vehicle,usage,setup,cockpit,event,stay,dayend,history:usageHistory,configuration,persons,areas,travelcheck,m365setup,workshop,lending,settings}[S.view]||placeholder)()}
+function render(){({login,main,start,vehicle,usage,setup,cockpit,event,stay,dayend,history:usageHistory,configuration,vehiclesconfig,vehicleedit,persons,areas,travelcheck,m365setup,workshop,lending,settings}[S.view]||placeholder)()}
 function login(){bar.hidden=true;app.innerHTML=`<div class="login"><div class="card"><div class="brand">Fahrzeugplattform</div><p class="muted">Version ${VERSION}</p><div class="field"><label>Nutzer</label><input value="Admin"></div><div class="field"><label>Passwort</label><input type="password" value="admin"></div><button class="primary" onclick="S.stack=[];S.view='main';render()">Anmelden</button></div></div>`}
 function main(){S.stack=[];head('Fahrzeugplattform','Admin');app.innerHTML=`<div class="grid">${[['Start','start'],['Konfiguration','configuration'],['Werkstatt','workshop'],['Verleihmodus','lending']].map(x=>`<button class="menu" onclick="go('${x[1]}')"><b>${x[0]}</b></button>`).join('')}</div>`}
-function configuration(){head('Konfiguration','Stammdaten und Grundlagen');app.innerHTML=`<div class="grid"><button class="menu"><b>Fahrzeuge</b><span class="muted">Fahrzeug, Komponenten, Einheiten</span></button><button class="menu" onclick="go('persons')"><b>Personen</b><span class="muted">Rollen, Funktionen, Nachweise</span></button><button class="menu" onclick="go('areas')"><b>Gebiete / Reviere</b><span class="muted">Länder, Reviere, Anforderungen</span></button><button class="menu" onclick="go('travelcheck')"><b>Reisecheck</b><span class="muted">Soll/Ist vor einer Reise</span></button><button class="menu" onclick="go('m365setup')"><b>Microsoft 365 Setup</b><span class="muted">SharePoint Phase 1 automatisch anlegen</span></button></div>`}
+function configuration(){head('Konfiguration','Stammdaten und Grundlagen');app.innerHTML=`<div class="grid"><button class="menu" onclick="go('vehiclesconfig')"><b>Fahrzeuge</b><span class="muted">Fahrzeug, Komponenten, Einheiten</span></button><button class="menu" onclick="go('persons')"><b>Personen</b><span class="muted">Rollen, Funktionen, Nachweise</span></button><button class="menu" onclick="go('areas')"><b>Gebiete / Reviere</b><span class="muted">Länder, Reviere, Anforderungen</span></button><button class="menu" onclick="go('travelcheck')"><b>Reisecheck</b><span class="muted">Soll/Ist vor einer Reise</span></button><button class="menu" onclick="go('m365setup')"><b>Microsoft 365 Setup</b><span class="muted">SharePoint Phase 1 automatisch anlegen</span></button></div>`}
+
+async function getCloud(){
+  const tok=FPAuth.token(), siteUrl=localStorage.getItem('fp_sp_site')||'';
+  if(!tok) throw new Error('Microsoft-Verbindung fehlt. Bitte unter Einstellungen → Microsoft 365 Setup anmelden.');
+  if(!siteUrl) throw new Error('SharePoint-Site fehlt. Bitte unter Microsoft 365 Setup die Site verbinden.');
+  const api=new FPGraphSetup(tok,siteUrl,{lists:[]}); await api.resolveSite(); return api;
+}
+async function vehiclesconfig(){
+  head('Fahrzeuge','Stammdaten aus SharePoint');
+  app.innerHTML='<div class="card">Fahrzeuge werden aus SharePoint geladen …</div>';
+  try{
+    const api=await getCloud(); const items=await api.listItemsByName('Fahrzeuge');
+    app.innerHTML=`<div class="card"><button class="primary" onclick="S.editVehicleId=null;go('vehicleedit')">Neues Fahrzeug</button></div>`+
+      (items.length?items.map(x=>`<button class="menu vehicle-row" onclick="S.editVehicleId='${x.id}';go('vehicleedit')"><b>${esc(x.fields.Fahrzeugname||x.fields.Title||'Ohne Name')}</b><span class="muted">${esc(x.fields.Profil||x.fields.Fahrzeugtyp||'')} · ${esc(x.fields.Hersteller||'')} ${esc(x.fields.Modell||'')}</span></button>`).join(''):'<div class="card">Noch kein Fahrzeug in SharePoint angelegt.</div>');
+  }catch(e){app.innerHTML=`<div class="card status-stop"><b>Fahrzeuge konnten nicht geladen werden</b><p>${esc(e.message)}</p><button onclick="go('m365setup')">Microsoft 365 Setup öffnen</button></div>`}
+}
+async function vehicleedit(){
+  head(S.editVehicleId?'Fahrzeug bearbeiten':'Neues Fahrzeug','SharePoint · Fahrzeuge');
+  let f={};
+  try{if(S.editVehicleId){const api=await getCloud(); const x=await api.getItemByName('Fahrzeuge',S.editVehicleId);f=x.fields||{}}}catch(e){app.innerHTML=`<div class="card status-stop">${esc(e.message)}</div>`;return}
+  app.innerHTML=`<div class="card">
+    <div class="field"><label>Fahrzeugname *</label><input id="fvName" value="${esc(f.Fahrzeugname||f.Title||'')}"></div>
+    <div class="field"><label>Profil *</label><select id="fvProfil"><option ${f.Profil==='Motorboot'?'selected':''}>Motorboot</option><option ${f.Profil==='Wohnmobil'?'selected':''}>Wohnmobil</option></select></div>
+    <div class="field"><label>Fahrzeugtyp *</label><input id="fvTyp" value="${esc(f.Fahrzeugtyp||'')}"></div>
+    <div class="field"><label>Hersteller</label><input id="fvHersteller" value="${esc(f.Hersteller||'')}"></div>
+    <div class="field"><label>Modell</label><input id="fvModell" value="${esc(f.Modell||'')}"></div>
+    <div class="field"><label>Baujahr</label><input id="fvBaujahr" type="number" value="${esc(f.Baujahr??'')}"></div>
+    <div class="field"><label>Kennzeichen / Registrierung</label><input id="fvKennz" value="${esc(f.KennzeichenRegistrierung||'')}"></div>
+    <label><input id="fvAktiv" type="checkbox" ${f.Aktiv===false?'':'checked'}> Aktiv</label>
+    <button class="primary" onclick="saveVehicle()">Speichern</button>
+  </div>`;
+}
+async function saveVehicle(){
+  const name=fvName.value.trim(), typ=fvTyp.value.trim(); if(!name||!typ){alert('Fahrzeugname und Fahrzeugtyp sind Pflichtfelder.');return}
+  const fields={Title:name,DatenraumId:'default',Fahrzeugname:name,Fahrzeugtyp:typ,Profil:fvProfil.value,Hersteller:fvHersteller.value.trim(),Modell:fvModell.value.trim(),KennzeichenRegistrierung:fvKennz.value.trim(),Aktiv:fvAktiv.checked};
+  if(fvBaujahr.value)fields.Baujahr=Number(fvBaujahr.value);
+  try{const api=await getCloud(); if(S.editVehicleId)await api.updateItemByName('Fahrzeuge',S.editVehicleId,fields);else await api.createItemByName('Fahrzeuge',fields); S.editVehicleId=null; S.stack=[];S.view='vehiclesconfig';render()}catch(e){alert('Speichern nicht möglich: '+e.message)}
+}
 function persons(){head('Personen','Rolle · Funktionen · Befähigungen');const ps=JSON.parse(localStorage.getItem('fp-persons')||'[]');app.innerHTML=ps.map(p=>`<div class="card"><b>${esc(p.name)}</b><div class="kv"><span>Rolle</span><strong>${esc(p.role)}</strong><span>Funktionen</span><div class="tagrow">${p.functions.map(f=>`<span class="tag">${esc(f)}</span>`).join('')}</div><span>Nachweise</span><div>${p.qualifications.length?p.qualifications.map(q=>`<div>${q.present?'✓':'○'} ${esc(q.type)}</div>`).join(''):'Keine erforderlich/hinterlegt'}</div></div></div>`).join('')+`<div class="card"><p class="muted">Prinzip: Rolle steuert App-Rechte. Funktionen können mehrfach möglich sein und werden je Nutzung/Tag tatsächlich zugeordnet. Nachweise können als vorhanden Ja/Nein oder später mit Nummer, Gültigkeit und Dokument erfasst werden.</p></div>`}
 function areas(){head('Gebiete / Reviere','Anforderungen werden vom Nutzer gepflegt');const gs=JSON.parse(localStorage.getItem('fp-areas')||'[]'),rs=JSON.parse(localStorage.getItem('fp-requirements')||'[]');app.innerHTML=gs.map(g=>{const own=rs.filter(r=>r.areaId===g.id);return `<div class="card"><b>${esc(g.name)}</b> <span class="tag">${esc(g.type)}</span>${own.length?`<div class="section">Hinterlegte Prüfpunkte</div>${own.map(r=>`<div>• <b>${esc(r.subject)}:</b> ${esc(r.requirement)}</div>`).join('')}`:'<p class="muted">Noch keine Anforderungen hinterlegt.</p>'}</div>`}).join('')+`<div class="card"><p class="muted">Die App behauptet nicht, alle Vorschriften zu kennen. Nutzer recherchieren Anforderungen und hinterlegen sie mit Quelle/Stand. Später kann die Community anonymisierte Vorschläge liefern.</p></div>`}
 function travelcheck(){head('Reisecheck','Planungshilfe · keine rechtsverbindliche Auskunft');app.innerHTML=`<div class="card"><div class="field"><label>Fahrzeug</label><select id="tcVehicle">${V.map(v=>`<option value="${v.id}">${esc(v.name)}</option>`).join('')}</select></div><div class="field"><label>Person</label><select id="tcPerson">${JSON.parse(localStorage.getItem('fp-persons')||'[]').map(p=>`<option value="${p.id}">${esc(p.name)} · ${esc(p.role)}</option>`).join('')}</select></div><div class="field"><label>Gebiet / Revier</label><select id="tcArea">${JSON.parse(localStorage.getItem('fp-areas')||'[]').map(g=>`<option value="${g.id}">${esc(g.name)}</option>`).join('')}</select></div><button class="primary" onclick="runTravelCheck()">Check erstellen</button></div><div id="tcResult"></div><div class="card"><b>Hinweis</b><p>Diese Prüfung dient als Planungshilfe. Vorschriften können sich ändern. Angaben und Anforderungen sind vor Reiseantritt anhand geeigneter aktueller Quellen zu prüfen.</p></div>`}
