@@ -1,4 +1,4 @@
-const VERSION='0.4.1-dev';
+const VERSION='0.4.2-dev';
 const P={
   motorboat:{label:'Motorboot',functions:['Skipper','Crew','Gast'],usage:[['Ausfahrt',0],['Törn',1],['Wasserski',0]],events:['Schleuse','Bewegliche Brücke','Hebewerk','Peilung / Landmarke','Besondere Begegnung','Wetter','Wetteränderung','Technische Beobachtung','Freie Notiz'],stays:['Angelegt','Vor Anker','Mooring'],actions:['Kontrolle','Ablegen','Ereignis','Anlegen / Ankern']},
   motorhome:{label:'Wohnmobil',functions:['Fahrer','Beifahrer','Gast'],usage:[['Tagesausflug',0],['Kurztrip',1],['Urlaub',1]],events:['Fähre','Besondere Begegnung','Wetter','Wetteränderung','Technische Beobachtung','Freie Notiz'],stays:['Stellplatz','Campingplatz','Freier Stellplatz'],actions:['Kontrolle','Abfahrt','Ereignis','Ankunft / Aufenthalt']}
