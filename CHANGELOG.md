@@ -1,4 +1,30 @@
-# Fahrzeugplattform – Build-Historie
+# Fahrzeugplattform / MOBIMORY – Build-Historie
+
+## 1.0.1-dev – erster Durchspiel-Bugfix
+
+### Behoben
+- Profilfremde Fahrzeugfelder werden ausgeblendet: Boot ohne Achsen/FIN/EZ, Wohnmobil ohne HIN/Tiefgang.
+- Startfehler `primaryPerson is not defined` beseitigt.
+- Crew/Gäste-Auswahl für Touch-Geräte auf große Einzel-Auswahlen umgestellt.
+- Skipper/Fahrer wird nicht gleichzeitig als Crew/Beifahrer angeboten.
+- Tiere können bearbeitet werden.
+- Nutzungen in Planung/Historie sind öffnbar.
+
+### Neu / geändert
+- Branding auf MOBIMORY: oben V–T–D-Routenicon; Headline separat `MOBIMORY` + `Your vehicle · Your travel · Your data`.
+- Personenstamm: E-Mail, Telefon, App-Zugang und Einladungsstatus.
+- Verleih: variable Personengruppe statt Einzel-Leiher, strukturierte Rechte statt Freitext, Funktionen nach hinterlegten Qualifikationen begrenzt.
+- Tiere können Nutzung/Reise und Überlassung zugeordnet werden.
+- Reisecheck berücksichtigt Fahrzeug, mehrere Personen und Tiere als Planungsgrundlage.
+- Planung & Historie: Geplant → Starten, Aktiv → Fortsetzen/neue Tagesetappe, Beenden.
+- Vergangene Tagesetappen bleiben bearbeitbar; Freitext kann nachgetragen werden.
+- Cockpit führt Fälligkeiten aus Fahrzeugprüfungen, Komponentenprüfungen und Werkstatt-Service zentral zusammen.
+- Komponenten erhalten Kategorie und eigene Prüfparameter.
+- Prüfungen bleiben am Fahrzeug bzw. an der Komponente; Service/Wartung bleibt Werkstatt-Thema.
+- Wartungspläne können zeit-, kilometer- oder betriebsstundenabhängig vorbereitet werden.
+- Verbrauchsprofile trennen Start-, System-, manuellen und aktuell verwendeten Verbrauch als Grundlage für spätere dynamische Reichweite.
+- Überlassungspersonen sind als eigene relationale Liste angelegt.
+
 
 Diese Datei ist die verbindliche technische Änderungshistorie. Abgeschlossene Punkte bleiben ihrem Build zugeordnet und werden bei späteren Builds nicht wieder als offene Arbeit behandelt.
 

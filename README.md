@@ -14,3 +14,7 @@ Neu erzeugte Vorgangsdaten werden im Testmodus markiert. Unter **Einstellungen /
 
 ## Build-Historie
 `CHANGELOG.md` ist ab jetzt die verbindliche Referenz für bereits implementierte und behobene Punkte.
+
+
+## Update 1.0.1
+Nach dem GitHub-Upload einmal **Microsoft 365 Setup → Phase-1-Struktur prüfen / anlegen** ausführen. 1.0.1 ergänzt u. a. Kontaktfelder, Gruppenüberlassung, Komponenten-/Prüffelder, Wartungsintervalle und Verbrauchsprofile additiv.

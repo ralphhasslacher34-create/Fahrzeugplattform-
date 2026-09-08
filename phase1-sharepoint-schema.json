@@ -1,5 +1,5 @@
 {
-  "version": "1.0.0-alpha",
+  "version": "1.0.1",
   "target": "SharePoint Online",
   "relationStrategy": "Stable GUID text IDs in Phase 1; no fragile SharePoint lookup coupling",
   "lists": [
@@ -81,6 +81,42 @@
           "internalName": "Aktiv",
           "displayName": "Aktiv",
           "type": "Boolean",
+          "required": false
+        },
+        {
+          "internalName": "Email",
+          "displayName": "E-Mail",
+          "type": "Text",
+          "required": false
+        },
+        {
+          "internalName": "Telefon",
+          "displayName": "Telefon",
+          "type": "Text",
+          "required": false
+        },
+        {
+          "internalName": "AppZugangErlaubt",
+          "displayName": "App-Zugang erlaubt",
+          "type": "Boolean",
+          "required": false
+        },
+        {
+          "internalName": "Einladungsstatus",
+          "displayName": "Einladungsstatus",
+          "type": "Choice",
+          "required": false,
+          "choices": [
+            "Nicht eingeladen",
+            "Eingeladen",
+            "Aktiv",
+            "Gesperrt"
+          ]
+        },
+        {
+          "internalName": "BenutzerKontoId",
+          "displayName": "Benutzerkonto-ID",
+          "type": "Text",
           "required": false
         }
       ]
@@ -543,6 +579,46 @@
           "displayName": "Beschreibung / Notiz",
           "type": "Note",
           "required": false
+        },
+        {
+          "internalName": "Kategorie",
+          "displayName": "Kategorie",
+          "type": "Choice",
+          "required": false,
+          "choices": [
+            "Antrieb",
+            "Versorgung",
+            "Elektrik",
+            "Navigation / Kommunikation",
+            "Sicherheit",
+            "Komfort",
+            "Ausrüstung",
+            "Sonstiges"
+          ]
+        },
+        {
+          "internalName": "Pruefpflicht",
+          "displayName": "Prüfpflicht",
+          "type": "Boolean",
+          "required": false
+        },
+        {
+          "internalName": "NaechstePruefung",
+          "displayName": "Nächste Prüfung",
+          "type": "DateTime",
+          "required": false
+        },
+        {
+          "internalName": "PruefintervallMonate",
+          "displayName": "Prüfintervall Monate",
+          "type": "Number",
+          "required": false
+        },
+        {
+          "internalName": "LetztePruefung",
+          "displayName": "Letzte Prüfung",
+          "type": "DateTime",
+          "required": false
         }
       ]
     },
@@ -872,6 +948,12 @@
           "displayName": "Testdaten",
           "type": "Boolean",
           "required": false
+        },
+        {
+          "internalName": "GeaendertAm",
+          "displayName": "Geändert am",
+          "type": "DateTime",
+          "required": false
         }
       ]
     },
@@ -991,6 +1073,18 @@
           "internalName": "Testdaten",
           "displayName": "Testdaten",
           "type": "Boolean",
+          "required": false
+        },
+        {
+          "internalName": "Tagesbericht",
+          "displayName": "Tagesbericht",
+          "type": "Note",
+          "required": false
+        },
+        {
+          "internalName": "NachgetragenAm",
+          "displayName": "Nachgetragen am",
+          "type": "DateTime",
           "required": false
         }
       ]
@@ -1560,6 +1654,30 @@
           "displayName": "Aktiv",
           "type": "Boolean",
           "required": false
+        },
+        {
+          "internalName": "NaechstePruefung",
+          "displayName": "Nächste Prüfung",
+          "type": "DateTime",
+          "required": false
+        },
+        {
+          "internalName": "IntervallMonate",
+          "displayName": "Intervall Monate",
+          "type": "Number",
+          "required": false
+        },
+        {
+          "internalName": "LetztePruefung",
+          "displayName": "Letzte Prüfung",
+          "type": "DateTime",
+          "required": false
+        },
+        {
+          "internalName": "Pruefart",
+          "displayName": "Prüfart",
+          "type": "Text",
+          "required": false
         }
       ]
     },
@@ -1781,6 +1899,43 @@
           "internalName": "Aktiv",
           "displayName": "Aktiv",
           "type": "Boolean",
+          "required": false
+        },
+        {
+          "internalName": "IntervallTyp",
+          "displayName": "Intervalltyp",
+          "type": "Choice",
+          "required": false,
+          "choices": [
+            "Zeit",
+            "Kilometer",
+            "Betriebsstunden",
+            "Zeit oder Kilometer",
+            "Zeit oder Betriebsstunden"
+          ]
+        },
+        {
+          "internalName": "IntervallWert",
+          "displayName": "Intervallwert",
+          "type": "Number",
+          "required": false
+        },
+        {
+          "internalName": "NaechsterTermin",
+          "displayName": "Nächster Termin",
+          "type": "DateTime",
+          "required": false
+        },
+        {
+          "internalName": "NaechsterZaehlerstand",
+          "displayName": "Nächster Zählerstand",
+          "type": "Number",
+          "required": false
+        },
+        {
+          "internalName": "LetzteDurchfuehrung",
+          "displayName": "Letzte Durchführung",
+          "type": "DateTime",
           "required": false
         }
       ]
@@ -2212,6 +2367,18 @@
           "displayName": "Testdaten",
           "type": "Boolean",
           "required": false
+        },
+        {
+          "internalName": "Gruppenmodus",
+          "displayName": "Gruppenmodus",
+          "type": "Boolean",
+          "required": false
+        },
+        {
+          "internalName": "TierIds",
+          "displayName": "Tier-IDs",
+          "type": "Note",
+          "required": false
         }
       ]
     },
@@ -2483,6 +2650,118 @@
         {
           "internalName": "Aktiv",
           "displayName": "Aktiv",
+          "type": "Boolean",
+          "required": false
+        }
+      ]
+    },
+    {
+      "internalName": "Verbrauchsprofile",
+      "displayName": "Verbrauchsprofile",
+      "fields": [
+        {
+          "internalName": "FahrzeugId",
+          "displayName": "Fahrzeug-ID",
+          "type": "Text",
+          "required": true
+        },
+        {
+          "internalName": "Energieart",
+          "displayName": "Energieart",
+          "type": "Text",
+          "required": true
+        },
+        {
+          "internalName": "Bezugsart",
+          "displayName": "Bezugsart",
+          "type": "Choice",
+          "required": true,
+          "choices": [
+            "pro 100 km",
+            "pro Stunde"
+          ]
+        },
+        {
+          "internalName": "Startverbrauch",
+          "displayName": "Startverbrauch",
+          "type": "Number",
+          "required": false
+        },
+        {
+          "internalName": "Systemverbrauch",
+          "displayName": "Systemverbrauch",
+          "type": "Number",
+          "required": false
+        },
+        {
+          "internalName": "ManuellerVerbrauch",
+          "displayName": "Manueller Verbrauch",
+          "type": "Number",
+          "required": false
+        },
+        {
+          "internalName": "AktuellerVerbrauch",
+          "displayName": "Aktuell verwendeter Verbrauch",
+          "type": "Number",
+          "required": false
+        },
+        {
+          "internalName": "Einheit",
+          "displayName": "Einheit",
+          "type": "Text",
+          "required": false
+        },
+        {
+          "internalName": "Aktiv",
+          "displayName": "Aktiv",
+          "type": "Boolean",
+          "required": false
+        }
+      ]
+    },
+    {
+      "internalName": "UeberlassungsPersonen",
+      "displayName": "Überlassungspersonen",
+      "fields": [
+        {
+          "internalName": "UeberlassungId",
+          "displayName": "Überlassung-ID",
+          "type": "Text",
+          "required": true
+        },
+        {
+          "internalName": "PersonId",
+          "displayName": "Person-ID",
+          "type": "Text",
+          "required": true
+        },
+        {
+          "internalName": "Funktion",
+          "displayName": "Funktion",
+          "type": "Text",
+          "required": false
+        },
+        {
+          "internalName": "Rechte",
+          "displayName": "Rechte",
+          "type": "Text",
+          "required": false
+        },
+        {
+          "internalName": "QualifikationStatus",
+          "displayName": "Qualifikationsstatus",
+          "type": "Text",
+          "required": false
+        },
+        {
+          "internalName": "Aktiv",
+          "displayName": "Aktiv",
+          "type": "Boolean",
+          "required": false
+        },
+        {
+          "internalName": "Testdaten",
+          "displayName": "Testdaten",
           "type": "Boolean",
           "required": false
         }
