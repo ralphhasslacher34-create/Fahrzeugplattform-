@@ -1,50 +1,50 @@
 # Fahrzeugplattform – Build-Historie
 
-Diese Datei ist die verbindliche technische Änderungshistorie. Abgeschlossene Punkte bleiben ihrem Build zugeordnet und werden in späteren Builds nicht erneut als offene Aufgabe behandelt.
+Diese Datei ist die verbindliche technische Änderungshistorie. Abgeschlossene Punkte bleiben ihrem Build zugeordnet und werden bei späteren Builds nicht wieder als offene Arbeit behandelt.
 
-## 0.8.0-dev – aktueller Build
+## 1.0.0-alpha – Phase-1-Gesamtstand
 
-### Behoben
-- SharePoint-Schreibfehler `DocIcon is read-only`: Komponenten verwenden das konfliktfreie Fachfeld `KomponentenTyp`.
-- Graph-Schreibzugriffe filtern schreibgeschützte SharePoint-Systemfelder aus und bevorzugen exakte interne Fachfeldnamen.
-- Teilaktualisierungen in langen Seiten halten den bearbeiteten Abschnitt stabiler; kein absichtlicher Rücksprung an den Seitenanfang.
+### Neu
+- Erster zusammenhängender Phase-1-Teststand statt weiterer Mikro-Builds.
+- Erweiterter Fahrzeugstamm mit HIN/CIN, FIN/VIN, Erstzulassung, Dokumentnummern, Maßen, Tiefgang/Durchfahrtshöhe, Gewichten, Achsen, Kraftstoff und Notizen.
+- Länderbezogene Maut-/Toll-Klassen je Fahrzeug mit Gültigkeitszeitraum.
+- Komponenten als echte technische Datensätze: Hersteller, Modell, Seriennummer, Baujahr, Einbaudatum, Einbauort und Beschreibung.
+- Beliebig viele technische Komponentenmerkmale mit Wert und Einheit.
+- Tageszähler werden aus den aktiven Fahrzeugkomponenten abgeleitet: Motorboot zeigt nur tatsächlich angelegte Motoren; keine feste Zwei-Motor-Annahme mehr.
+- Kostenbearbeitung mit Historisierung: Betragserhöhung beendet den alten Satz und legt ab Stichtag einen neuen an.
+- Tierstamm vorbereitet/bedienbar.
+- Cockpit speichert Ereignisse, Aufenthalte, Kontrollen, Versorgungsvorgänge, Messwerte und GPS-Punkte in SharePoint.
+- Medienauswahl für Foto/Video mit lokalem Alpha-Cache und SharePoint-Metadatenbezug.
+- Besatzungsänderung während einer Nutzung.
+- Tagesabschluss schreibt Endmesswerte und beendet Tagesetappe/Nutzung.
+- SharePoint-basierte Nutzungshistorie.
+- Werkstatt-Grundworkflow für Störungen, Aufgaben, Wartungspläne, Prüfungen und Arbeiten.
+- Verleihmodus mit Fahrzeug, Leiher, Zeitraum, Rechten, Übergabenotiz und Qualifikationsprüfung.
+- Testdatenkennzeichen für Vorgangsdaten und Sammellöschung der markierten Testdaten.
+- Vollständiger JSON-Datenexport über alle Phase-1-Listen.
 
-### Neu / geändert
-- Zentrale Aktionen für aktuelle Stammdaten: Aktiv/Inaktiv und Löschen in den neu ausgebauten Konfigurationsbereichen.
-- Allgemeine Fahrzeugkosten mit Intervall: einmalig, monatlich, alle X Monate, jährlich, Start/Ende und nächste Fälligkeit.
-- Nutzungsarten-Stamm als eigener Konfigurationsbereich; Fahrzeuge zeigen nur aktive, dem Profil zugehörige Nutzungsarten.
-- Neuer zentraler Ortsstamm `Orte`.
-- Neuer Standortstamm `Standorte`: Ort und konkreter Hafen/Stellplatz/POI sind getrennte Ebenen.
-- Orte/Standorte können Favoriten sein, Nutzungen zählen und `Zuletzt verwendet` speichern.
-- Nutzungsplanung verwendet Orts-/Standortauswahl statt wiederholtem Freitext.
-- Mehrtägige Gesamtplanung und Tagesetappe speichern Ort-/Standort-IDs zusätzlich zum lesbaren Text.
-- Zwischenziele werden aus dem Orts-/Standortstamm gewählt und geordnet gespeichert.
-- Orts-/Standortmodell ist für spätere GPS-/Karten-/Navigationsfunktionen vorbereitet.
-- SharePoint-Schema auf 42 Listen erweitert; neue Felder werden additiv ergänzt.
+### Geändert
+- SharePoint-Schema auf 43 Listen / 356 Fachfelder erweitert.
+- Fahrzeugkonfiguration stärker in fachliche Abschnitte gegliedert.
+- Phase 1 wird ab diesem Stand als Gesamtsystem getestet; Folgeversionen dienen der Fehlerkorrektur, Bedienverbesserung und Ergänzung erkannter Lücken.
 
-### Bewusst nicht erneut bearbeitet
-- Personenauswahl in Nutzungen (Skipper/Fahrer, Crew/Beifahrer, Gäste) stammt aus 0.7.0 und bleibt bestehen.
-- Lizenz-/Patent-Katalog stammt aus 0.7.0 und bleibt bestehen.
+### Bekannte Alpha-Grenzen
+- Foto/Video-Dateien werden in diesem Teststand noch nicht als Binärdateien in eine SharePoint-Dokumentbibliothek hochgeladen; SharePoint erhält Metadaten/Referenz, kleine Dateien können lokal im Browser gepuffert werden.
+- Offline-Betrieb ist in diesem Alpha-Stand auf lokale aktuelle Nutzung/Medienpuffer und Browserdaten beschränkt; ein vollständiger konfliktfähiger Offline-Sync ist weiterhin eine nachgelagerte technische Ausbaustufe.
+- Reisecheck ist eine Planungshilfe und keine rechtsverbindliche Auskunft.
 
-## 0.7.0-dev – abgeschlossen / Referenzstand
-- Fahrzeugkonfiguration, Personen, Gebiete/Reviere, Reisecheck.
-- Fahrzeugspezifische Nutzungsarten.
-- Mehrtägige Nutzungen mit Gesamtplanung/Tagesetappe.
-- Personen in Nutzungen aus Stammdaten.
-- Vorbefüllter und erweiterbarer Lizenz-/Patent-Katalog.
-- Bekannter Folgefehler `DocIcon is read-only`, in 0.8.0 behoben.
+## 0.8.0-dev – abgeschlossen
+- `DocIcon`-Konflikt und allgemeine Feldzuordnung gehärtet.
+- Aktiv/Inaktiv/Löschen, Kostenintervalle, Nutzungsarten-Stamm sowie Ort-/Standortmodell eingeführt.
+
+## 0.7.0-dev – abgeschlossen
+- Mehrtägige Nutzungsplanung, Personenauswahl, Nutzungsarten-Mapping und Lizenz-/Patent-Katalog.
 
 ## 0.6.0-dev – abgeschlossen
-- Konfigurationsbereich mit Fahrzeugausstattung, Merkmalen, Nutzungsarten, Prüfpunkten, Kosten, Personen, Gebieten und Reisecheck ausgebaut.
+- Konfigurationsbereiche für Fahrzeuge, Personen, Gebiete und Reisecheck ausgebaut.
 
 ## 0.5.0-dev – abgeschlossen
-- Fahrzeugstammdaten aus SharePoint lesen, anlegen und bearbeiten.
+- Erste echte SharePoint-Fahrzeugstammdaten.
 
-## 0.4.3-dev – abgeschlossen
-- Microsoft OAuth/PKCE, Graph/SharePoint-Verbindung und additive M365-Provisionierung stabilisiert.
-
-## Frühere Entwicklungsstände
-- 0.4.0–0.4.2: Microsoft-Anmeldung und Redirect stabilisiert.
-- 0.3.0: erstes M365-Provisionierungsmodul.
-- 0.2.0: GitHub-Pages-Prototyp.
-- 0.1.0: erster Entwicklungsprototyp.
+## 0.4.x – abgeschlossen
+- Microsoft OAuth/PKCE, Graph/SharePoint-Verbindung und additive Provisionierung stabilisiert.

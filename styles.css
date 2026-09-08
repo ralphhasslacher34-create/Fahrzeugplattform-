@@ -8,3 +8,5 @@
 .location-box>label{display:block;font-weight:700;margin-bottom:.4rem}
 .location-box .grid{margin-bottom:.35rem}
 #plannedStops .line{margin-top:.45rem}
+
+.entitybox{border:1px solid #d5d8dc;border-radius:12px;padding:.75rem;margin:.6rem 0}.chips{display:flex;gap:.4rem;flex-wrap:wrap;margin-top:.5rem}.chips span{background:#eef1f4;border-radius:999px;padding:.3rem .55rem}.subeditor{border-top:1px solid #ddd;margin-top:1rem;padding-top:1rem}.attrrow{grid-template-columns:minmax(140px,1.5fr) minmax(100px,1fr) minmax(80px,.6fr) auto;align-items:end}.status-ok{border-left:5px solid #2d8a4e}.status-warn{border-left:5px solid #c88b16}.status-stop{border-left:5px solid #b43e3e}@media(max-width:650px){.attrrow{grid-template-columns:1fr}.row-actions{width:100%;justify-content:flex-start}}

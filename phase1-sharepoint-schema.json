@@ -1,5 +1,5 @@
 {
-  "version": "0.8.0",
+  "version": "1.0.0-alpha",
   "target": "SharePoint Online",
   "relationStrategy": "Stable GUID text IDs in Phase 1; no fragile SharePoint lookup coupling",
   "lists": [
@@ -215,6 +215,12 @@
           "displayName": "HeimtierausweisNr",
           "type": "Text",
           "required": false
+        },
+        {
+          "internalName": "Aktiv",
+          "displayName": "Aktiv",
+          "type": "Boolean",
+          "required": false
         }
       ]
     },
@@ -250,6 +256,12 @@
           "internalName": "DokumentId",
           "displayName": "DokumentId",
           "type": "Text",
+          "required": false
+        },
+        {
+          "internalName": "Aktiv",
+          "displayName": "Aktiv",
+          "type": "Boolean",
           "required": false
         }
       ]
@@ -314,6 +326,96 @@
           "internalName": "Aktiv",
           "displayName": "Aktiv",
           "type": "Boolean",
+          "required": false
+        },
+        {
+          "internalName": "HIN_CIN",
+          "displayName": "HIN / CIN",
+          "type": "Text",
+          "required": false
+        },
+        {
+          "internalName": "FIN_VIN",
+          "displayName": "FIN / VIN",
+          "type": "Text",
+          "required": false
+        },
+        {
+          "internalName": "Erstzulassung",
+          "displayName": "Erstzulassung",
+          "type": "DateTime",
+          "required": false
+        },
+        {
+          "internalName": "ZulassungsDokNr",
+          "displayName": "Fahrzeug-/Zulassungsdokument-Nr.",
+          "type": "Text",
+          "required": false
+        },
+        {
+          "internalName": "Laenge",
+          "displayName": "Länge",
+          "type": "Number",
+          "required": false
+        },
+        {
+          "internalName": "Breite",
+          "displayName": "Breite",
+          "type": "Number",
+          "required": false
+        },
+        {
+          "internalName": "Hoehe",
+          "displayName": "Höhe",
+          "type": "Number",
+          "required": false
+        },
+        {
+          "internalName": "Tiefgang",
+          "displayName": "Tiefgang",
+          "type": "Number",
+          "required": false
+        },
+        {
+          "internalName": "Durchfahrtshoehe",
+          "displayName": "Durchfahrtshöhe",
+          "type": "Number",
+          "required": false
+        },
+        {
+          "internalName": "Leergewicht",
+          "displayName": "Leergewicht",
+          "type": "Number",
+          "required": false
+        },
+        {
+          "internalName": "ZulaessigesGesamtgewicht",
+          "displayName": "Zulässiges Gesamtgewicht",
+          "type": "Number",
+          "required": false
+        },
+        {
+          "internalName": "Achsen",
+          "displayName": "Achsen",
+          "type": "Number",
+          "required": false
+        },
+        {
+          "internalName": "Kraftstoff",
+          "displayName": "Kraftstoff",
+          "type": "Text",
+          "required": false
+        },
+        {
+          "internalName": "Farbe",
+          "displayName": "Farbe",
+          "type": "Text",
+          "required": false
+        },
+        {
+          "internalName": "Notiz",
+          "displayName": "Notiz",
+          "type": "Note",
           "required": false
         }
       ]
@@ -399,6 +501,48 @@
           "displayName": "Komponententyp",
           "type": "Text",
           "required": true
+        },
+        {
+          "internalName": "Hersteller",
+          "displayName": "Hersteller",
+          "type": "Text",
+          "required": false
+        },
+        {
+          "internalName": "Modell",
+          "displayName": "Modell / Typ",
+          "type": "Text",
+          "required": false
+        },
+        {
+          "internalName": "Seriennummer",
+          "displayName": "Seriennummer",
+          "type": "Text",
+          "required": false
+        },
+        {
+          "internalName": "Baujahr",
+          "displayName": "Baujahr",
+          "type": "Number",
+          "required": false
+        },
+        {
+          "internalName": "Einbaudatum",
+          "displayName": "Einbaudatum",
+          "type": "DateTime",
+          "required": false
+        },
+        {
+          "internalName": "Einbauort",
+          "displayName": "Einbauort",
+          "type": "Text",
+          "required": false
+        },
+        {
+          "internalName": "Beschreibung",
+          "displayName": "Beschreibung / Notiz",
+          "type": "Note",
+          "required": false
         }
       ]
     },
@@ -434,6 +578,12 @@
           "internalName": "Einheit",
           "displayName": "Einheit",
           "type": "Text",
+          "required": false
+        },
+        {
+          "internalName": "Aktiv",
+          "displayName": "Aktiv",
+          "type": "Boolean",
           "required": false
         }
       ]
@@ -716,6 +866,12 @@
           "displayName": "Geplanter Endort Standort-ID",
           "type": "Text",
           "required": false
+        },
+        {
+          "internalName": "Testdaten",
+          "displayName": "Testdaten",
+          "type": "Boolean",
+          "required": false
         }
       ]
     },
@@ -830,6 +986,12 @@
           "displayName": "Ziel Standort-ID",
           "type": "Text",
           "required": false
+        },
+        {
+          "internalName": "Testdaten",
+          "displayName": "Testdaten",
+          "type": "Boolean",
+          "required": false
         }
       ]
     },
@@ -860,6 +1022,12 @@
           "displayName": "Funktion",
           "type": "Text",
           "required": true
+        },
+        {
+          "internalName": "Testdaten",
+          "displayName": "Testdaten",
+          "type": "Boolean",
+          "required": false
         }
       ]
     },
@@ -878,6 +1046,12 @@
           "displayName": "TierId",
           "type": "Text",
           "required": true
+        },
+        {
+          "internalName": "Testdaten",
+          "displayName": "Testdaten",
+          "type": "Boolean",
+          "required": false
         }
       ]
     },
@@ -912,6 +1086,12 @@
           "internalName": "HinweisBestaetigtAm",
           "displayName": "HinweisBestaetigtAm",
           "type": "DateTime",
+          "required": false
+        },
+        {
+          "internalName": "Testdaten",
+          "displayName": "Testdaten",
+          "type": "Boolean",
           "required": false
         }
       ]
@@ -973,6 +1153,12 @@
           "displayName": "Notiz",
           "type": "Note",
           "required": false
+        },
+        {
+          "internalName": "Testdaten",
+          "displayName": "Testdaten",
+          "type": "Boolean",
+          "required": false
         }
       ]
     },
@@ -1020,6 +1206,42 @@
           "internalName": "Notiz",
           "displayName": "Notiz",
           "type": "Note",
+          "required": false
+        },
+        {
+          "internalName": "Aktiv",
+          "displayName": "Aktiv",
+          "type": "Boolean",
+          "required": false
+        },
+        {
+          "internalName": "Breitengrad",
+          "displayName": "Breitengrad",
+          "type": "Number",
+          "required": false
+        },
+        {
+          "internalName": "Laengengrad",
+          "displayName": "Längengrad",
+          "type": "Number",
+          "required": false
+        },
+        {
+          "internalName": "OrtId",
+          "displayName": "Ort-ID",
+          "type": "Text",
+          "required": false
+        },
+        {
+          "internalName": "StandortId",
+          "displayName": "Standort-ID",
+          "type": "Text",
+          "required": false
+        },
+        {
+          "internalName": "Testdaten",
+          "displayName": "Testdaten",
+          "type": "Boolean",
           "required": false
         }
       ]
@@ -1069,6 +1291,30 @@
           "displayName": "Ende",
           "type": "DateTime",
           "required": false
+        },
+        {
+          "internalName": "Aktiv",
+          "displayName": "Aktiv",
+          "type": "Boolean",
+          "required": false
+        },
+        {
+          "internalName": "OrtId",
+          "displayName": "Ort-ID",
+          "type": "Text",
+          "required": false
+        },
+        {
+          "internalName": "StandortId",
+          "displayName": "Standort-ID",
+          "type": "Text",
+          "required": false
+        },
+        {
+          "internalName": "Testdaten",
+          "displayName": "Testdaten",
+          "type": "Boolean",
+          "required": false
         }
       ]
     },
@@ -1116,6 +1362,18 @@
           "internalName": "Quelle",
           "displayName": "Quelle",
           "type": "Text",
+          "required": false
+        },
+        {
+          "internalName": "Aktiv",
+          "displayName": "Aktiv",
+          "type": "Boolean",
+          "required": false
+        },
+        {
+          "internalName": "Testdaten",
+          "displayName": "Testdaten",
+          "type": "Boolean",
           "required": false
         }
       ]
@@ -1188,6 +1446,18 @@
           "displayName": "Quelle",
           "type": "Text",
           "required": false
+        },
+        {
+          "internalName": "Aktiv",
+          "displayName": "Aktiv",
+          "type": "Boolean",
+          "required": false
+        },
+        {
+          "internalName": "Testdaten",
+          "displayName": "Testdaten",
+          "type": "Boolean",
+          "required": false
         }
       ]
     },
@@ -1248,6 +1518,18 @@
           "displayName": "Zeitpunkt",
           "type": "DateTime",
           "required": true
+        },
+        {
+          "internalName": "Aktiv",
+          "displayName": "Aktiv",
+          "type": "Boolean",
+          "required": false
+        },
+        {
+          "internalName": "Testdaten",
+          "displayName": "Testdaten",
+          "type": "Boolean",
+          "required": false
         }
       ]
     },
@@ -1326,6 +1608,18 @@
           "displayName": "Ergebnis",
           "type": "Text",
           "required": false
+        },
+        {
+          "internalName": "Aktiv",
+          "displayName": "Aktiv",
+          "type": "Boolean",
+          "required": false
+        },
+        {
+          "internalName": "Testdaten",
+          "displayName": "Testdaten",
+          "type": "Boolean",
+          "required": false
         }
       ]
     },
@@ -1373,6 +1667,18 @@
           "internalName": "Prioritaet",
           "displayName": "Prioritaet",
           "type": "Text",
+          "required": false
+        },
+        {
+          "internalName": "Aktiv",
+          "displayName": "Aktiv",
+          "type": "Boolean",
+          "required": false
+        },
+        {
+          "internalName": "Testdaten",
+          "displayName": "Testdaten",
+          "type": "Boolean",
           "required": false
         }
       ]
@@ -1427,6 +1733,18 @@
           "internalName": "Waehrung",
           "displayName": "Waehrung",
           "type": "Text",
+          "required": false
+        },
+        {
+          "internalName": "Aktiv",
+          "displayName": "Aktiv",
+          "type": "Boolean",
+          "required": false
+        },
+        {
+          "internalName": "Testdaten",
+          "displayName": "Testdaten",
+          "type": "Boolean",
           "required": false
         }
       ]
@@ -1506,6 +1824,18 @@
           "displayName": "Status",
           "type": "Text",
           "required": true
+        },
+        {
+          "internalName": "Aktiv",
+          "displayName": "Aktiv",
+          "type": "Boolean",
+          "required": false
+        },
+        {
+          "internalName": "Testdaten",
+          "displayName": "Testdaten",
+          "type": "Boolean",
+          "required": false
         }
       ]
     },
@@ -1547,6 +1877,18 @@
           "internalName": "DokumentId",
           "displayName": "DokumentId",
           "type": "Text",
+          "required": false
+        },
+        {
+          "internalName": "Aktiv",
+          "displayName": "Aktiv",
+          "type": "Boolean",
+          "required": false
+        },
+        {
+          "internalName": "Testdaten",
+          "displayName": "Testdaten",
+          "type": "Boolean",
           "required": false
         }
       ]
@@ -1613,6 +1955,18 @@
           "displayName": "HinzugefuegtAm",
           "type": "DateTime",
           "required": true
+        },
+        {
+          "internalName": "Aktiv",
+          "displayName": "Aktiv",
+          "type": "Boolean",
+          "required": false
+        },
+        {
+          "internalName": "Testdaten",
+          "displayName": "Testdaten",
+          "type": "Boolean",
+          "required": false
         }
       ]
     },
@@ -1648,6 +2002,18 @@
           "internalName": "GueltigBis",
           "displayName": "GueltigBis",
           "type": "DateTime",
+          "required": false
+        },
+        {
+          "internalName": "Aktiv",
+          "displayName": "Aktiv",
+          "type": "Boolean",
+          "required": false
+        },
+        {
+          "internalName": "Testdaten",
+          "displayName": "Testdaten",
+          "type": "Boolean",
           "required": false
         }
       ]
@@ -1745,6 +2111,24 @@
           "displayName": "Nächste Fälligkeit",
           "type": "DateTime",
           "required": false
+        },
+        {
+          "internalName": "VorgaengerId",
+          "displayName": "Vorgänger-ID",
+          "type": "Text",
+          "required": false
+        },
+        {
+          "internalName": "Notiz",
+          "displayName": "Notiz",
+          "type": "Note",
+          "required": false
+        },
+        {
+          "internalName": "Testdaten",
+          "displayName": "Testdaten",
+          "type": "Boolean",
+          "required": false
         }
       ]
     },
@@ -1792,6 +2176,42 @@
             "Aktiv",
             "Beendet"
           ]
+        },
+        {
+          "internalName": "Aktiv",
+          "displayName": "Aktiv",
+          "type": "Boolean",
+          "required": false
+        },
+        {
+          "internalName": "UebergabeNotiz",
+          "displayName": "Übergabenotiz",
+          "type": "Note",
+          "required": false
+        },
+        {
+          "internalName": "RueckgabeNotiz",
+          "displayName": "Rückgabenotiz",
+          "type": "Note",
+          "required": false
+        },
+        {
+          "internalName": "FuehrerscheinGeprueftAm",
+          "displayName": "Führerschein geprüft am",
+          "type": "DateTime",
+          "required": false
+        },
+        {
+          "internalName": "QualifikationGeprueftAm",
+          "displayName": "Qualifikation geprüft am",
+          "type": "DateTime",
+          "required": false
+        },
+        {
+          "internalName": "Testdaten",
+          "displayName": "Testdaten",
+          "type": "Boolean",
+          "required": false
         }
       ]
     },
@@ -1865,6 +2285,12 @@
           "internalName": "StandortId",
           "displayName": "Standort-ID",
           "type": "Text",
+          "required": false
+        },
+        {
+          "internalName": "Testdaten",
+          "displayName": "Testdaten",
+          "type": "Boolean",
           "required": false
         }
       ]
@@ -1998,6 +2424,60 @@
           "internalName": "ZuletztVerwendet",
           "displayName": "Zuletzt verwendet",
           "type": "DateTime",
+          "required": false
+        },
+        {
+          "internalName": "Aktiv",
+          "displayName": "Aktiv",
+          "type": "Boolean",
+          "required": false
+        }
+      ]
+    },
+    {
+      "internalName": "FahrzeugMautklassen",
+      "displayName": "Fahrzeug-Mautklassen",
+      "fields": [
+        {
+          "internalName": "FahrzeugId",
+          "displayName": "Fahrzeug-ID",
+          "type": "Text",
+          "required": true
+        },
+        {
+          "internalName": "Land",
+          "displayName": "Land",
+          "type": "Text",
+          "required": true
+        },
+        {
+          "internalName": "System",
+          "displayName": "System / Kategorie",
+          "type": "Text",
+          "required": false
+        },
+        {
+          "internalName": "Klasse",
+          "displayName": "Klasse / Wert",
+          "type": "Text",
+          "required": true
+        },
+        {
+          "internalName": "GueltigVon",
+          "displayName": "Gültig von",
+          "type": "DateTime",
+          "required": false
+        },
+        {
+          "internalName": "GueltigBis",
+          "displayName": "Gültig bis",
+          "type": "DateTime",
+          "required": false
+        },
+        {
+          "internalName": "Notiz",
+          "displayName": "Notiz",
+          "type": "Note",
           "required": false
         },
         {

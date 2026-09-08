@@ -1,21 +1,16 @@
-# Fahrzeugplattform 0.4.3-dev
+# Fahrzeugplattform 1.0.0-alpha
 
-Entwicklungsstand mit Microsoft-365-/SharePoint-Provisionierung.
+Erster vollständiger Phase-1-Teststand der Fahrzeug-/Reiseplattform. Unterstützt die Profile Motorboot und Wohnmobil auf einer gemeinsamen Datenarchitektur.
 
-Neu in 0.4.3:
-- OAuth 2.0 Authorization Code + PKCE direkt aus der SPA
-- kein Client-Secret im Browser
-- Microsoft Graph v1.0 für SharePoint-Listen und Spalten
-- Setup-Oberfläche unter Konfiguration → Microsoft 365 Setup
-- Phase-1-Schema: 40 Listen / 237 Felder
-- additive/idempotente Provisionierung
+## Update
+1. Gesamten Paketinhalt in das GitHub-Pages-Repository hochladen.
+2. Deployment abwarten.
+3. In der App **Einstellungen / Daten → Microsoft 365 Setup** öffnen.
+4. **Phase-1-Struktur prüfen / anlegen** einmal ausführen. Das Setup ist additiv und ergänzt nur fehlende Listen/Felder.
+5. Danach zunächst den Testmodus eingeschaltet lassen und die App komplett durchspielen.
 
-Hinweis: Für die Ziel-Site-Auflösung wird delegiert `Sites.Read.All` benötigt; für das Erstellen von Listen/Spalten `Sites.Manage.All`.
+## Testdaten
+Neu erzeugte Vorgangsdaten werden im Testmodus markiert. Unter **Einstellungen / Daten** können alle markierten Testdaten gesammelt gelöscht werden. Stammdaten wie Fahrzeuge, Personen, Orte, Komponenten und Nutzungsarten bleiben bestehen.
 
-
-## 0.8.0-dev
-Konfiguration ausgebaut: Fahrzeugausstattung/Komponenten, Merkmale, fahrzeugspezifische Nutzungsarten, Prüfpunkte/Intervalle, allgemeine Fahrzeugkosten sowie echte SharePoint-Seiten für Personen, Funktionen, Befähigungen, Gebiete/Reviere, Anforderungen und Reisecheck.
-
-
-## Update 0.8.0
-Nach dem GitHub-Upload einmal unter **Einstellungen → Microsoft 365 Setup** die Struktur erneut prüfen/anlegen. Das Update ist additiv und ergänzt u. a. `Orte`, `Standorte`, Kostenintervalle und konfliktfreie Komponentenfelder.
+## Build-Historie
+`CHANGELOG.md` ist ab jetzt die verbindliche Referenz für bereits implementierte und behobene Punkte.
