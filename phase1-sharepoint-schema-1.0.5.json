@@ -1,0 +1,134 @@
+{
+  "version": "1.0.5",
+  "target": "SharePoint Online",
+  "relationStrategy": "Additive extension for location learning, supply/disposal, lending animals and vehicle authorization rules",
+  "lists": [
+    {
+      "internalName": "PositionsOrtsHistorie",
+      "displayName": "PositionsOrtsHistorie",
+      "fields": [
+        {"internalName":"OrtId","displayName":"Ort-ID","type":"Text","required":false},
+        {"internalName":"StandortId","displayName":"Standort-ID","type":"Text","required":false},
+        {"internalName":"Breitengrad","displayName":"Breitengrad","type":"Number","required":true},
+        {"internalName":"Laengengrad","displayName":"Laengengrad","type":"Number","required":true},
+        {"internalName":"GenauigkeitM","displayName":"GPS-Genauigkeit m","type":"Number","required":false},
+        {"internalName":"Zeitpunkt","displayName":"Zeitpunkt","type":"DateTime","required":true},
+        {"internalName":"QuelleTyp","displayName":"Quelle / Vorgangstyp","type":"Text","required":false},
+        {"internalName":"QuelleId","displayName":"Quell-Datensatz-ID","type":"Text","required":false},
+        {"internalName":"FahrzeugId","displayName":"FahrzeugId","type":"Text","required":false},
+        {"internalName":"Testdaten","displayName":"Testdaten","type":"Boolean","required":false},
+        {"internalName":"Aktiv","displayName":"Aktiv","type":"Boolean","required":false}
+      ]
+    },
+    {
+      "internalName": "VerEntsorgungen",
+      "displayName": "VerEntsorgungen",
+      "fields": [
+        {"internalName":"FahrzeugId","displayName":"FahrzeugId","type":"Text","required":true},
+        {"internalName":"NutzungId","displayName":"NutzungId","type":"Text","required":true},
+        {"internalName":"TagesetappeId","displayName":"TagesetappeId","type":"Text","required":false},
+        {"internalName":"Zeitpunkt","displayName":"Zeitpunkt","type":"DateTime","required":true},
+        {"internalName":"OrtId","displayName":"Ort-ID","type":"Text","required":false},
+        {"internalName":"StandortId","displayName":"Standort-ID","type":"Text","required":false},
+        {"internalName":"Breitengrad","displayName":"Breitengrad","type":"Number","required":false},
+        {"internalName":"Laengengrad","displayName":"Laengengrad","type":"Number","required":false},
+        {"internalName":"GenauigkeitM","displayName":"GPS-Genauigkeit m","type":"Number","required":false},
+        {"internalName":"GesamtKosten","displayName":"Gesamtkosten","type":"Number","required":false},
+        {"internalName":"Waehrung","displayName":"Waehrung","type":"Text","required":false},
+        {"internalName":"Notiz","displayName":"Notiz","type":"Note","required":false},
+        {"internalName":"Testdaten","displayName":"Testdaten","type":"Boolean","required":false},
+        {"internalName":"Aktiv","displayName":"Aktiv","type":"Boolean","required":false}
+      ]
+    },
+    {
+      "internalName": "VerEntsorgungsPositionen",
+      "displayName": "VerEntsorgungsPositionen",
+      "fields": [
+        {"internalName":"VorgangId","displayName":"Vorgang-ID","type":"Text","required":true},
+        {"internalName":"KomponenteId","displayName":"KomponenteId","type":"Text","required":false},
+        {"internalName":"Art","displayName":"Art","type":"Text","required":true},
+        {"internalName":"Richtung","displayName":"Richtung","type":"Choice","required":true,"choices":["Aufnahme","Abgabe"]},
+        {"internalName":"Menge","displayName":"Menge","type":"Number","required":false},
+        {"internalName":"Einheit","displayName":"Einheit","type":"Text","required":false},
+        {"internalName":"Kosten","displayName":"Kosten","type":"Number","required":false},
+        {"internalName":"Waehrung","displayName":"Waehrung","type":"Text","required":false},
+        {"internalName":"AusgabeId","displayName":"Ausgabe-ID","type":"Text","required":false},
+        {"internalName":"Notiz","displayName":"Notiz","type":"Note","required":false},
+        {"internalName":"Testdaten","displayName":"Testdaten","type":"Boolean","required":false},
+        {"internalName":"Aktiv","displayName":"Aktiv","type":"Boolean","required":false}
+      ]
+    },
+    {
+      "internalName": "UeberlassungsTiere",
+      "displayName": "UeberlassungsTiere",
+      "fields": [
+        {"internalName":"UeberlassungId","displayName":"Ueberlassung-ID","type":"Text","required":true},
+        {"internalName":"TierId","displayName":"Tier-ID","type":"Text","required":true},
+        {"internalName":"Testdaten","displayName":"Testdaten","type":"Boolean","required":false},
+        {"internalName":"Aktiv","displayName":"Aktiv","type":"Boolean","required":false}
+      ]
+    },
+    {
+      "internalName": "FahrzeugBerechtigungsRegeln",
+      "displayName": "FahrzeugBerechtigungsRegeln",
+      "fields": [
+        {"internalName":"FahrzeugId","displayName":"FahrzeugId","type":"Text","required":true},
+        {"internalName":"Regelart","displayName":"Regelart","type":"Choice","required":true,"choices":["Fahrerlaubnis","Bootsfuehrerschein / Patent","Funkzeugnis","Sonderberechtigung","Sonstiges"]},
+        {"internalName":"NachweisArt","displayName":"Benoetigter Nachweis","type":"Text","required":true},
+        {"internalName":"Bedingung","displayName":"Gilt bei / Bedingung","type":"Note","required":false},
+        {"internalName":"Pflichtgrad","displayName":"Pflichtgrad","type":"Choice","required":true,"choices":["Pflicht","Situativ","Empfohlen"]},
+        {"internalName":"GebietId","displayName":"Gebiet-ID","type":"Text","required":false},
+        {"internalName":"Aktiv","displayName":"Aktiv","type":"Boolean","required":false}
+      ]
+    },
+    {
+      "internalName": "Orte",
+      "displayName": "Orte",
+      "fields": [
+        {"internalName":"Breitengrad","displayName":"Breitengrad","type":"Number","required":false},
+        {"internalName":"Laengengrad","displayName":"Laengengrad","type":"Number","required":false},
+        {"internalName":"GenauigkeitM","displayName":"GPS-Genauigkeit m","type":"Number","required":false}
+      ]
+    },
+    {
+      "internalName": "Standorte",
+      "displayName": "Standorte",
+      "fields": [
+        {"internalName":"Breitengrad","displayName":"Breitengrad","type":"Number","required":false},
+        {"internalName":"Laengengrad","displayName":"Laengengrad","type":"Number","required":false},
+        {"internalName":"GenauigkeitM","displayName":"GPS-Genauigkeit m","type":"Number","required":false}
+      ]
+    },
+    {
+      "internalName": "Kontrollen",
+      "displayName": "Kontrollen",
+      "fields": [
+        {"internalName":"OrtId","displayName":"Ort-ID","type":"Text","required":false},
+        {"internalName":"StandortId","displayName":"Standort-ID","type":"Text","required":false},
+        {"internalName":"Breitengrad","displayName":"Breitengrad","type":"Number","required":false},
+        {"internalName":"Laengengrad","displayName":"Laengengrad","type":"Number","required":false},
+        {"internalName":"GenauigkeitM","displayName":"GPS-Genauigkeit m","type":"Number","required":false},
+        {"internalName":"Zeitpunkt","displayName":"Zeitpunkt","type":"DateTime","required":false}
+      ]
+    },
+    {
+      "internalName": "Wetterdaten",
+      "displayName": "Wetterdaten",
+      "fields": [
+        {"internalName":"OrtId","displayName":"Ort-ID","type":"Text","required":false},
+        {"internalName":"StandortId","displayName":"Standort-ID","type":"Text","required":false},
+        {"internalName":"GenauigkeitM","displayName":"GPS-Genauigkeit m","type":"Number","required":false},
+        {"internalName":"AbrufAm","displayName":"Online-Abruf am","type":"DateTime","required":false},
+        {"internalName":"QuellURL","displayName":"Quell-URL","type":"Note","required":false},
+        {"internalName":"Wettercode","displayName":"Wettercode","type":"Number","required":false}
+      ]
+    },
+    {
+      "internalName": "Fahrzeugueberlassungen",
+      "displayName": "Fahrzeugueberlassungen",
+      "fields": [
+        {"internalName":"AppRechte","displayName":"App-Rechte","type":"Note","required":false}
+      ]
+    }
+  ]
+}
