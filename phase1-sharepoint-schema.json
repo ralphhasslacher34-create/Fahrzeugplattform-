@@ -1,0 +1,1659 @@
+{
+  "version": "0.3.0",
+  "target": "SharePoint Online",
+  "relationStrategy": "Stable GUID text IDs in Phase 1; no fragile SharePoint lookup coupling",
+  "lists": [
+    {
+      "internalName": "Datenraeume",
+      "displayName": "Datenraeume",
+      "fields": [
+        {
+          "internalName": "Name",
+          "displayName": "Name",
+          "type": "Text",
+          "required": true
+        },
+        {
+          "internalName": "Aktiv",
+          "displayName": "Aktiv",
+          "type": "Boolean",
+          "required": false
+        }
+      ]
+    },
+    {
+      "internalName": "Benutzer",
+      "displayName": "Benutzer",
+      "fields": [
+        {
+          "internalName": "DatenraumId",
+          "displayName": "DatenraumId",
+          "type": "Text",
+          "required": true
+        },
+        {
+          "internalName": "LoginName",
+          "displayName": "LoginName",
+          "type": "Text",
+          "required": true
+        },
+        {
+          "internalName": "Status",
+          "displayName": "Status",
+          "type": "Choice",
+          "required": true,
+          "choices": [
+            "Aktiv",
+            "Inaktiv"
+          ]
+        }
+      ]
+    },
+    {
+      "internalName": "Personen",
+      "displayName": "Personen",
+      "fields": [
+        {
+          "internalName": "DatenraumId",
+          "displayName": "DatenraumId",
+          "type": "Text",
+          "required": true
+        },
+        {
+          "internalName": "Anzeigename",
+          "displayName": "Anzeigename",
+          "type": "Text",
+          "required": true
+        },
+        {
+          "internalName": "Rolle",
+          "displayName": "Rolle",
+          "type": "Choice",
+          "required": true,
+          "choices": [
+            "Admin",
+            "Benutzer",
+            "Leiher",
+            "Gast"
+          ]
+        },
+        {
+          "internalName": "Aktiv",
+          "displayName": "Aktiv",
+          "type": "Boolean",
+          "required": false
+        }
+      ]
+    },
+    {
+      "internalName": "PersonFunktionen",
+      "displayName": "PersonFunktionen",
+      "fields": [
+        {
+          "internalName": "PersonId",
+          "displayName": "PersonId",
+          "type": "Text",
+          "required": true
+        },
+        {
+          "internalName": "Funktion",
+          "displayName": "Funktion",
+          "type": "Choice",
+          "required": true,
+          "choices": [
+            "Skipper",
+            "Fahrer",
+            "Crew",
+            "Beifahrer",
+            "Gast"
+          ]
+        }
+      ]
+    },
+    {
+      "internalName": "Befaehigungen",
+      "displayName": "Befaehigungen",
+      "fields": [
+        {
+          "internalName": "PersonId",
+          "displayName": "PersonId",
+          "type": "Text",
+          "required": true
+        },
+        {
+          "internalName": "Art",
+          "displayName": "Art",
+          "type": "Text",
+          "required": true
+        },
+        {
+          "internalName": "Vorhanden",
+          "displayName": "Vorhanden",
+          "type": "Boolean",
+          "required": false
+        },
+        {
+          "internalName": "Nummer",
+          "displayName": "Nummer",
+          "type": "Text",
+          "required": false
+        },
+        {
+          "internalName": "GueltigVon",
+          "displayName": "GueltigVon",
+          "type": "DateTime",
+          "required": false
+        },
+        {
+          "internalName": "GueltigBis",
+          "displayName": "GueltigBis",
+          "type": "DateTime",
+          "required": false
+        },
+        {
+          "internalName": "Aussteller",
+          "displayName": "Aussteller",
+          "type": "Text",
+          "required": false
+        },
+        {
+          "internalName": "DokumentId",
+          "displayName": "DokumentId",
+          "type": "Text",
+          "required": false
+        },
+        {
+          "internalName": "GeprueftAm",
+          "displayName": "GeprueftAm",
+          "type": "DateTime",
+          "required": false
+        }
+      ]
+    },
+    {
+      "internalName": "Tiere",
+      "displayName": "Tiere",
+      "fields": [
+        {
+          "internalName": "DatenraumId",
+          "displayName": "DatenraumId",
+          "type": "Text",
+          "required": true
+        },
+        {
+          "internalName": "Name",
+          "displayName": "Name",
+          "type": "Text",
+          "required": true
+        },
+        {
+          "internalName": "Tierart",
+          "displayName": "Tierart",
+          "type": "Text",
+          "required": true
+        },
+        {
+          "internalName": "Chipnummer",
+          "displayName": "Chipnummer",
+          "type": "Text",
+          "required": false
+        },
+        {
+          "internalName": "HeimtierausweisNr",
+          "displayName": "HeimtierausweisNr",
+          "type": "Text",
+          "required": false
+        }
+      ]
+    },
+    {
+      "internalName": "TierNachweise",
+      "displayName": "TierNachweise",
+      "fields": [
+        {
+          "internalName": "TierId",
+          "displayName": "TierId",
+          "type": "Text",
+          "required": true
+        },
+        {
+          "internalName": "Art",
+          "displayName": "Art",
+          "type": "Text",
+          "required": true
+        },
+        {
+          "internalName": "Vorhanden",
+          "displayName": "Vorhanden",
+          "type": "Boolean",
+          "required": false
+        },
+        {
+          "internalName": "GueltigBis",
+          "displayName": "GueltigBis",
+          "type": "DateTime",
+          "required": false
+        },
+        {
+          "internalName": "DokumentId",
+          "displayName": "DokumentId",
+          "type": "Text",
+          "required": false
+        }
+      ]
+    },
+    {
+      "internalName": "Fahrzeuge",
+      "displayName": "Fahrzeuge",
+      "fields": [
+        {
+          "internalName": "DatenraumId",
+          "displayName": "DatenraumId",
+          "type": "Text",
+          "required": true
+        },
+        {
+          "internalName": "Fahrzeugname",
+          "displayName": "Fahrzeugname",
+          "type": "Text",
+          "required": true
+        },
+        {
+          "internalName": "Fahrzeugtyp",
+          "displayName": "Fahrzeugtyp",
+          "type": "Text",
+          "required": true
+        },
+        {
+          "internalName": "Profil",
+          "displayName": "Profil",
+          "type": "Choice",
+          "required": true,
+          "choices": [
+            "Motorboot",
+            "Wohnmobil"
+          ]
+        },
+        {
+          "internalName": "Hersteller",
+          "displayName": "Hersteller",
+          "type": "Text",
+          "required": false
+        },
+        {
+          "internalName": "Modell",
+          "displayName": "Modell",
+          "type": "Text",
+          "required": false
+        },
+        {
+          "internalName": "Baujahr",
+          "displayName": "Baujahr",
+          "type": "Number",
+          "required": false
+        },
+        {
+          "internalName": "KennzeichenRegistrierung",
+          "displayName": "KennzeichenRegistrierung",
+          "type": "Text",
+          "required": false
+        },
+        {
+          "internalName": "Aktiv",
+          "displayName": "Aktiv",
+          "type": "Boolean",
+          "required": false
+        }
+      ]
+    },
+    {
+      "internalName": "Fahrzeugmerkmale",
+      "displayName": "Fahrzeugmerkmale",
+      "fields": [
+        {
+          "internalName": "FahrzeugId",
+          "displayName": "FahrzeugId",
+          "type": "Text",
+          "required": true
+        },
+        {
+          "internalName": "Merkmal",
+          "displayName": "Merkmal",
+          "type": "Text",
+          "required": true
+        },
+        {
+          "internalName": "WertText",
+          "displayName": "WertText",
+          "type": "Note",
+          "required": false
+        },
+        {
+          "internalName": "WertZahl",
+          "displayName": "WertZahl",
+          "type": "Number",
+          "required": false
+        },
+        {
+          "internalName": "Einheit",
+          "displayName": "Einheit",
+          "type": "Text",
+          "required": false
+        }
+      ]
+    },
+    {
+      "internalName": "Komponenten",
+      "displayName": "Komponenten",
+      "fields": [
+        {
+          "internalName": "FahrzeugId",
+          "displayName": "FahrzeugId",
+          "type": "Text",
+          "required": true
+        },
+        {
+          "internalName": "ParentKomponenteId",
+          "displayName": "ParentKomponenteId",
+          "type": "Text",
+          "required": false
+        },
+        {
+          "internalName": "Typ",
+          "displayName": "Typ",
+          "type": "Text",
+          "required": true
+        },
+        {
+          "internalName": "Name",
+          "displayName": "Name",
+          "type": "Text",
+          "required": true
+        },
+        {
+          "internalName": "Aktiv",
+          "displayName": "Aktiv",
+          "type": "Boolean",
+          "required": false
+        }
+      ]
+    },
+    {
+      "internalName": "KomponentenMerkmale",
+      "displayName": "KomponentenMerkmale",
+      "fields": [
+        {
+          "internalName": "KomponenteId",
+          "displayName": "KomponenteId",
+          "type": "Text",
+          "required": true
+        },
+        {
+          "internalName": "Merkmal",
+          "displayName": "Merkmal",
+          "type": "Text",
+          "required": true
+        },
+        {
+          "internalName": "WertText",
+          "displayName": "WertText",
+          "type": "Note",
+          "required": false
+        },
+        {
+          "internalName": "WertZahl",
+          "displayName": "WertZahl",
+          "type": "Number",
+          "required": false
+        },
+        {
+          "internalName": "Einheit",
+          "displayName": "Einheit",
+          "type": "Text",
+          "required": false
+        }
+      ]
+    },
+    {
+      "internalName": "Nutzungsarten",
+      "displayName": "Nutzungsarten",
+      "fields": [
+        {
+          "internalName": "Profil",
+          "displayName": "Profil",
+          "type": "Choice",
+          "required": true,
+          "choices": [
+            "Motorboot",
+            "Wohnmobil"
+          ]
+        },
+        {
+          "internalName": "Name",
+          "displayName": "Name",
+          "type": "Text",
+          "required": true
+        },
+        {
+          "internalName": "Aktiv",
+          "displayName": "Aktiv",
+          "type": "Boolean",
+          "required": false
+        }
+      ]
+    },
+    {
+      "internalName": "FahrzeugNutzungsarten",
+      "displayName": "FahrzeugNutzungsarten",
+      "fields": [
+        {
+          "internalName": "FahrzeugId",
+          "displayName": "FahrzeugId",
+          "type": "Text",
+          "required": true
+        },
+        {
+          "internalName": "NutzungsartId",
+          "displayName": "NutzungsartId",
+          "type": "Text",
+          "required": true
+        },
+        {
+          "internalName": "Aktiv",
+          "displayName": "Aktiv",
+          "type": "Boolean",
+          "required": false
+        },
+        {
+          "internalName": "Sortierung",
+          "displayName": "Sortierung",
+          "type": "Number",
+          "required": false
+        }
+      ]
+    },
+    {
+      "internalName": "Gebiete",
+      "displayName": "Gebiete",
+      "fields": [
+        {
+          "internalName": "Name",
+          "displayName": "Name",
+          "type": "Text",
+          "required": true
+        },
+        {
+          "internalName": "Gebietstyp",
+          "displayName": "Gebietstyp",
+          "type": "Choice",
+          "required": true,
+          "choices": [
+            "Land",
+            "Region",
+            "Revier",
+            "Teilgebiet",
+            "Sondergebiet"
+          ]
+        },
+        {
+          "internalName": "ParentGebietId",
+          "displayName": "ParentGebietId",
+          "type": "Text",
+          "required": false
+        },
+        {
+          "internalName": "Aktiv",
+          "displayName": "Aktiv",
+          "type": "Boolean",
+          "required": false
+        }
+      ]
+    },
+    {
+      "internalName": "GebietsAnforderungen",
+      "displayName": "GebietsAnforderungen",
+      "fields": [
+        {
+          "internalName": "GebietId",
+          "displayName": "GebietId",
+          "type": "Text",
+          "required": true
+        },
+        {
+          "internalName": "SubjektTyp",
+          "displayName": "SubjektTyp",
+          "type": "Choice",
+          "required": true,
+          "choices": [
+            "Person",
+            "Fahrzeug",
+            "Tier"
+          ]
+        },
+        {
+          "internalName": "Verkehrsart",
+          "displayName": "Verkehrsart",
+          "type": "Choice",
+          "required": false,
+          "choices": [
+            "Strasse",
+            "Binnen",
+            "See",
+            "Sonderrevier"
+          ]
+        },
+        {
+          "internalName": "Anforderung",
+          "displayName": "Anforderung",
+          "type": "Note",
+          "required": true
+        },
+        {
+          "internalName": "Pflicht",
+          "displayName": "Pflicht",
+          "type": "Boolean",
+          "required": false
+        },
+        {
+          "internalName": "QuelleTyp",
+          "displayName": "QuelleTyp",
+          "type": "Text",
+          "required": false
+        },
+        {
+          "internalName": "Quelle",
+          "displayName": "Quelle",
+          "type": "Note",
+          "required": false
+        },
+        {
+          "internalName": "GeprueftAm",
+          "displayName": "GeprueftAm",
+          "type": "DateTime",
+          "required": false
+        },
+        {
+          "internalName": "GueltigVon",
+          "displayName": "GueltigVon",
+          "type": "DateTime",
+          "required": false
+        },
+        {
+          "internalName": "GueltigBis",
+          "displayName": "GueltigBis",
+          "type": "DateTime",
+          "required": false
+        }
+      ]
+    },
+    {
+      "internalName": "Nutzungen",
+      "displayName": "Nutzungen",
+      "fields": [
+        {
+          "internalName": "FahrzeugId",
+          "displayName": "FahrzeugId",
+          "type": "Text",
+          "required": true
+        },
+        {
+          "internalName": "BenutzerId",
+          "displayName": "BenutzerId",
+          "type": "Text",
+          "required": true
+        },
+        {
+          "internalName": "NutzungsartId",
+          "displayName": "NutzungsartId",
+          "type": "Text",
+          "required": true
+        },
+        {
+          "internalName": "Beginn",
+          "displayName": "Beginn",
+          "type": "DateTime",
+          "required": true
+        },
+        {
+          "internalName": "Ende",
+          "displayName": "Ende",
+          "type": "DateTime",
+          "required": false
+        },
+        {
+          "internalName": "Status",
+          "displayName": "Status",
+          "type": "Choice",
+          "required": true,
+          "choices": [
+            "Vorbereitet",
+            "Aktiv",
+            "Beendet"
+          ]
+        },
+        {
+          "internalName": "Startpunkt",
+          "displayName": "Startpunkt",
+          "type": "Text",
+          "required": false
+        },
+        {
+          "internalName": "GeplantesZiel",
+          "displayName": "GeplantesZiel",
+          "type": "Text",
+          "required": false
+        }
+      ]
+    },
+    {
+      "internalName": "NutzungsGebiete",
+      "displayName": "NutzungsGebiete",
+      "fields": [
+        {
+          "internalName": "NutzungId",
+          "displayName": "NutzungId",
+          "type": "Text",
+          "required": true
+        },
+        {
+          "internalName": "GebietId",
+          "displayName": "GebietId",
+          "type": "Text",
+          "required": true
+        },
+        {
+          "internalName": "Verkehrsart",
+          "displayName": "Verkehrsart",
+          "type": "Text",
+          "required": false
+        }
+      ]
+    },
+    {
+      "internalName": "Tagesetappen",
+      "displayName": "Tagesetappen",
+      "fields": [
+        {
+          "internalName": "NutzungId",
+          "displayName": "NutzungId",
+          "type": "Text",
+          "required": true
+        },
+        {
+          "internalName": "FahrzeugId",
+          "displayName": "FahrzeugId",
+          "type": "Text",
+          "required": true
+        },
+        {
+          "internalName": "TagNr",
+          "displayName": "TagNr",
+          "type": "Number",
+          "required": true
+        },
+        {
+          "internalName": "Datum",
+          "displayName": "Datum",
+          "type": "DateTime",
+          "required": true
+        },
+        {
+          "internalName": "Startpunkt",
+          "displayName": "Startpunkt",
+          "type": "Text",
+          "required": false
+        },
+        {
+          "internalName": "Tagesziel",
+          "displayName": "Tagesziel",
+          "type": "Text",
+          "required": false
+        },
+        {
+          "internalName": "TatsaechlichesZiel",
+          "displayName": "TatsaechlichesZiel",
+          "type": "Text",
+          "required": false
+        },
+        {
+          "internalName": "Beginn",
+          "displayName": "Beginn",
+          "type": "DateTime",
+          "required": false
+        },
+        {
+          "internalName": "Ende",
+          "displayName": "Ende",
+          "type": "DateTime",
+          "required": false
+        },
+        {
+          "internalName": "Status",
+          "displayName": "Status",
+          "type": "Text",
+          "required": true
+        }
+      ]
+    },
+    {
+      "internalName": "NutzungsPersonen",
+      "displayName": "NutzungsPersonen",
+      "fields": [
+        {
+          "internalName": "NutzungId",
+          "displayName": "NutzungId",
+          "type": "Text",
+          "required": true
+        },
+        {
+          "internalName": "TagesetappeId",
+          "displayName": "TagesetappeId",
+          "type": "Text",
+          "required": false
+        },
+        {
+          "internalName": "PersonId",
+          "displayName": "PersonId",
+          "type": "Text",
+          "required": true
+        },
+        {
+          "internalName": "Funktion",
+          "displayName": "Funktion",
+          "type": "Text",
+          "required": true
+        }
+      ]
+    },
+    {
+      "internalName": "NutzungsTiere",
+      "displayName": "NutzungsTiere",
+      "fields": [
+        {
+          "internalName": "NutzungId",
+          "displayName": "NutzungId",
+          "type": "Text",
+          "required": true
+        },
+        {
+          "internalName": "TierId",
+          "displayName": "TierId",
+          "type": "Text",
+          "required": true
+        }
+      ]
+    },
+    {
+      "internalName": "Reisechecks",
+      "displayName": "Reisechecks",
+      "fields": [
+        {
+          "internalName": "NutzungId",
+          "displayName": "NutzungId",
+          "type": "Text",
+          "required": true
+        },
+        {
+          "internalName": "ErstelltAm",
+          "displayName": "ErstelltAm",
+          "type": "DateTime",
+          "required": true
+        },
+        {
+          "internalName": "Status",
+          "displayName": "Status",
+          "type": "Choice",
+          "required": true,
+          "choices": [
+            "Offen",
+            "Unvollstaendig",
+            "Vollstaendig"
+          ]
+        },
+        {
+          "internalName": "HinweisBestaetigtAm",
+          "displayName": "HinweisBestaetigtAm",
+          "type": "DateTime",
+          "required": false
+        }
+      ]
+    },
+    {
+      "internalName": "ReisecheckPunkte",
+      "displayName": "ReisecheckPunkte",
+      "fields": [
+        {
+          "internalName": "ReisecheckId",
+          "displayName": "ReisecheckId",
+          "type": "Text",
+          "required": true
+        },
+        {
+          "internalName": "GebietsAnforderungId",
+          "displayName": "GebietsAnforderungId",
+          "type": "Text",
+          "required": false
+        },
+        {
+          "internalName": "SubjektTyp",
+          "displayName": "SubjektTyp",
+          "type": "Text",
+          "required": true
+        },
+        {
+          "internalName": "SubjektId",
+          "displayName": "SubjektId",
+          "type": "Text",
+          "required": false
+        },
+        {
+          "internalName": "Anforderung",
+          "displayName": "Anforderung",
+          "type": "Note",
+          "required": true
+        },
+        {
+          "internalName": "Ergebnis",
+          "displayName": "Ergebnis",
+          "type": "Choice",
+          "required": true,
+          "choices": [
+            "Offen",
+            "Erfuellt",
+            "NichtErfuellt",
+            "ZuPruefen"
+          ]
+        },
+        {
+          "internalName": "BestaetigtAm",
+          "displayName": "BestaetigtAm",
+          "type": "DateTime",
+          "required": false
+        },
+        {
+          "internalName": "Notiz",
+          "displayName": "Notiz",
+          "type": "Note",
+          "required": false
+        }
+      ]
+    },
+    {
+      "internalName": "Ereignisse",
+      "displayName": "Ereignisse",
+      "fields": [
+        {
+          "internalName": "FahrzeugId",
+          "displayName": "FahrzeugId",
+          "type": "Text",
+          "required": true
+        },
+        {
+          "internalName": "NutzungId",
+          "displayName": "NutzungId",
+          "type": "Text",
+          "required": false
+        },
+        {
+          "internalName": "TagesetappeId",
+          "displayName": "TagesetappeId",
+          "type": "Text",
+          "required": false
+        },
+        {
+          "internalName": "BenutzerId",
+          "displayName": "BenutzerId",
+          "type": "Text",
+          "required": true
+        },
+        {
+          "internalName": "Art",
+          "displayName": "Art",
+          "type": "Text",
+          "required": true
+        },
+        {
+          "internalName": "Zeitpunkt",
+          "displayName": "Zeitpunkt",
+          "type": "DateTime",
+          "required": true
+        },
+        {
+          "internalName": "Notiz",
+          "displayName": "Notiz",
+          "type": "Note",
+          "required": false
+        }
+      ]
+    },
+    {
+      "internalName": "Aufenthalte",
+      "displayName": "Aufenthalte",
+      "fields": [
+        {
+          "internalName": "FahrzeugId",
+          "displayName": "FahrzeugId",
+          "type": "Text",
+          "required": true
+        },
+        {
+          "internalName": "NutzungId",
+          "displayName": "NutzungId",
+          "type": "Text",
+          "required": true
+        },
+        {
+          "internalName": "TagesetappeId",
+          "displayName": "TagesetappeId",
+          "type": "Text",
+          "required": false
+        },
+        {
+          "internalName": "Art",
+          "displayName": "Art",
+          "type": "Text",
+          "required": true
+        },
+        {
+          "internalName": "Ort",
+          "displayName": "Ort",
+          "type": "Text",
+          "required": false
+        },
+        {
+          "internalName": "Beginn",
+          "displayName": "Beginn",
+          "type": "DateTime",
+          "required": true
+        },
+        {
+          "internalName": "Ende",
+          "displayName": "Ende",
+          "type": "DateTime",
+          "required": false
+        }
+      ]
+    },
+    {
+      "internalName": "GPSPunkte",
+      "displayName": "GPSPunkte",
+      "fields": [
+        {
+          "internalName": "FahrzeugId",
+          "displayName": "FahrzeugId",
+          "type": "Text",
+          "required": true
+        },
+        {
+          "internalName": "NutzungId",
+          "displayName": "NutzungId",
+          "type": "Text",
+          "required": false
+        },
+        {
+          "internalName": "TagesetappeId",
+          "displayName": "TagesetappeId",
+          "type": "Text",
+          "required": false
+        },
+        {
+          "internalName": "Zeitpunkt",
+          "displayName": "Zeitpunkt",
+          "type": "DateTime",
+          "required": true
+        },
+        {
+          "internalName": "Breite",
+          "displayName": "Breite",
+          "type": "Number",
+          "required": true
+        },
+        {
+          "internalName": "Laenge",
+          "displayName": "Laenge",
+          "type": "Number",
+          "required": true
+        },
+        {
+          "internalName": "Quelle",
+          "displayName": "Quelle",
+          "type": "Text",
+          "required": false
+        }
+      ]
+    },
+    {
+      "internalName": "Messwerte",
+      "displayName": "Messwerte",
+      "fields": [
+        {
+          "internalName": "FahrzeugId",
+          "displayName": "FahrzeugId",
+          "type": "Text",
+          "required": true
+        },
+        {
+          "internalName": "NutzungId",
+          "displayName": "NutzungId",
+          "type": "Text",
+          "required": false
+        },
+        {
+          "internalName": "TagesetappeId",
+          "displayName": "TagesetappeId",
+          "type": "Text",
+          "required": false
+        },
+        {
+          "internalName": "KomponenteId",
+          "displayName": "KomponenteId",
+          "type": "Text",
+          "required": false
+        },
+        {
+          "internalName": "Messgroesse",
+          "displayName": "Messgroesse",
+          "type": "Text",
+          "required": true
+        },
+        {
+          "internalName": "Wert",
+          "displayName": "Wert",
+          "type": "Number",
+          "required": false
+        },
+        {
+          "internalName": "Einheit",
+          "displayName": "Einheit",
+          "type": "Text",
+          "required": false
+        },
+        {
+          "internalName": "Phase",
+          "displayName": "Phase",
+          "type": "Choice",
+          "required": false,
+          "choices": [
+            "Start",
+            "Zwischenwert",
+            "Ende"
+          ]
+        },
+        {
+          "internalName": "GemessenAm",
+          "displayName": "GemessenAm",
+          "type": "DateTime",
+          "required": true
+        },
+        {
+          "internalName": "Quelle",
+          "displayName": "Quelle",
+          "type": "Text",
+          "required": false
+        }
+      ]
+    },
+    {
+      "internalName": "Versorgungsvorgaenge",
+      "displayName": "Versorgungsvorgaenge",
+      "fields": [
+        {
+          "internalName": "FahrzeugId",
+          "displayName": "FahrzeugId",
+          "type": "Text",
+          "required": true
+        },
+        {
+          "internalName": "NutzungId",
+          "displayName": "NutzungId",
+          "type": "Text",
+          "required": false
+        },
+        {
+          "internalName": "KomponenteId",
+          "displayName": "KomponenteId",
+          "type": "Text",
+          "required": false
+        },
+        {
+          "internalName": "Art",
+          "displayName": "Art",
+          "type": "Text",
+          "required": true
+        },
+        {
+          "internalName": "Menge",
+          "displayName": "Menge",
+          "type": "Number",
+          "required": false
+        },
+        {
+          "internalName": "Einheit",
+          "displayName": "Einheit",
+          "type": "Text",
+          "required": false
+        },
+        {
+          "internalName": "Kosten",
+          "displayName": "Kosten",
+          "type": "Currency",
+          "required": false
+        },
+        {
+          "internalName": "Waehrung",
+          "displayName": "Waehrung",
+          "type": "Text",
+          "required": false
+        },
+        {
+          "internalName": "Zeitpunkt",
+          "displayName": "Zeitpunkt",
+          "type": "DateTime",
+          "required": true
+        }
+      ]
+    },
+    {
+      "internalName": "FahrzeugPruefpunkte",
+      "displayName": "FahrzeugPruefpunkte",
+      "fields": [
+        {
+          "internalName": "FahrzeugId",
+          "displayName": "FahrzeugId",
+          "type": "Text",
+          "required": true
+        },
+        {
+          "internalName": "Name",
+          "displayName": "Name",
+          "type": "Text",
+          "required": true
+        },
+        {
+          "internalName": "IntervallRegel",
+          "displayName": "IntervallRegel",
+          "type": "Note",
+          "required": true
+        },
+        {
+          "internalName": "Aktiv",
+          "displayName": "Aktiv",
+          "type": "Boolean",
+          "required": false
+        }
+      ]
+    },
+    {
+      "internalName": "Kontrollen",
+      "displayName": "Kontrollen",
+      "fields": [
+        {
+          "internalName": "FahrzeugId",
+          "displayName": "FahrzeugId",
+          "type": "Text",
+          "required": true
+        },
+        {
+          "internalName": "NutzungId",
+          "displayName": "NutzungId",
+          "type": "Text",
+          "required": false
+        },
+        {
+          "internalName": "TagesetappeId",
+          "displayName": "TagesetappeId",
+          "type": "Text",
+          "required": false
+        },
+        {
+          "internalName": "PruefpunktId",
+          "displayName": "PruefpunktId",
+          "type": "Text",
+          "required": false
+        },
+        {
+          "internalName": "BenutzerId",
+          "displayName": "BenutzerId",
+          "type": "Text",
+          "required": false
+        },
+        {
+          "internalName": "AbgeschlossenAm",
+          "displayName": "AbgeschlossenAm",
+          "type": "DateTime",
+          "required": true
+        },
+        {
+          "internalName": "Ergebnis",
+          "displayName": "Ergebnis",
+          "type": "Text",
+          "required": false
+        }
+      ]
+    },
+    {
+      "internalName": "Stoerungen",
+      "displayName": "Stoerungen",
+      "fields": [
+        {
+          "internalName": "FahrzeugId",
+          "displayName": "FahrzeugId",
+          "type": "Text",
+          "required": true
+        },
+        {
+          "internalName": "NutzungId",
+          "displayName": "NutzungId",
+          "type": "Text",
+          "required": false
+        },
+        {
+          "internalName": "Kategorie",
+          "displayName": "Kategorie",
+          "type": "Text",
+          "required": false
+        },
+        {
+          "internalName": "Beschreibung",
+          "displayName": "Beschreibung",
+          "type": "Note",
+          "required": true
+        },
+        {
+          "internalName": "GemeldetAm",
+          "displayName": "GemeldetAm",
+          "type": "DateTime",
+          "required": true
+        },
+        {
+          "internalName": "Status",
+          "displayName": "Status",
+          "type": "Text",
+          "required": true
+        },
+        {
+          "internalName": "Prioritaet",
+          "displayName": "Prioritaet",
+          "type": "Text",
+          "required": false
+        }
+      ]
+    },
+    {
+      "internalName": "Arbeiten",
+      "displayName": "Arbeiten",
+      "fields": [
+        {
+          "internalName": "FahrzeugId",
+          "displayName": "FahrzeugId",
+          "type": "Text",
+          "required": true
+        },
+        {
+          "internalName": "KomponenteId",
+          "displayName": "KomponenteId",
+          "type": "Text",
+          "required": false
+        },
+        {
+          "internalName": "StoerungId",
+          "displayName": "StoerungId",
+          "type": "Text",
+          "required": false
+        },
+        {
+          "internalName": "Arbeitsart",
+          "displayName": "Arbeitsart",
+          "type": "Text",
+          "required": true
+        },
+        {
+          "internalName": "Beschreibung",
+          "displayName": "Beschreibung",
+          "type": "Note",
+          "required": true
+        },
+        {
+          "internalName": "AbgeschlossenAm",
+          "displayName": "AbgeschlossenAm",
+          "type": "DateTime",
+          "required": false
+        },
+        {
+          "internalName": "Kosten",
+          "displayName": "Kosten",
+          "type": "Currency",
+          "required": false
+        },
+        {
+          "internalName": "Waehrung",
+          "displayName": "Waehrung",
+          "type": "Text",
+          "required": false
+        }
+      ]
+    },
+    {
+      "internalName": "Wartungsplaene",
+      "displayName": "Wartungsplaene",
+      "fields": [
+        {
+          "internalName": "FahrzeugId",
+          "displayName": "FahrzeugId",
+          "type": "Text",
+          "required": true
+        },
+        {
+          "internalName": "KomponenteId",
+          "displayName": "KomponenteId",
+          "type": "Text",
+          "required": false
+        },
+        {
+          "internalName": "Name",
+          "displayName": "Name",
+          "type": "Text",
+          "required": true
+        },
+        {
+          "internalName": "IntervallRegel",
+          "displayName": "IntervallRegel",
+          "type": "Note",
+          "required": true
+        },
+        {
+          "internalName": "Aktiv",
+          "displayName": "Aktiv",
+          "type": "Boolean",
+          "required": false
+        }
+      ]
+    },
+    {
+      "internalName": "Aufgaben",
+      "displayName": "Aufgaben",
+      "fields": [
+        {
+          "internalName": "FahrzeugId",
+          "displayName": "FahrzeugId",
+          "type": "Text",
+          "required": true
+        },
+        {
+          "internalName": "BezugTyp",
+          "displayName": "BezugTyp",
+          "type": "Text",
+          "required": false
+        },
+        {
+          "internalName": "BezugId",
+          "displayName": "BezugId",
+          "type": "Text",
+          "required": false
+        },
+        {
+          "internalName": "Aufgabe",
+          "displayName": "Aufgabe",
+          "type": "Note",
+          "required": true
+        },
+        {
+          "internalName": "FaelligAm",
+          "displayName": "FaelligAm",
+          "type": "DateTime",
+          "required": false
+        },
+        {
+          "internalName": "Status",
+          "displayName": "Status",
+          "type": "Text",
+          "required": true
+        }
+      ]
+    },
+    {
+      "internalName": "Pruefungen",
+      "displayName": "Pruefungen",
+      "fields": [
+        {
+          "internalName": "FahrzeugId",
+          "displayName": "FahrzeugId",
+          "type": "Text",
+          "required": true
+        },
+        {
+          "internalName": "Art",
+          "displayName": "Art",
+          "type": "Text",
+          "required": true
+        },
+        {
+          "internalName": "GeprueftAm",
+          "displayName": "GeprueftAm",
+          "type": "DateTime",
+          "required": false
+        },
+        {
+          "internalName": "GueltigBis",
+          "displayName": "GueltigBis",
+          "type": "DateTime",
+          "required": false
+        },
+        {
+          "internalName": "Ergebnis",
+          "displayName": "Ergebnis",
+          "type": "Text",
+          "required": false
+        },
+        {
+          "internalName": "DokumentId",
+          "displayName": "DokumentId",
+          "type": "Text",
+          "required": false
+        }
+      ]
+    },
+    {
+      "internalName": "Medien",
+      "displayName": "Medien",
+      "fields": [
+        {
+          "internalName": "FahrzeugId",
+          "displayName": "FahrzeugId",
+          "type": "Text",
+          "required": true
+        },
+        {
+          "internalName": "NutzungId",
+          "displayName": "NutzungId",
+          "type": "Text",
+          "required": false
+        },
+        {
+          "internalName": "TagesetappeId",
+          "displayName": "TagesetappeId",
+          "type": "Text",
+          "required": false
+        },
+        {
+          "internalName": "BezugTyp",
+          "displayName": "BezugTyp",
+          "type": "Text",
+          "required": false
+        },
+        {
+          "internalName": "BezugId",
+          "displayName": "BezugId",
+          "type": "Text",
+          "required": false
+        },
+        {
+          "internalName": "Medientyp",
+          "displayName": "Medientyp",
+          "type": "Choice",
+          "required": true,
+          "choices": [
+            "Foto",
+            "Video",
+            "Datei"
+          ]
+        },
+        {
+          "internalName": "DateiRef",
+          "displayName": "DateiRef",
+          "type": "Note",
+          "required": true
+        },
+        {
+          "internalName": "AufgenommenAm",
+          "displayName": "AufgenommenAm",
+          "type": "DateTime",
+          "required": false
+        },
+        {
+          "internalName": "HinzugefuegtAm",
+          "displayName": "HinzugefuegtAm",
+          "type": "DateTime",
+          "required": true
+        }
+      ]
+    },
+    {
+      "internalName": "Dokumente",
+      "displayName": "Dokumente",
+      "fields": [
+        {
+          "internalName": "DatenraumId",
+          "displayName": "DatenraumId",
+          "type": "Text",
+          "required": true
+        },
+        {
+          "internalName": "Dokumenttyp",
+          "displayName": "Dokumenttyp",
+          "type": "Text",
+          "required": true
+        },
+        {
+          "internalName": "Titel",
+          "displayName": "Titel",
+          "type": "Text",
+          "required": true
+        },
+        {
+          "internalName": "MedienId",
+          "displayName": "MedienId",
+          "type": "Text",
+          "required": false
+        },
+        {
+          "internalName": "GueltigBis",
+          "displayName": "GueltigBis",
+          "type": "DateTime",
+          "required": false
+        }
+      ]
+    },
+    {
+      "internalName": "Ausgaben",
+      "displayName": "Ausgaben",
+      "fields": [
+        {
+          "internalName": "FahrzeugId",
+          "displayName": "FahrzeugId",
+          "type": "Text",
+          "required": true
+        },
+        {
+          "internalName": "NutzungId",
+          "displayName": "NutzungId",
+          "type": "Text",
+          "required": false
+        },
+        {
+          "internalName": "BezugTyp",
+          "displayName": "BezugTyp",
+          "type": "Text",
+          "required": false
+        },
+        {
+          "internalName": "BezugId",
+          "displayName": "BezugId",
+          "type": "Text",
+          "required": false
+        },
+        {
+          "internalName": "Kostenart",
+          "displayName": "Kostenart",
+          "type": "Text",
+          "required": true
+        },
+        {
+          "internalName": "Betrag",
+          "displayName": "Betrag",
+          "type": "Currency",
+          "required": true
+        },
+        {
+          "internalName": "Waehrung",
+          "displayName": "Waehrung",
+          "type": "Text",
+          "required": false
+        },
+        {
+          "internalName": "Datum",
+          "displayName": "Datum",
+          "type": "DateTime",
+          "required": true
+        }
+      ]
+    },
+    {
+      "internalName": "Fahrzeugueberlassungen",
+      "displayName": "Fahrzeugueberlassungen",
+      "fields": [
+        {
+          "internalName": "FahrzeugId",
+          "displayName": "FahrzeugId",
+          "type": "Text",
+          "required": true
+        },
+        {
+          "internalName": "LeiherPersonId",
+          "displayName": "LeiherPersonId",
+          "type": "Text",
+          "required": true
+        },
+        {
+          "internalName": "Beginn",
+          "displayName": "Beginn",
+          "type": "DateTime",
+          "required": true
+        },
+        {
+          "internalName": "Ende",
+          "displayName": "Ende",
+          "type": "DateTime",
+          "required": false
+        },
+        {
+          "internalName": "Rechte",
+          "displayName": "Rechte",
+          "type": "Note",
+          "required": false
+        },
+        {
+          "internalName": "Status",
+          "displayName": "Status",
+          "type": "Choice",
+          "required": true,
+          "choices": [
+            "Vorbereitet",
+            "Aktiv",
+            "Beendet"
+          ]
+        }
+      ]
+    }
+  ]
+}

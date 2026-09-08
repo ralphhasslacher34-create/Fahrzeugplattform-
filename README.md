@@ -1,21 +1,13 @@
-# Fahrzeugplattform – Entwicklungsstand 0.2.0
+# Fahrzeugplattform 0.4.0-dev
 
-Erster Android-/GitHub-Pages-fähiger statischer Prototyp der Fahrzeugplattform.
+Entwicklungsstand mit Microsoft-365-/SharePoint-Provisionierung.
 
-## Enthalten
-- Login-Demo
-- Hauptnavigation: Start, Konfiguration, Werkstatt, Verleihmodus
-- Motorboot- und Wohnmobilprofil
-- Nutzungsstart, Cockpit, Ereignis, Aufenthalt, Tagesabschluss
-- tägliche Start-/Endstände: Betriebsstunden pro Motor bzw. Kilometerstand
-- Personen mit fester Rolle, mehreren möglichen Funktionen und Befähigungen/Nachweisen
-- Gebiete/Reviere mit nutzergepflegten Anforderungen
-- erster Reisecheck als Soll/Ist-Prototyp
-- sichtbarer Hinweis: keine rechtsverbindliche Auskunft
-- lokale Browser-Demo mit `localStorage`
+Neu in 0.4.0:
+- OAuth 2.0 Authorization Code + PKCE direkt aus der SPA
+- kein Client-Secret im Browser
+- Microsoft Graph v1.0 für SharePoint-Listen und Spalten
+- Setup-Oberfläche unter Konfiguration → Microsoft 365 Setup
+- Phase-1-Schema: 38 Listen / 225 Felder
+- additive/idempotente Provisionierung
 
-## GitHub Pages
-Alle Dateien aus diesem Ordner müssen direkt im Stamm des Repository liegen. Danach unter **Settings → Pages** als Quelle den Branch `main` und Ordner `/ (root)` auswählen.
-
-## Wichtig
-Dieser Stand ist ein Entwicklungsprototyp. Login, Datenhaltung und Berechtigungen sind noch keine Produktionslösung. Die Reisecheck-Daten sind Demo-/Strukturdaten und keine verbindliche Rechts- oder Reiseauskunft.
+Hinweis: Für die Ziel-Site-Auflösung wird delegiert `Sites.Read.All` benötigt; für das Erstellen von Listen/Spalten `Sites.Manage.All`.
