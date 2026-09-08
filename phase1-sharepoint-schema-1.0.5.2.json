@@ -1,0 +1,69 @@
+{
+  "version": "1.0.5.2",
+  "target": "SharePoint Online",
+  "relationStrategy": "Additive Phase-1 correction for vehicle availability, lending driver roles, dynamic animal proofs, and vehicle/component maintenance and inspections",
+  "lists": [
+    {
+      "internalName": "UeberlassungsPersonen",
+      "displayName": "UeberlassungsPersonen",
+      "fields": [
+        {"internalName":"Fahrrolle","displayName":"Fahrrolle","type":"Choice","required":false,"choices":["Keine","Fahrer","Skipper"]}
+      ]
+    },
+    {
+      "internalName": "Fahrzeugueberlassungen",
+      "displayName": "Fahrzeugueberlassungen",
+      "fields": [
+        {"internalName":"Anhaengerbetrieb","displayName":"Anhaengerbetrieb geplant","type":"Boolean","required":false},
+        {"internalName":"VerfuegbarkeitGeprueftAm","displayName":"Verfuegbarkeit geprueft am","type":"DateTime","required":false},
+        {"internalName":"BerechtigungGeprueftAm","displayName":"Berechtigung geprueft am","type":"DateTime","required":false}
+      ]
+    },
+    {
+      "internalName": "TierNachweise",
+      "displayName": "TierNachweise",
+      "fields": [
+        {"internalName":"Status","displayName":"Status","type":"Choice","required":false,"choices":["Vorhanden","Fehlt","Zu pruefen","Nicht relevant","Abgelaufen"]},
+        {"internalName":"Ausstellungsdatum","displayName":"Ausstellungs-/Behandlungsdatum","type":"DateTime","required":false},
+        {"internalName":"GueltigVon","displayName":"Gueltig von","type":"DateTime","required":false},
+        {"internalName":"WertErgebnis","displayName":"Wert / Ergebnis","type":"Text","required":false},
+        {"internalName":"Nummer","displayName":"Dokument-/Nachweisnummer","type":"Text","required":false},
+        {"internalName":"Aussteller","displayName":"Tierarzt / Aussteller","type":"Text","required":false},
+        {"internalName":"LandRegion","displayName":"Land / Region","type":"Text","required":false},
+        {"internalName":"Notiz","displayName":"Notiz","type":"Note","required":false},
+        {"internalName":"Testdaten","displayName":"Testdaten","type":"Boolean","required":false}
+      ]
+    },
+    {
+      "internalName": "Wartungsplaene",
+      "displayName": "Wartungsplaene",
+      "fields": [
+        {"internalName":"BezugTyp","displayName":"Bezugstyp","type":"Choice","required":false,"choices":["Fahrzeug","Komponente"]},
+        {"internalName":"BezugId","displayName":"Bezugs-ID","type":"Text","required":false},
+        {"internalName":"IntervallArt","displayName":"Intervallart","type":"Choice","required":false,"choices":["Zeit","Kilometer","Betriebsstunden","Kombination","Frei"]},
+        {"internalName":"IntervallWert","displayName":"Intervallwert","type":"Number","required":false},
+        {"internalName":"IntervallEinheit","displayName":"Intervalleinheit","type":"Text","required":false},
+        {"internalName":"NaechsterTermin","displayName":"Naechster Termin","type":"DateTime","required":false},
+        {"internalName":"NaechsterZaehlerstand","displayName":"Naechster Zaehlerstand","type":"Number","required":false},
+        {"internalName":"LetzteDurchfuehrung","displayName":"Letzte Durchfuehrung","type":"DateTime","required":false},
+        {"internalName":"LetzterZaehlerstand","displayName":"Letzter Zaehlerstand","type":"Number","required":false},
+        {"internalName":"Notiz","displayName":"Notiz","type":"Note","required":false}
+      ]
+    },
+    {
+      "internalName": "Pruefungen",
+      "displayName": "Pruefungen",
+      "fields": [
+        {"internalName":"KomponenteId","displayName":"KomponenteId","type":"Text","required":false},
+        {"internalName":"BezugTyp","displayName":"Bezugstyp","type":"Choice","required":false,"choices":["Fahrzeug","Komponente"]},
+        {"internalName":"BezugId","displayName":"Bezugs-ID","type":"Text","required":false},
+        {"internalName":"Intervall","displayName":"Intervall","type":"Text","required":false},
+        {"internalName":"NaechsterTermin","displayName":"Naechster Termin","type":"DateTime","required":false},
+        {"internalName":"LetztePruefung","displayName":"Letzte Pruefung","type":"DateTime","required":false},
+        {"internalName":"QuelleGrundlage","displayName":"Quelle / Grundlage","type":"Note","required":false},
+        {"internalName":"Notiz","displayName":"Notiz","type":"Note","required":false},
+        {"internalName":"Testdaten","displayName":"Testdaten","type":"Boolean","required":false}
+      ]
+    }
+  ]
+}
