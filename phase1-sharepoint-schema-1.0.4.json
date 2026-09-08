@@ -1,0 +1,82 @@
+{
+  "version": "1.0.4",
+  "target": "SharePoint Online",
+  "relationStrategy": "Additive extension for vehicle-independent Phase 1",
+  "lists": [
+    {
+      "internalName": "Wetterdaten",
+      "displayName": "Wetterdaten",
+      "fields": [
+        {"internalName":"FahrzeugId","displayName":"FahrzeugId","type":"Text","required":true},
+        {"internalName":"NutzungId","displayName":"NutzungId","type":"Text","required":true},
+        {"internalName":"TagesetappeId","displayName":"TagesetappeId","type":"Text","required":false},
+        {"internalName":"Zeitpunkt","displayName":"Zeitpunkt","type":"DateTime","required":true},
+        {"internalName":"Breitengrad","displayName":"Breitengrad","type":"Number","required":false},
+        {"internalName":"Laengengrad","displayName":"Laengengrad","type":"Number","required":false},
+        {"internalName":"Temperatur","displayName":"Temperatur °C","type":"Number","required":false},
+        {"internalName":"Luftfeuchte","displayName":"Luftfeuchte %","type":"Number","required":false},
+        {"internalName":"Luftdruck","displayName":"Luftdruck hPa","type":"Number","required":false},
+        {"internalName":"Windrichtung","displayName":"Windrichtung","type":"Text","required":false},
+        {"internalName":"Windgeschwindigkeit","displayName":"Windgeschwindigkeit km/h","type":"Number","required":false},
+        {"internalName":"Boeen","displayName":"Böen km/h","type":"Number","required":false},
+        {"internalName":"Bewoelkung","displayName":"Bewölkung %","type":"Number","required":false},
+        {"internalName":"Niederschlag","displayName":"Niederschlag","type":"Text","required":false},
+        {"internalName":"Sichtweite","displayName":"Sichtweite km","type":"Number","required":false},
+        {"internalName":"Wetterbeschreibung","displayName":"Wetterbeschreibung","type":"Note","required":false},
+        {"internalName":"Quelle","displayName":"Quelle","type":"Text","required":false},
+        {"internalName":"Wassertemperatur","displayName":"Wassertemperatur °C","type":"Number","required":false},
+        {"internalName":"Wellenhoehe","displayName":"Wellenhöhe m","type":"Number","required":false},
+        {"internalName":"Seegang","displayName":"Seegang","type":"Text","required":false},
+        {"internalName":"Beaufort","displayName":"Beaufort","type":"Number","required":false},
+        {"internalName":"Testdaten","displayName":"Testdaten","type":"Boolean","required":false},
+        {"internalName":"Aktiv","displayName":"Aktiv","type":"Boolean","required":false}
+      ]
+    },
+    {
+      "internalName": "Tagesetappen",
+      "displayName": "Tagesetappen",
+      "fields": [
+        {"internalName":"Highlights","displayName":"Highlights des Tages","type":"Note","required":false}
+      ]
+    },
+    {
+      "internalName": "Aufenthalte",
+      "displayName": "Aufenthalte",
+      "fields": [
+        {"internalName":"Breitengrad","displayName":"Breitengrad","type":"Number","required":false},
+        {"internalName":"Laengengrad","displayName":"Laengengrad","type":"Number","required":false},
+        {"internalName":"GenauigkeitM","displayName":"GPS-Genauigkeit m","type":"Number","required":false}
+      ]
+    },
+    {
+      "internalName": "Aufgaben",
+      "displayName": "Aufgaben",
+      "fields": [
+        {"internalName":"AbgeschlossenAm","displayName":"AbgeschlossenAm","type":"DateTime","required":false}
+      ]
+    },
+    {
+      "internalName": "Stoerungen",
+      "displayName": "Stoerungen",
+      "fields": [
+        {"internalName":"BehobenAm","displayName":"BehobenAm","type":"DateTime","required":false}
+      ]
+    },
+    {
+      "internalName": "Arbeiten",
+      "displayName": "Arbeiten",
+      "fields": [
+        {"internalName":"Status","displayName":"Status","type":"Text","required":false}
+      ]
+    },
+    {
+      "internalName": "Fahrzeugueberlassungen",
+      "displayName": "Fahrzeugueberlassungen",
+      "fields": [
+        {"internalName":"BeendetAm","displayName":"BeendetAm","type":"DateTime","required":false},
+        {"internalName":"Archiviert","displayName":"Archiviert","type":"Boolean","required":false},
+        {"internalName":"ArchiviertAm","displayName":"ArchiviertAm","type":"DateTime","required":false}
+      ]
+    }
+  ]
+}
