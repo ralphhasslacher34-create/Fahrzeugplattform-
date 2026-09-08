@@ -1,0 +1,32 @@
+{
+  "version": "1.0.5.1",
+  "target": "SharePoint Online",
+  "relationStrategy": "Additive correction for workshop maintenance test flag and configurable event types",
+  "lists": [
+    {
+      "internalName": "Wartungsplaene",
+      "displayName": "Wartungsplaene",
+      "fields": [
+        {"internalName":"Testdaten","displayName":"Testdaten","type":"Boolean","required":false}
+      ]
+    },
+    {
+      "internalName": "Ereignisarten",
+      "displayName": "Ereignisarten",
+      "fields": [
+        {"internalName":"Name","displayName":"Ereignisart","type":"Text","required":true},
+        {"internalName":"Profil","displayName":"Profil","type":"Text","required":true},
+        {"internalName":"System","displayName":"Systemereignis","type":"Boolean","required":false},
+        {"internalName":"Sortierung","displayName":"Sortierung","type":"Number","required":false},
+        {"internalName":"Aktiv","displayName":"Aktiv","type":"Boolean","required":false}
+      ]
+    },
+    {
+      "internalName": "Ereignisse",
+      "displayName": "Ereignisse",
+      "fields": [
+        {"internalName":"EreignisartId","displayName":"Ereignisart-ID","type":"Text","required":false}
+      ]
+    }
+  ]
+}
