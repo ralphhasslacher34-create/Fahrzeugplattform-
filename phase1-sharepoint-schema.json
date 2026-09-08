@@ -1,5 +1,5 @@
 {
-  "version": "1.0.2",
+  "version": "1.0.3",
   "target": "SharePoint Online",
   "relationStrategy": "Stable GUID text IDs in Phase 1; no fragile SharePoint lookup coupling",
   "lists": [
@@ -884,7 +884,9 @@
           "choices": [
             "Vorbereitet",
             "Aktiv",
-            "Beendet"
+            "Beendet",
+            "Geplant",
+            "Verworfen"
           ]
         },
         {
@@ -1336,6 +1338,37 @@
           "internalName": "Testdaten",
           "displayName": "Testdaten",
           "type": "Boolean",
+          "required": false
+        },
+        {
+          "internalName": "ErfasstAm",
+          "displayName": "Erfasst am",
+          "type": "DateTime",
+          "required": false
+        },
+        {
+          "internalName": "Herkunft",
+          "displayName": "Herkunft",
+          "type": "Choice",
+          "required": false,
+          "choices": [
+            "Manuell",
+            "Nachtrag",
+            "GPS",
+            "System",
+            "Sensor"
+          ]
+        },
+        {
+          "internalName": "Rohdaten",
+          "displayName": "Rohdaten geschützt",
+          "type": "Boolean",
+          "required": false
+        },
+        {
+          "internalName": "KorrekturZuEreignisId",
+          "displayName": "Korrektur zu Ereignis-ID",
+          "type": "Text",
           "required": false
         }
       ]
@@ -2752,6 +2785,158 @@
           "displayName": "Qualifikationsstatus",
           "type": "Text",
           "required": false
+        },
+        {
+          "internalName": "Aktiv",
+          "displayName": "Aktiv",
+          "type": "Boolean",
+          "required": false
+        },
+        {
+          "internalName": "Testdaten",
+          "displayName": "Testdaten",
+          "type": "Boolean",
+          "required": false
+        }
+      ]
+    },
+    {
+      "internalName": "WasserskiRuns",
+      "displayName": "Wasserski-Runs",
+      "fields": [
+        {
+          "internalName": "NutzungId",
+          "displayName": "Nutzung-ID",
+          "type": "Text",
+          "required": true
+        },
+        {
+          "internalName": "SkilaeuferPersonId",
+          "displayName": "Skiläufer Person-ID",
+          "type": "Text",
+          "required": true
+        },
+        {
+          "internalName": "Beginn",
+          "displayName": "Beginn",
+          "type": "DateTime",
+          "required": true
+        },
+        {
+          "internalName": "Ende",
+          "displayName": "Ende",
+          "type": "DateTime",
+          "required": false
+        },
+        {
+          "internalName": "Status",
+          "displayName": "Status",
+          "type": "Choice",
+          "required": true,
+          "choices": [
+            "Aktiv",
+            "Beendet"
+          ]
+        },
+        {
+          "internalName": "Aktiv",
+          "displayName": "Aktiv",
+          "type": "Boolean",
+          "required": false
+        },
+        {
+          "internalName": "Testdaten",
+          "displayName": "Testdaten",
+          "type": "Boolean",
+          "required": false
+        }
+      ]
+    },
+    {
+      "internalName": "WasserskiRunEtappen",
+      "displayName": "Wasserski-Run-Etappen",
+      "fields": [
+        {
+          "internalName": "RunId",
+          "displayName": "Run-ID",
+          "type": "Text",
+          "required": true
+        },
+        {
+          "internalName": "NutzungId",
+          "displayName": "Nutzung-ID",
+          "type": "Text",
+          "required": true
+        },
+        {
+          "internalName": "EtappeNr",
+          "displayName": "Etappe-Nr",
+          "type": "Number",
+          "required": true
+        },
+        {
+          "internalName": "Beginn",
+          "displayName": "Beginn",
+          "type": "DateTime",
+          "required": true
+        },
+        {
+          "internalName": "Ende",
+          "displayName": "Ende",
+          "type": "DateTime",
+          "required": false
+        },
+        {
+          "internalName": "Status",
+          "displayName": "Status",
+          "type": "Choice",
+          "required": true,
+          "choices": [
+            "Aktiv",
+            "Beendet"
+          ]
+        },
+        {
+          "internalName": "Aktiv",
+          "displayName": "Aktiv",
+          "type": "Boolean",
+          "required": false
+        },
+        {
+          "internalName": "Testdaten",
+          "displayName": "Testdaten",
+          "type": "Boolean",
+          "required": false
+        }
+      ]
+    },
+    {
+      "internalName": "WasserskiRunPersonen",
+      "displayName": "Wasserski-Run-Personen",
+      "fields": [
+        {
+          "internalName": "RunId",
+          "displayName": "Run-ID",
+          "type": "Text",
+          "required": true
+        },
+        {
+          "internalName": "PersonId",
+          "displayName": "Person-ID",
+          "type": "Text",
+          "required": true
+        },
+        {
+          "internalName": "Funktion",
+          "displayName": "Funktion",
+          "type": "Choice",
+          "required": true,
+          "choices": [
+            "Fahrer",
+            "Beobachter",
+            "Skiläufer",
+            "Gast"
+          ]
         },
         {
           "internalName": "Aktiv",

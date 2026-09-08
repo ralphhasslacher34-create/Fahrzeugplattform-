@@ -1,5 +1,33 @@
 # Fahrzeugplattform / MOBIMORY – Build-Historie
 
+## 1.0.3-dev – Nutzung praxisnah + Wasserski + Verleihbearbeitung
+
+### Neu
+- Start zeigt aktive Nutzungen sofort zum Fortsetzen.
+- Geplante Nutzungen bleiben dauerhaft aufrufbar und bearbeitbar.
+- Beendete Nutzungen bleiben für Nachträge/Korrekturen geöffnet.
+- Ereignis-Nachträge mit tatsächlichem Ereigniszeitpunkt plus Erfassungszeitpunkt/Herkunft.
+- Wasserski: Nutzung → Run → Run-Etappen, mit Skiläufer, Fahrer und Beobachter je Run.
+- Läufer können später erneut starten; Rollen können zwischen Runs wechseln.
+- Rückfahrt zum Ausgangspunkt bleibt Teil derselben Wasserski-Nutzung.
+- Neue Listen: WasserskiRuns, WasserskiRunEtappen, WasserskiRunPersonen.
+
+### Geändert
+- Planung & Historie ist eine bearbeitbare Arbeitsansicht, kein reines Archiv.
+- Ende einer Nutzung ist Status, kein Schreibschutz.
+- Fehleranzeige verweist nur bei echten Schemafehlern auf M365-Setup.
+
+### Verleih
+- Dropdown statt sofort sichtbarer kompletter Personenliste.
+- Auswahl nur aus Rollen Leiher und Gast.
+- Bestehende Überlassungen sind anklickbar und bearbeitbar.
+- Mindestens ein Leiher erforderlich.
+
+### Schema
+- 48 SharePoint-Listen.
+- Ereignisse erweitert um ErfasstAm, Herkunft, Rohdaten und Korrekturbezug.
+
+
 ## 1.0.2-dev – Sackgassen-/Stabilitätsfix
 
 ### Behoben

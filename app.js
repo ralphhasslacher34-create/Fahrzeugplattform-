@@ -1,4 +1,4 @@
-const VERSION='1.0.2-dev';
+const VERSION='1.0.3-dev';
 const P={
   motorboat:{label:'Motorboot',functions:['Skipper','Crew','Gast'],usage:[['Ausfahrt',0],['Törn',1],['Wasserski',0]],events:['Schleuse','Bewegliche Brücke','Hebewerk','Peilung / Landmarke','Besondere Begegnung','Wetter','Wetteränderung','Technische Beobachtung','Freie Notiz'],stays:['Angelegt','Vor Anker','Mooring'],actions:['Kontrolle','Ablegen','Ereignis','Anlegen / Ankern']},
   motorhome:{label:'Wohnmobil',functions:['Fahrer','Beifahrer','Gast'],usage:[['Tagesausflug',0],['Kurztrip',1],['Urlaub',1]],events:['Fähre','Besondere Begegnung','Wetter','Wetteränderung','Technische Beobachtung','Freie Notiz'],stays:['Stellplatz','Campingplatz','Freier Stellplatz'],actions:['Kontrolle','Abfahrt','Ereignis','Ankunft / Aufenthalt']}
@@ -46,7 +46,12 @@ function configuration(){head('Konfiguration','Stammdaten und Grundlagen');app.i
 
 async function getCloud(){const tok=FPAuth.token(),siteUrl=localStorage.getItem('fp_sp_site')||'';if(!tok)throw new Error('Microsoft-Verbindung fehlt. Bitte unter Einstellungen → Microsoft 365 Setup anmelden.');if(!siteUrl)throw new Error('SharePoint-Site fehlt. Bitte unter Microsoft 365 Setup die Site verbinden.');const api=new FPGraphSetup(tok,siteUrl,{lists:[]});await api.resolveSite();return api}
 async function list(api,name){return api.listItemsByName(name)}
-function failBox(e,backTo='m365setup'){app.innerHTML=`<div class="card status-stop"><b>Daten konnten nicht geladen werden</b><p>${esc(e.message)}</p><button onclick="go('${backTo}')">${backTo==='m365setup'?'Microsoft 365 Setup öffnen':'Zurück'}</button></div>`}
+function failBox(e,backTo='main'){
+ const msg=e?.message||String(e), schema=/SharePoint-Liste|nicht gefunden|Setup-Verifikation|Schema/i.test(msg);
+ app.innerHTML=`<div class="card status-stop"><b>Daten konnten nicht geladen werden</b><p>${esc(msg)}</p>
+ <button onclick="go('${backTo}')">Zurück</button>
+ ${schema?`<button onclick="go('m365setup')">Microsoft 365 Setup öffnen</button>`:''}</div>`
+}
 
 async function vehiclesconfig(){head('Fahrzeuge','Stammdaten und Konfiguration');app.innerHTML='<div class="card">Fahrzeuge werden aus SharePoint geladen …</div>';try{const api=await getCloud(),items=await list(api,'Fahrzeuge');app.innerHTML=`<div class="card"><button class="primary" onclick="S.editVehicleId=null;go('vehicleedit')">Neues Fahrzeug</button></div>`+(items.length?items.map(x=>`<button class="menu vehicle-row" onclick="S.editVehicleId='${x.id}';go('vehicleedit')"><b>${esc(x.fields.Fahrzeugname||x.fields.Title||'Ohne Name')}</b><span class="muted">${esc(x.fields.Profil||x.fields.Fahrzeugtyp||'')} · ${esc(x.fields.Hersteller||'')} ${esc(x.fields.Modell||'')}</span></button>`).join(''):'<div class="card">Noch kein Fahrzeug in SharePoint angelegt.</div>')}catch(e){failBox(e)}}
 async function vehicleedit(){head(S.editVehicleId?'Fahrzeug bearbeiten':'Neues Fahrzeug','Stammdaten · SharePoint');let f={};try{if(S.editVehicleId){const api=await getCloud(),x=await api.getItemByName('Fahrzeuge',S.editVehicleId);f=x.fields||{}}}catch(e){failBox(e);return}app.innerHTML=`<div class="card"><div class="field"><label>Fahrzeugname *</label><input id="fvName" value="${esc(f.Fahrzeugname||f.Title||'')}"></div><div class="field"><label>Profil *</label><select id="fvProfil"><option ${f.Profil==='Motorboot'?'selected':''}>Motorboot</option><option ${f.Profil==='Wohnmobil'?'selected':''}>Wohnmobil</option></select></div><div class="field"><label>Fahrzeugtyp *</label><input id="fvTyp" value="${esc(f.Fahrzeugtyp||'')}"></div><div class="field"><label>Hersteller</label><input id="fvHersteller" value="${esc(f.Hersteller||'')}"></div><div class="field"><label>Modell</label><input id="fvModell" value="${esc(f.Modell||'')}"></div><div class="field"><label>Baujahr</label><input id="fvBaujahr" type="number" value="${esc(f.Baujahr??'')}"></div><div class="field"><label>Kennzeichen / Registrierung</label><input id="fvKennz" value="${esc(f.KennzeichenRegistrierung||'')}"></div><label><input id="fvAktiv" type="checkbox" ${f.Aktiv===false?'':'checked'}> Aktiv</label><div class="actions"><button class="primary" onclick="saveVehicle(false)">Stammdaten speichern</button>${S.editVehicleId?`<button onclick="S.configVehicleId='${S.editVehicleId}';go('vehicleconfigure')">Ausrüsten / konfigurieren</button>`:''}</div></div>`}
@@ -113,7 +118,21 @@ async function travelcheck(){head('Reisecheck','Planungshilfe · keine rechtsver
 async function runTravelCheckCloud(){const out=document.querySelector('#tcResult');out.innerHTML='<div class="card">Prüfung wird erstellt …</div>';try{const api=await getCloud(),[reqs,quals]=await Promise.all([list(api,'GebietsAnforderungen'),list(api,'Befaehigungen')]),own=reqs.filter(r=>String(r.fields.GebietId)===String(tcArea.value)),pq=quals.filter(q=>String(q.fields.PersonId)===String(tcPerson.value));const rows=own.map(r=>{let result='ZuPruefen',note='Aktuell prüfen und bestätigen.';if(r.fields.SubjektTyp==='Person'&&pq.length){const text=(r.fields.Anforderung||'').toLowerCase(),hit=pq.find(q=>q.fields.Vorhanden!==false&&text.includes(String(q.fields.Art||'').toLowerCase()));if(hit){result='Erfuellt';note='Passender hinterlegter Nachweis gefunden: '+hit.fields.Art}}return {r,result,note}});out.innerHTML=`<div class="card ${rows.some(x=>x.result!=='Erfuellt')?'status-warn':'status-ok'}"><b>${rows.length?'Prüfliste':'Keine Anforderungen hinterlegt'}</b>${rows.map(x=>`<div class="checkresult"><b>${x.result==='Erfuellt'?'✓':'○'} ${esc(x.r.fields.SubjektTyp)} · ${esc(x.r.fields.Verkehrsart)}</b><div>${esc(x.r.fields.Anforderung)}</div><div class="muted">${esc(x.note)}</div></div>`).join('')}${rows.length?'<button onclick="saveTravelCheck()">Check in SharePoint speichern</button>':''}</div>`;S.lastTravelCheck={vehicleId:tcVehicle.value,personId:tcPerson.value,areaId:tcArea.value,rows}}catch(e){out.innerHTML=`<div class="card status-stop">${esc(e.message)}</div>`}}
 async function saveTravelCheck(){try{const api=await getCloud(),h=await api.createItemByName('Reisechecks',{NutzungId:'',ErstelltAm:new Date().toISOString(),Status:S.lastTravelCheck.rows.every(x=>x.result==='Erfuellt')?'Vollstaendig':'Unvollstaendig'});for(const x of S.lastTravelCheck.rows)await api.createItemByName('ReisecheckPunkte',{ReisecheckId:String(h.id),GebietsAnforderungId:String(x.r.id),SubjektTyp:x.r.fields.SubjektTyp,SubjektId:x.r.fields.SubjektTyp==='Person'?String(S.lastTravelCheck.personId):x.r.fields.SubjektTyp==='Fahrzeug'?String(S.lastTravelCheck.vehicleId):'',Anforderung:x.r.fields.Anforderung,Ergebnis:x.result,Notiz:x.note});alert('Reisecheck gespeichert.')}catch(e){alert(e.message)}}
 
-function start(){head('Start','Nutzung und Rückblick');app.innerHTML=`<div class="grid"><button class="menu" onclick="go('vehicle')"><b>Neue Nutzung</b></button><button class="menu" onclick="go('history')"><b>Bisherige Nutzungen</b></button><button class="menu"><b>Foto / Film</b></button></div>`}
+async function start(){
+ head('Start','Nutzung und Rückblick');
+ app.innerHTML='<div class="card">Nutzungen werden geladen …</div>';
+ try{
+  const api=await getCloud(),[us,vs,types]=await Promise.all([list(api,'Nutzungen'),list(api,'Fahrzeuge'),list(api,'Nutzungsarten')]);
+  const vm=Object.fromEntries(vs.map(x=>[String(x.id),x.fields.Fahrzeugname||x.fields.Title]));
+  const tm=Object.fromEntries(types.map(x=>[String(x.id),x.fields.Name||x.fields.Title]));
+  const active=us.filter(x=>x.fields.Status==='Aktiv').sort((a,b)=>String(b.fields.Beginn||'').localeCompare(String(a.fields.Beginn||'')));
+  const planned=us.filter(x=>['Vorbereitet','Geplant'].includes(x.fields.Status)).sort((a,b)=>String(a.fields.GeplanterBeginn||'').localeCompare(String(b.fields.GeplanterBeginn||'')));
+  app.innerHTML=`${active.length?`<div class="card status-ok"><div class="section first">Aktive Nutzung fortsetzen</div>${active.map(u=>`<button class="menu" onclick="openUsage('${u.id}')"><b>${esc(vm[String(u.fields.FahrzeugId)]||'Fahrzeug')} · ${esc(tm[String(u.fields.NutzungsartId)]||'Nutzung')}</b><span class="muted">${esc(u.fields.Startpunkt||u.fields.GeplanterStartort||'')} · aktiv seit ${fmtDate(u.fields.Beginn)}</span></button>`).join('')}</div>`:''}
+  <div class="grid"><button class="menu" onclick="go('vehicle')"><b>Neue Nutzung</b><span class="muted">spontan oder geplant</span></button><button class="menu" onclick="go('history')"><b>Planung & Historie</b><span class="muted">geplante, aktive und beendete Nutzungen</span></button></div>
+  ${planned.length?`<div class="card"><div class="section first">Geplante Nutzungen</div>${planned.slice(0,8).map(u=>`<button class="menu" onclick="openUsage('${u.id}')"><b>${esc(vm[String(u.fields.FahrzeugId)]||'Fahrzeug')} · ${esc(tm[String(u.fields.NutzungsartId)]||'Nutzung')}</b><span class="muted">${fmtDate(u.fields.GeplanterBeginn)} · ${esc(u.fields.GeplanterStartort||'')} → ${esc(u.fields.GeplanterEndort||u.fields.GeplantesZiel||'')}</span></button>`).join('')}</div>`:''}`;
+ }catch(e){failBox(e)}
+}
+function openUsage(id){S.usageDetailId=String(id);go('usageDetail')}
 async function vehicle(){head('Fahrzeug auswählen');app.innerHTML='<div class="card">Fahrzeuge werden geladen …</div>';try{const api=await getCloud(),vs=await list(api,'Fahrzeuge');const active=vs.filter(v=>v.fields.Aktiv!==false);app.innerHTML=`<div class="grid">${active.map(v=>`<button class="menu" onclick='selectCloudVehicle(${JSON.stringify(JSON.stringify({id:v.id,name:v.fields.Fahrzeugname||v.fields.Title,profile:v.fields.Profil||"Motorboot"}))})'><b>${esc(v.fields.Fahrzeugname||v.fields.Title)}</b><span class="muted">${esc(v.fields.Profil||v.fields.Fahrzeugtyp||'')}</span></button>`).join('')}</div>`}catch(e){failBox(e)}}
 function selectCloudVehicle(raw){const v=JSON.parse(raw);S.vehicle={id:String(v.id),name:v.name,profile:normalizeProfile(v.profile),profileLabel:v.profile};go('usage')}
 async function usage(){head('Nutzungsart',S.vehicle.name);app.innerHTML='<div class="card">Nutzungsarten werden geladen …</div>';try{const api=await getCloud(),[maps,types]=await Promise.all([list(api,'FahrzeugNutzungsarten'),list(api,'Nutzungsarten')]);const typeById=Object.fromEntries(types.map(x=>[String(x.id),x]));const rows=maps.filter(x=>String(x.fields.FahrzeugId)===String(S.vehicle.id)&&x.fields.Aktiv!==false).sort((a,b)=>(a.fields.Sortierung||0)-(b.fields.Sortierung||0)).map(m=>typeById[String(m.fields.NutzungsartId)]).filter(Boolean).filter(t=>t.fields.Aktiv!==false);app.innerHTML=rows.length?`<div class="grid">${rows.map(t=>{const n=t.fields.Name||t.fields.Title;const multi=['Törn','Kurztrip','Urlaub'].includes(n);return `<button class="menu" onclick="S.usage={id:'${t.id}',name:'${esc(n)}',multi:${multi}};go('setup')"><b>${esc(n)}</b><span class="muted">${multi?'mehrtägige Nutzung':'eintägige Nutzung'}</span></button>`}).join('')}</div>`:'<div class="card status-warn"><b>Keine Nutzungsart aktiviert.</b><p>Bitte unter Konfiguration → Fahrzeuge die Nutzungsarten dieses Fahrzeugs festlegen.</p></div>'}catch(e){failBox(e)}}
@@ -182,7 +201,7 @@ const TESTFLAG_KEY='fp_testmode';
 function testFlag(){return localStorage.getItem(TESTFLAG_KEY)!=='0'}
 function isoDate(v){return v?new Date(v+'T12:00:00').toISOString():null}
 function actionsHtml(listName,x,anchor,editJs=''){return `<div class="row-actions">${editJs?`<button onclick="${editJs}">Bearbeiten</button>`:''}${Object.prototype.hasOwnProperty.call(x.fields,'Aktiv')?`<button onclick="toggleConfigItem('${listName}','${x.id}',${x.fields.Aktiv===false?'true':'false'},'${anchor}')">${x.fields.Aktiv===false?'Aktivieren':'Inaktiv'}</button>`:''}<button class="danger-lite" onclick="deleteConfigItem('${listName}','${x.id}','${anchor}')">Löschen</button></div>`}
-function main(){S.stack=[];head('Fahrzeugplattform','Phase 1 · 1.0.1-dev');app.innerHTML=`<div class="grid"><button class="menu" onclick="go('start')"><b>Start</b><span class="muted">Nutzung, Cockpit, Historie</span></button><button class="menu" onclick="go('configuration')"><b>Konfiguration</b><span class="muted">Fahrzeuge, Personen, Orte, Reisegrundlagen</span></button><button class="menu" onclick="go('workshop')"><b>Werkstatt</b><span class="muted">Störungen, Wartung, Arbeiten, Prüfungen, Aufgaben</span></button><button class="menu" onclick="go('lending')"><b>Verleihmodus</b><span class="muted">Übergaben und Rechte</span></button><button class="menu" onclick="go('settings')"><b>Einstellungen / Daten</b><span class="muted">M365, Testmodus, Export</span></button></div>`}
+function main(){S.stack=[];head('Fahrzeugplattform','Phase 1 · 1.0.3-dev');app.innerHTML=`<div class="grid"><button class="menu" onclick="go('start')"><b>Start</b><span class="muted">Nutzung, Cockpit, Historie</span></button><button class="menu" onclick="go('configuration')"><b>Konfiguration</b><span class="muted">Fahrzeuge, Personen, Orte, Reisegrundlagen</span></button><button class="menu" onclick="go('workshop')"><b>Werkstatt</b><span class="muted">Störungen, Wartung, Arbeiten, Prüfungen, Aufgaben</span></button><button class="menu" onclick="go('lending')"><b>Verleihmodus</b><span class="muted">Übergaben und Rechte</span></button><button class="menu" onclick="go('settings')"><b>Einstellungen / Daten</b><span class="muted">M365, Testmodus, Export</span></button></div>`}
 function configuration(){head('Konfiguration','Phase-1-Stammdaten');app.innerHTML=`<div class="grid"><button class="menu" onclick="go('vehiclesconfig')"><b>Fahrzeuge</b><span class="muted">Identität, Maße, Ausrüstung, Mautklassen, Kosten</span></button><button class="menu" onclick="go('usagecatalog')"><b>Nutzungsarten</b><span class="muted">Profilbezogener Stamm</span></button><button class="menu" onclick="go('places')"><b>Orte / Standorte</b><span class="muted">Favoriten, GPS-Basis, Häfen/Stellplätze</span></button><button class="menu" onclick="go('persons')"><b>Personen</b><span class="muted">Rollen, Funktionen, Lizenzen / Patente</span></button><button class="menu" onclick="go('animals')"><b>Tiere</b><span class="muted">Tierstamm und Nachweise</span></button><button class="menu" onclick="go('areas')"><b>Gebiete / Reviere</b><span class="muted">Länder, Regionen, Anforderungen</span></button><button class="menu" onclick="go('travelcheck')"><b>Reisecheck</b><span class="muted">Soll/Ist · keine rechtsverbindliche Auskunft</span></button><button class="menu" onclick="go('m365setup')"><b>Microsoft 365 Setup</b></button></div>`}
 
 async function vehicleedit(){
@@ -280,7 +299,7 @@ async function saveCrewChange(){try{const api=await getCloud(),p=profileDef();if
 function dayend(){head('Tagesabschluss',S.vehicle.name);app.innerHTML=`<div class="card"><div class="field"><label>Tatsächlicher Tagesziel-/Aufenthaltsort</label><input id="actual" value="${esc(S.day?.goal||'')}"></div>${endMeters()}<div class="field"><label>Tagesnotiz</label><textarea id="dayNote"></textarea></div><div class="actions"><button class="primary" onclick="finishV1(false)">Tag abschließen</button>${S.usage?.multi?'<button onclick="finishV1(true)">Tag abschließen · Nutzung bleibt aktiv</button>':''}</div></div>`}
 async function finishV1(continueUsage=false){try{const api=await getCloud(),now=new Date().toISOString(),vals=[...document.querySelectorAll('[id^=em]')].map(x=>x.value);await api.updateItemByName('Tagesetappen',S.day.id,{TatsaechlichesZiel:actual.value.trim(),Ende:now,Status:'Abgeschlossen'});for(let i=0;i<(S.metrics||[]).length;i++){if(vals[i]==='')continue;const m=S.metrics[i];await api.createItemByName('Messwerte',{FahrzeugId:String(S.vehicle.id),NutzungId:String(S.usage.cloudId),TagesetappeId:String(S.day.id),KomponenteId:m.componentId,Messgroesse:m.measure,Wert:Number(vals[i]),Einheit:m.unit,Phase:'Ende',GemessenAm:now,Quelle:'Manuell',Testdaten:testFlag(),Aktiv:true})}if(dayNote.value.trim())await api.createItemByName('Ereignisse',{FahrzeugId:String(S.vehicle.id),NutzungId:String(S.usage.cloudId),TagesetappeId:String(S.day.id),BenutzerId:'current',Art:'Tagesabschluss',Zeitpunkt:now,Notiz:dayNote.value.trim(),Testdaten:testFlag(),Aktiv:true});if(!continueUsage)await api.updateItemByName('Nutzungen',S.usage.cloudId,{Ende:now,Status:'Beendet'});localStorage.removeItem('fp-current');S.stack=[];S.view='start';render()}catch(e){alert(e.message)}}
 
-async function usageHistory(){head('Nutzungen / Historie','SharePoint-Auswertung');app.innerHTML='<div class="card">Historie wird geladen …</div>';try{const api=await getCloud(),[us,vs,types,days,events,costs]=await Promise.all([list(api,'Nutzungen'),list(api,'Fahrzeuge'),list(api,'Nutzungsarten'),list(api,'Tagesetappen'),list(api,'Ereignisse'),list(api,'Ausgaben')]);const vm=Object.fromEntries(vs.map(x=>[String(x.id),x.fields.Fahrzeugname||x.fields.Title])),tm=Object.fromEntries(types.map(x=>[String(x.id),x.fields.Name||x.fields.Title]));app.innerHTML=`<div class="card"><button onclick="exportPhase1Data()">Kompletten Datenexport erzeugen</button></div>${us.sort((a,b)=>String(b.fields.Beginn||'').localeCompare(String(a.fields.Beginn||''))).map(u=>{const ds=days.filter(d=>String(d.fields.NutzungId)===String(u.id)),es=events.filter(e=>String(e.fields.NutzungId)===String(u.id)),sum=costs.filter(c=>String(c.fields.NutzungId)===String(u.id)).reduce((a,c)=>a+Number(c.fields.Betrag||0),0);return `<div class="card"><b>${esc(vm[String(u.fields.FahrzeugId)]||'Fahrzeug')} · ${esc(tm[String(u.fields.NutzungsartId)]||'Nutzung')}</b><div class="muted">${fmtDate(u.fields.Beginn)} · ${esc(u.fields.Startpunkt||'')} → ${esc(u.fields.GeplantesZiel||u.fields.GeplanterEndort||'')} · ${esc(u.fields.Status||'')}</div><div>${ds.length} Tagesetappe(n) · ${es.length} Ereignis(se) · Kosten ${sum.toFixed(2)} €${u.fields.Testdaten?' · TEST':''}</div></div>`}).join('')||'<div class="card">Noch keine Nutzungen.</div>'}` }catch(e){failBox(e)}}
+async function usageHistory(){head('Nutzungen / Historie','SharePoint-Auswertung');app.innerHTML='<div class="card">Historie wird geladen …</div>';try{const api=await getCloud(),[us,vs,types,days,events,costs]=await Promise.all([list(api,'Nutzungen'),list(api,'Fahrzeuge'),list(api,'Nutzungsarten'),list(api,'Tagesetappen'),list(api,'Ereignisse'),list(api,'Ausgaben')]);const vm=Object.fromEntries(vs.map(x=>[String(x.id),x.fields.Fahrzeugname||x.fields.Title])),tm=Object.fromEntries(types.map(x=>[String(x.id),x.fields.Name||x.fields.Title]));app.innerHTML=`<div class="card"><button onclick="exportPhase1Data()">Kompletten Datenexport erzeugen</button></div>${us.sort((a,b)=>String(b.fields.Beginn||'').localeCompare(String(a.fields.Beginn||''))).map(u=>{const ds=days.filter(d=>String(d.fields.NutzungId)===String(u.id)),es=events.filter(e=>String(e.fields.NutzungId)===String(u.id)),sum=costs.filter(c=>String(c.fields.NutzungId)===String(u.id)).reduce((a,c)=>a+Number(c.fields.Betrag||0),0);return `<button class="menu" onclick="openUsage('${u.id}')"><b>${esc(vm[String(u.fields.FahrzeugId)]||'Fahrzeug')} · ${esc(tm[String(u.fields.NutzungsartId)]||'Nutzung')}</b><span class="muted">${fmtDate(u.fields.Beginn||u.fields.GeplanterBeginn)} · ${esc(u.fields.Startpunkt||u.fields.GeplanterStartort||'')} → ${esc(u.fields.GeplantesZiel||u.fields.GeplanterEndort||'')} · ${esc(u.fields.Status||'')}</span><span>${ds.length} Tagesetappe(n) · ${es.length} Ereignis(se) · Kosten ${sum.toFixed(2)} €${u.fields.Testdaten?' · TEST':''}</span></button>`}).join('')||'<div class="card">Noch keine Nutzungen.</div>'}` }catch(e){failBox(e)}}
 
 async function workshop(){head('Werkstatt','Störungen · Wartung · Arbeiten · Aufgaben · Prüfungen');app.innerHTML='<div class="card">Werkstattdaten werden geladen …</div>';try{const api=await getCloud(),[vs,st,wo,wp,tasks,ins]=await Promise.all([list(api,'Fahrzeuge'),list(api,'Stoerungen'),list(api,'Arbeiten'),list(api,'Wartungsplaene'),list(api,'Aufgaben'),list(api,'Pruefungen')]);const vopt=vs.filter(x=>x.fields.Aktiv!==false).map(x=>`<option value="${x.id}">${esc(x.fields.Fahrzeugname||x.fields.Title)}</option>`).join('');const vm=Object.fromEntries(vs.map(x=>[String(x.id),x.fields.Fahrzeugname||x.fields.Title]));app.innerHTML=`<div class="card"><div class="section first">Neue Störung / Aufgabe / Prüfung</div><select id="wkVehicle">${vopt}</select><div class="grid compact"><input id="wkDesc" placeholder="Beschreibung"><select id="wkKind"><option>Störung</option><option>Aufgabe</option><option>Wartungsplan</option><option>Prüfung</option><option>Arbeit / Reparatur</option></select><input id="wkDue" type="date"></div><button class="primary" onclick="addWorkshopEntry()">Eintrag anlegen</button></div><div class="card"><div class="section first">Offene Störungen</div>${st.filter(x=>x.fields.Aktiv!==false).map(x=>`<div class="line"><div><b>${esc(vm[String(x.fields.FahrzeugId)]||'')} · ${esc(x.fields.Kategorie||'Störung')}</b><div>${esc(x.fields.Beschreibung||'')}</div><div class="muted">${esc(x.fields.Status||'Offen')} · ${esc(x.fields.Prioritaet||'')}</div></div>${actionsHtml('Stoerungen',x,'')}</div>`).join('')||'<p class="muted">Keine offenen Störungen.</p>'}</div><div class="card"><div class="section first">Aufgaben / Wartung / Prüfungen / Arbeiten</div>${tasks.map(x=>`<div><b>Aufgabe:</b> ${esc(x.fields.Aufgabe||'')} · ${fmtDate(x.fields.FaelligAm)} · ${esc(x.fields.Status||'')}</div>`).join('')}${wp.map(x=>`<div><b>Wartung:</b> ${esc(x.fields.Name||'')} · ${esc(x.fields.IntervallRegel||'')}</div>`).join('')}${ins.map(x=>`<div><b>Prüfung:</b> ${esc(x.fields.Art||'')} · gültig bis ${fmtDate(x.fields.GueltigBis)}</div>`).join('')}${wo.map(x=>`<div><b>Arbeit:</b> ${esc(x.fields.Arbeitsart||'')} · ${esc(x.fields.Beschreibung||'')}</div>`).join('')}</div>`}catch(e){failBox(e)}}
 async function addWorkshopEntry(){if(!wkDesc.value.trim())return alert('Beschreibung eingeben.');try{const api=await getCloud(),f={FahrzeugId:String(wkVehicle.value),Testdaten:testFlag(),Aktiv:true};if(wkKind.value==='Störung')await api.createItemByName('Stoerungen',{...f,Kategorie:'Technik',Beschreibung:wkDesc.value.trim(),GemeldetAm:new Date().toISOString(),Status:'Offen',Prioritaet:'Normal'});else if(wkKind.value==='Aufgabe')await api.createItemByName('Aufgaben',{...f,BezugTyp:'Fahrzeug',BezugId:String(wkVehicle.value),Aufgabe:wkDesc.value.trim(),FaelligAm:isoDate(wkDue.value),Status:'Offen'});else if(wkKind.value==='Wartungsplan')await api.createItemByName('Wartungsplaene',{...f,KomponenteId:'',Name:wkDesc.value.trim(),IntervallRegel:wkDue.value?'Nächster Termin '+wkDue.value:'',Aktiv:true});else if(wkKind.value==='Prüfung')await api.createItemByName('Pruefungen',{...f,Art:wkDesc.value.trim(),GeprueftAm:new Date().toISOString(),GueltigBis:isoDate(wkDue.value),Ergebnis:'Offen'});else await api.createItemByName('Arbeiten',{...f,KomponenteId:'',StoerungId:'',Arbeitsart:'Arbeit',Beschreibung:wkDesc.value.trim(),AbgeschlossenAm:wkDue.value?isoDate(wkDue.value):null,Waehrung:'EUR'});render()}catch(e){alert(e.message)}}
@@ -310,7 +329,7 @@ function brandHeadline(){
  return `<div class="mobi-brand"><div class="mobi-word">MOBIMORY</div><div class="mobi-tag">Your vehicle · Your travel · Your data</div></div>`;
 }
 function login(){bar.hidden=true;app.innerHTML=`<div class="login"><div class="card mobi-login">${mobiIcon()}${brandHeadline()}<p class="muted">Version ${VERSION}</p><div class="field"><label>Nutzer</label><input value="Admin"></div><div class="field"><label>Passwort</label><input type="password" value="admin"></div><button class="primary" onclick="S.stack=[];S.view='main';render()">Anmelden</button></div></div>`}
-function main(){S.stack=[];head('MOBIMORY','Phase 1 · 1.0.1-dev');app.innerHTML=`<div class="home-brand">${mobiIcon()}${brandHeadline()}</div><div class="grid"><button class="menu" onclick="go('start')"><b>Start</b><span class="muted">Nutzung, Cockpit, Planung & Historie</span></button><button class="menu" onclick="go('configuration')"><b>Konfiguration</b><span class="muted">Fahrzeuge, Personen, Tiere, Orte, Reisegrundlagen</span></button><button class="menu" onclick="go('workshop')"><b>Werkstatt</b><span class="muted">Störungen, Wartung, Arbeiten und Aufgaben</span></button><button class="menu" onclick="go('lending')"><b>Verleihmodus</b><span class="muted">Gruppen, Qualifikationen und Rechte</span></button><button class="menu" onclick="go('settings')"><b>Einstellungen / Daten</b><span class="muted">M365, Testmodus, Export</span></button></div>`}
+function main(){S.stack=[];head('MOBIMORY','Phase 1 · 1.0.3-dev');app.innerHTML=`<div class="home-brand">${mobiIcon()}${brandHeadline()}</div><div class="grid"><button class="menu" onclick="go('start')"><b>Start</b><span class="muted">Nutzung, Cockpit, Planung & Historie</span></button><button class="menu" onclick="go('configuration')"><b>Konfiguration</b><span class="muted">Fahrzeuge, Personen, Tiere, Orte, Reisegrundlagen</span></button><button class="menu" onclick="go('workshop')"><b>Werkstatt</b><span class="muted">Störungen, Wartung, Arbeiten und Aufgaben</span></button><button class="menu" onclick="go('lending')"><b>Verleihmodus</b><span class="muted">Gruppen, Qualifikationen und Rechte</span></button><button class="menu" onclick="go('settings')"><b>Einstellungen / Daten</b><span class="muted">M365, Testmodus, Export</span></button></div>`}
 
 function profileFields(){
  const p=document.getElementById('fvProfil')?.value||'Motorboot';
@@ -413,7 +432,7 @@ async function usageDetail(){head('Nutzung','Planung · Tagesetappen · Fortsetz
 async function editDay(id){try{const api=await getCloud(),d=await api.getItemByName('Tagesetappen',id);const txt=prompt('Tagesbericht / Freitext ergänzen oder korrigieren:',d.fields.Tagesbericht||'');if(txt===null)return;await api.updateItemByName('Tagesetappen',id,{Tagesbericht:txt,NachgetragenAm:new Date().toISOString()});render()}catch(e){alert(e.message)}}
 async function continueUsage(id){try{const api=await getCloud(),u=await api.getItemByName('Nutzungen',id),[vs,types,days]=await Promise.all([list(api,'Fahrzeuge'),list(api,'Nutzungsarten'),list(api,'Tagesetappen')]),v=vs.find(x=>String(x.id)===String(u.fields.FahrzeugId)),t=types.find(x=>String(x.id)===String(u.fields.NutzungsartId)),ds=days.filter(x=>String(x.fields.NutzungId)===String(id)),n=ds.length+1;S.vehicle={id:String(v.id),name:v.fields.Fahrzeugname||v.fields.Title,profile:normalizeProfile(v.fields.Profil||'Motorboot')};S.usage={id:String(t?.id||u.fields.NutzungsartId),name:t?.fields?.Name||'Nutzung',cloudId:String(id),multi:true};await loadVehicleMetrics();const start=prompt(`Startpunkt für Tag ${n}:`,ds.length?(ds[ds.length-1].fields.TatsaechlichesZiel||ds[ds.length-1].fields.Tagesziel||''):'')||'',goal=prompt(`Tagesziel für Tag ${n}:`,'')||'';const day=await api.createItemByName('Tagesetappen',{NutzungId:String(id),FahrzeugId:String(v.id),TagNr:n,Datum:new Date().toISOString(),Startpunkt:start,Tagesziel:goal,Beginn:new Date().toISOString(),Status:'Aktiv',Testdaten:testFlag()});S.day={id:String(day.id),start,goal,startMeters:[]};localStorage.setItem('fp-current',JSON.stringify({vehicle:S.vehicle,usage:S.usage,day:S.day,startedAt:new Date().toISOString()}));go('cockpit')}catch(e){alert(e.message)}}
 async function startPlannedUsage(id){try{const api=await getCloud();await api.updateItemByName('Nutzungen',id,{Status:'Aktiv',Beginn:new Date().toISOString(),GeaendertAm:new Date().toISOString()});return continueUsage(id)}catch(e){alert(e.message)}}
-async function endWholeUsage(id){if(!confirm('Gesamte Nutzung / Reise wirklich beenden?'))return;try{const api=await getCloud();await api.updateItemByName('Nutzungen',id,{Status:'Beendet',Ende:new Date().toISOString(),GeaendertAm:new Date().toISOString()});render()}catch(e){alert(e.message)}}
+async function endWholeUsage(id){if(!confirm('Gesamte Nutzung / Reise beenden? Der Datensatz bleibt für Nachträge und Korrekturen erreichbar.'))return;try{const api=await getCloud();await api.updateItemByName('Nutzungen',id,{Status:'Beendet',Ende:new Date().toISOString(),GeaendertAm:new Date().toISOString()});render()}catch(e){alert(e.message)}}
 
 async function travelcheck(){head('Reisecheck','Fahrzeug + Personen + Tiere + Gebiet · keine rechtsverbindliche Auskunft');app.innerHTML='<div class="card">Stammdaten werden geladen …</div>';try{const api=await getCloud(),[vs,ps,gs,as]=await Promise.all([list(api,'Fahrzeuge'),list(api,'Personen'),list(api,'Gebiete'),list(api,'Tiere')]);app.innerHTML=`<div class="card"><div class="field"><label>Fahrzeug</label><select id="tcVehicle">${vs.filter(x=>x.fields.Aktiv!==false).map(v=>`<option value="${v.id}">${esc(v.fields.Fahrzeugname||v.fields.Title)}</option>`).join('')}</select></div><div class="section">Mitreisende Personen</div>${ps.filter(x=>x.fields.Aktiv!==false).map(p=>`<label class="person-tile"><input type="checkbox" data-tcperson="${p.id}"> ${esc(p.fields.Anzeigename||p.fields.Title)}</label>`).join('')}<div class="section">Mitreisende Tiere</div>${as.filter(x=>x.fields.Aktiv!==false).map(a=>`<label class="person-tile"><input type="checkbox" data-tcanimal="${a.id}"> ${esc(a.fields.Name||a.fields.Title)} · ${esc(a.fields.Tierart||'')}</label>`).join('')||'<p class="muted">Keine Tiere.</p>'}<div class="field"><label>Gebiet / Revier</label><select id="tcArea">${gs.map(g=>`<option value="${g.id}">${esc(g.fields.Name||g.fields.Title)}</option>`).join('')}</select></div><button class="primary" onclick="runTravelCheck101()">Check erstellen</button></div><div id="tcResult"></div><div class="card"><b>Hinweis</b><p>Diese Prüfung dient als Planungshilfe und ist keine rechtsverbindliche Auskunft. Anforderungen sind vor Reiseantritt anhand aktueller geeigneter Quellen zu prüfen.</p></div>`}catch(e){failBox(e)}}
 async function runTravelCheck101(){const people=checkedIds('tcperson'),pets=checkedIds('tcanimal');tcResult.innerHTML=`<div class="card status-warn"><b>Reisecheck vorbereitet</b><p>${people.length} Person(en), ${pets.length} Tier(e) und das gewählte Fahrzeug werden gegen die Anforderungen des Gebiets geprüft. Die Detailprüfung wird aus den hinterlegten Personen-, Tier- und Fahrzeugnachweisen aufgebaut.</p></div>`}
@@ -423,8 +442,182 @@ function renderLendingPeople(){const d=S.lendData;if(!d||!lendPeople)return;cons
 async function addLending101(){const members=checkedIds('lendperson');if(!members.length)return alert('Mindestens eine Person auswählen.');if(!leFrom.value||!leTo.value)return alert('Beginn und Ende eingeben.');try{const api=await getCloud(),rights=[...document.querySelectorAll('[data-lendright]:checked')].map(x=>x.dataset.lendright),animalIds=checkedIds('lendanimal'),x=await api.createItemByName('Fahrzeugueberlassungen',{FahrzeugId:String(leVehicle.value),LeiherPersonId:members[0],Beginn:new Date(leFrom.value).toISOString(),Ende:new Date(leTo.value).toISOString(),Rechte:rights.join('|'),Status:'Vorbereitet',UebergabeNotiz:leNote.value.trim(),Gruppenmodus:true,TierIds:animalIds.join('|'),Testdaten:testFlag(),Aktiv:true});for(const id of members){const sel=document.querySelector(`[data-lendfunction="${id}"]`);await api.createItemByName('UeberlassungsPersonen',{UeberlassungId:String(x.id),PersonId:id,Funktion:sel?.value||'Gast',Rechte:rights.join('|'),QualifikationStatus:'automatisch geprüft',Aktiv:true,Testdaten:testFlag()})}rerenderKeepPosition('lend')}catch(e){alert(e.message)}}
 
 
+
+async function usageDetail(){
+ head('Nutzung','Planung · aktive Nutzung · Historie · Nachträge');
+ app.innerHTML='<div class="card">Nutzung wird geladen …</div>';
+ try{
+  const api=await getCloud(),u=await api.getItemByName('Nutzungen',S.usageDetailId),
+   [vs,types,days,ps,np,animals,na,events]=await Promise.all([list(api,'Fahrzeuge'),list(api,'Nutzungsarten'),list(api,'Tagesetappen'),list(api,'Personen'),list(api,'NutzungsPersonen'),list(api,'Tiere'),list(api,'NutzungsTiere'),list(api,'Ereignisse')]);
+  const v=vs.find(x=>String(x.id)===String(u.fields.FahrzeugId)),t=types.find(x=>String(x.id)===String(u.fields.NutzungsartId)),
+   ds=days.filter(x=>String(x.fields.NutzungId)===String(u.id)).sort((a,b)=>Number(a.fields.TagNr||0)-Number(b.fields.TagNr||0)),
+   es=events.filter(x=>String(x.fields.NutzungId)===String(u.id)).sort((a,b)=>String(a.fields.Zeitpunkt||'').localeCompare(String(b.fields.Zeitpunkt||''))),
+   pm=Object.fromEntries(ps.map(x=>[String(x.id),x.fields.Anzeigename||x.fields.Title])),
+   am=Object.fromEntries(animals.map(x=>[String(x.id),x.fields.Name||x.fields.Title])),
+   people=np.filter(x=>String(x.fields.NutzungId)===String(u.id)),pets=na.filter(x=>String(x.fields.NutzungId)===String(u.id));
+  app.innerHTML=`<div class="card">
+   <div class="line"><div><b>${esc(v?.fields?.Fahrzeugname||'Fahrzeug')} · ${esc(t?.fields?.Name||'Nutzung')}</b><div class="muted">Status: ${esc(u.fields.Status||'Vorbereitet')}</div></div><button onclick="editUsagePlan('${u.id}')">Planung bearbeiten</button></div>
+   <div>${esc(u.fields.GeplanterStartort||u.fields.Startpunkt||'')} → ${esc(u.fields.GeplanterEndort||u.fields.GeplantesZiel||'')}</div>
+   <div class="chips">${people.map(x=>`<span>${esc(x.fields.Funktion)}: ${esc(pm[String(x.fields.PersonId)]||'')}</span>`).join('')}${pets.map(x=>`<span>Tier: ${esc(am[String(x.fields.TierId)]||'')}</span>`).join('')}</div>
+   <div class="actions">
+    ${['Vorbereitet','Geplant'].includes(u.fields.Status)?`<button class="primary" onclick="startPlannedUsage('${u.id}')">Ablegen / Losfahren</button>`:''}
+    ${u.fields.Status==='Aktiv'?`<button class="primary" onclick="continueExistingUsage('${u.id}')">Aktive Nutzung öffnen</button><button onclick="continueUsage('${u.id}')">Neue Tagesetappe</button><button onclick="endWholeUsage('${u.id}')">Gesamtnutzung beenden</button>`:''}
+    <button onclick="prepareUsageForEdit('${u.id}','${v?.id||''}','${esc(t?.fields?.Name||'Nutzung')}','${esc(v?.fields?.Fahrzeugname||'Fahrzeug')}','${esc(v?.fields?.Profil||'Motorboot')}')">Besatzung / Ereignisse nachtragen</button>
+    ${/wasserski/i.test(t?.fields?.Name||'')?`<button onclick="openWaterski('${u.id}')">Wasserski-Runs</button>`:''}
+   </div>
+   <p class="muted">Auch eine beendete Nutzung bleibt bearbeitbar. Automatisch erfasste Rohdaten werden nicht überschrieben; Nachträge werden separat gekennzeichnet.</p>
+  </div>
+  <div class="card"><div class="section first">Tagesetappen</div>${ds.map(d=>`<div class="entitybox"><div class="line"><div><b>Tag ${d.fields.TagNr||'?'} · ${fmtDate(d.fields.Datum)}</b><div class="muted">${esc(d.fields.Startpunkt||'')} → ${esc(d.fields.Tagesziel||d.fields.TatsaechlichesZiel||'')} · ${esc(d.fields.Status||'')}</div></div><button onclick="editDay('${d.id}')">Bearbeiten / nachtragen</button></div>${d.fields.Tagesbericht?`<p>${esc(d.fields.Tagesbericht)}</p>`:''}</div>`).join('')||'<p class="muted">Noch keine Tagesetappe.</p>'}</div>
+  <div class="card"><div class="section first">Ereignisse</div>
+   <button onclick="prepareUsageForEdit('${u.id}','${v?.id||''}','${esc(t?.fields?.Name||'Nutzung')}','${esc(v?.fields?.Fahrzeugname||'Fahrzeug')}','${esc(v?.fields?.Profil||'Motorboot')}');go('event')">Ereignis nachtragen</button>
+   ${es.slice(-30).map(e=>`<div class="line"><div><b>${esc(e.fields.Art||'Ereignis')}</b><div class="muted">${fmtDate(e.fields.Zeitpunkt)}${e.fields.Herkunft==='Nachtrag'?' · nachgetragen':''}</div></div></div>`).join('')||'<p class="muted">Noch keine Ereignisse.</p>'}
+  </div>`;
+ }catch(e){failBox(e)}
+}
+async function editUsagePlan(id){
+ try{
+  const api=await getCloud(),u=await api.getItemByName('Nutzungen',id);
+  const a=prompt('Geplanter Startort:',u.fields.GeplanterStartort||u.fields.Startpunkt||''); if(a===null)return;
+  const b=prompt('Geplanter Endort / Ziel:',u.fields.GeplanterEndort||u.fields.GeplantesZiel||''); if(b===null)return;
+  await api.updateItemByName('Nutzungen',id,{GeplanterStartort:a,GeplanterEndort:b,GeplantesZiel:b,GeaendertAm:new Date().toISOString()});render();
+ }catch(e){alert(e.message)}
+}
+function prepareUsageForEdit(id,vehicleId,usageName,vehicleName,profile){
+ S.vehicle={id:String(vehicleId),name:vehicleName,profile:normalizeProfile(profile)};
+ S.usage={cloudId:String(id),name:usageName,multi:true};
+}
+async function continueExistingUsage(id){
+ try{
+  const api=await getCloud(),u=await api.getItemByName('Nutzungen',id),[vs,types,days]=await Promise.all([list(api,'Fahrzeuge'),list(api,'Nutzungsarten'),list(api,'Tagesetappen')]);
+  const v=vs.find(x=>String(x.id)===String(u.fields.FahrzeugId)),t=types.find(x=>String(x.id)===String(u.fields.NutzungsartId)),
+   ds=days.filter(x=>String(x.fields.NutzungId)===String(id)).sort((a,b)=>Number(a.fields.TagNr||0)-Number(b.fields.TagNr||0)),d=ds[ds.length-1];
+  S.vehicle={id:String(v.id),name:v.fields.Fahrzeugname||v.fields.Title,profile:normalizeProfile(v.fields.Profil||'Motorboot')};
+  S.usage={id:String(t?.id||u.fields.NutzungsartId),name:t?.fields?.Name||'Nutzung',cloudId:String(id),multi:true};
+  S.day=d?{id:String(d.id),start:d.fields.Startpunkt||'',goal:d.fields.Tagesziel||'',startMeters:[]}:{};
+  localStorage.setItem('fp-current',JSON.stringify({vehicle:S.vehicle,usage:S.usage,day:S.day,startedAt:u.fields.Beginn||new Date().toISOString()}));
+  go('cockpit');
+ }catch(e){alert(e.message)}
+}
+
+
+
+async function event(){
+ head('Ereignis / Nachtrag',S.vehicle?.name||'Nutzung');
+ try{
+  const [api,orts,sites]=await Promise.all([getCloud(),getCloud().then(a=>list(a,'Orte')),getCloud().then(a=>list(a,'Standorte'))]);
+  const p=profileDef();S.locationData={orts,sites};
+  const now=new Date(),local=new Date(now.getTime()-now.getTimezoneOffset()*60000).toISOString().slice(0,16);
+  app.innerHTML=`<div class="card">
+   <div class="field"><label>Ereignisart</label><select id="evType">${p.events.map(x=>`<option>${x}</option>`).join('')}<option>Drehbrücke</option><option>Nachtrag / Sonstiges</option></select></div>
+   <div class="field"><label>Zeitpunkt des Ereignisses</label><input id="evWhen" type="datetime-local" value="${local}"></div>
+   ${locSelect('ev','Ort / Standort (optional)',orts,sites)}
+   <div class="grid compact"><input id="evLat" type="number" step="0.000001" placeholder="Breitengrad"><input id="evLon" type="number" step="0.000001" placeholder="Längengrad"></div>
+   <div class="field"><label>Bemerkung</label><textarea id="evNote"></textarea></div>
+   <button class="primary" onclick="saveEventV103()">Speichern</button>
+  </div>`;refreshSiteOptions('ev');
+ }catch(e){failBox(e)}
+}
+async function saveEventV103(){
+ try{
+  const api=await getCloud(),loc=locValue('ev',S.locationData.orts,S.locationData.sites),
+   when=evWhen.value?new Date(evWhen.value).toISOString():new Date().toISOString(),
+   now=new Date().toISOString(),isBackfill=Math.abs(new Date(now)-new Date(when))>5*60*1000,
+   f={FahrzeugId:String(S.vehicle.id),NutzungId:String(S.usage.cloudId),TagesetappeId:String(S.day?.id||''),BenutzerId:'current',Art:evType.value,Zeitpunkt:when,ErfasstAm:now,Herkunft:isBackfill?'Nachtrag':'Manuell',Rohdaten:false,Notiz:evNote.value.trim(),OrtId:loc.ortId,StandortId:loc.standortId,Testdaten:testFlag(),Aktiv:true};
+  if(evLat.value)f.Breitengrad=Number(evLat.value);if(evLon.value)f.Laengengrad=Number(evLon.value);
+  await api.createItemByName('Ereignisse',f);back();
+ }catch(e){alert(e.message)}
+}
+
+
+
+function openWaterski(id){S.waterskiUsageId=String(id);go('waterski')}
+async function waterski(){
+ head('Wasserski','Runs · Läufer · Fahrer · Beobachter');
+ app.innerHTML='<div class="card">Wasserski-Daten werden geladen …</div>';
+ try{
+  const api=await getCloud(),[runs,legs,roles,people]=await Promise.all([list(api,'WasserskiRuns'),list(api,'WasserskiRunEtappen'),list(api,'WasserskiRunPersonen'),list(api,'Personen')]);
+  const rs=runs.filter(x=>String(x.fields.NutzungId)===String(S.waterskiUsageId)).sort((a,b)=>String(a.fields.Beginn||'').localeCompare(String(b.fields.Beginn||''))),
+   pm=Object.fromEntries(people.map(x=>[String(x.id),x.fields.Anzeigename||x.fields.Title])),activePeople=people.filter(x=>x.fields.Aktiv!==false),
+   active=rs.find(x=>x.fields.Status==='Aktiv');
+  app.innerHTML=`<div class="card">
+   <div class="section first">${active?'Aktiver Run':'Nächsten Run starten'}</div>
+   ${active?`<p><b>${esc(pm[String(active.fields.SkilaeuferPersonId)]||'Läufer')}</b></p><button onclick="addWaterskiLeg('${active.id}')">Weitere Etappe</button><button class="primary" onclick="endWaterskiRun('${active.id}')">Run beenden / Wechsel</button>`:
+   `<div class="field"><label>Skiläufer</label><select id="wsRunner"><option value="">– auswählen –</option>${activePeople.map(p=>`<option value="${p.id}">${esc(p.fields.Anzeigename||p.fields.Title)}</option>`).join('')}</select></div>
+    <div class="field"><label>Fahrer</label><select id="wsDriver"><option value="">– auswählen –</option>${activePeople.map(p=>`<option value="${p.id}">${esc(p.fields.Anzeigename||p.fields.Title)}</option>`).join('')}</select></div>
+    <div class="field"><label>Beobachter</label><select id="wsObserver"><option value="">– auswählen –</option>${activePeople.map(p=>`<option value="${p.id}">${esc(p.fields.Anzeigename||p.fields.Title)}</option>`).join('')}</select></div>
+    <button class="primary" onclick="startWaterskiRun()">Run starten</button>`}
+   <button onclick="markWaterskiReturn()">Zurück zum Ausgangspunkt</button>
+  </div>
+  <div class="card"><div class="section first">Runs dieser Nutzung</div>${rs.map((r,i)=>{const rc=roles.filter(x=>String(x.fields.RunId)===String(r.id)&&x.fields.Aktiv!==false),lc=legs.filter(x=>String(x.fields.RunId)===String(r.id));return `<div class="entitybox"><b>Run ${i+1} · ${esc(pm[String(r.fields.SkilaeuferPersonId)]||'Läufer')}</b><div class="muted">${esc(r.fields.Status||'')} · ${lc.length} Etappe(n)</div><div class="chips">${rc.map(x=>`<span>${esc(x.fields.Funktion)}: ${esc(pm[String(x.fields.PersonId)]||'')}</span>`).join('')}</div></div>`}).join('')||'<p class="muted">Noch keine Runs.</p>'}</div>`;
+ }catch(e){failBox(e,'usageDetail')}
+}
+async function startWaterskiRun(){
+ const runner=wsRunner.value,driver=wsDriver.value,observer=wsObserver.value;
+ if(!runner||!driver||!observer)return alert('Bitte Skiläufer, Fahrer und Beobachter auswählen.');
+ if(new Set([runner,driver,observer]).size<3)return alert('Während eines Runs müssen Skiläufer, Fahrer und Beobachter verschiedene Personen sein.');
+ try{
+  const api=await getCloud(),x=await api.createItemByName('WasserskiRuns',{NutzungId:String(S.waterskiUsageId),SkilaeuferPersonId:runner,Beginn:new Date().toISOString(),Status:'Aktiv',Testdaten:testFlag(),Aktiv:true});
+  for(const [id,fn] of [[runner,'Skiläufer'],[driver,'Fahrer'],[observer,'Beobachter']])await api.createItemByName('WasserskiRunPersonen',{RunId:String(x.id),PersonId:String(id),Funktion:fn,Aktiv:true,Testdaten:testFlag()});
+  await api.createItemByName('WasserskiRunEtappen',{RunId:String(x.id),NutzungId:String(S.waterskiUsageId),EtappeNr:1,Beginn:new Date().toISOString(),Status:'Aktiv',Testdaten:testFlag(),Aktiv:true});render();
+ }catch(e){alert(e.message)}
+}
+async function addWaterskiLeg(runId){
+ try{
+  const api=await getCloud(),legs=(await list(api,'WasserskiRunEtappen')).filter(x=>String(x.fields.RunId)===String(runId)),n=legs.length+1,active=legs.find(x=>x.fields.Status==='Aktiv');
+  if(active)await api.updateItemByName('WasserskiRunEtappen',active.id,{Status:'Beendet',Ende:new Date().toISOString()});
+  await api.createItemByName('WasserskiRunEtappen',{RunId:String(runId),NutzungId:String(S.waterskiUsageId),EtappeNr:n,Beginn:new Date().toISOString(),Status:'Aktiv',Testdaten:testFlag(),Aktiv:true});render();
+ }catch(e){alert(e.message)}
+}
+async function endWaterskiRun(runId){
+ try{
+  const api=await getCloud(),legs=(await list(api,'WasserskiRunEtappen')).filter(x=>String(x.fields.RunId)===String(runId)&&x.fields.Status==='Aktiv');
+  for(const l of legs)await api.updateItemByName('WasserskiRunEtappen',l.id,{Status:'Beendet',Ende:new Date().toISOString()});
+  await api.updateItemByName('WasserskiRuns',runId,{Status:'Beendet',Ende:new Date().toISOString()});render();
+ }catch(e){alert(e.message)}
+}
+async function markWaterskiReturn(){alert('Rückfahrt zum Ausgangspunkt bleibt Teil derselben Wasserski-Nutzung.')}
+
+
+
+async function lending(){
+ head('Verleihmodus','Fahrzeugüberlassung · Leiher und Gäste');
+ app.innerHTML='<div class="card">Verleihdaten werden geladen …</div>';
+ try{
+  const api=await getCloud(),[vs,ps,ls,ups,animals]=await Promise.all([list(api,'Fahrzeuge'),list(api,'Personen'),list(api,'Fahrzeugueberlassungen'),list(api,'UeberlassungsPersonen'),list(api,'Tiere')]);
+  S.lendData={vs,ps,ls,ups,animals};S.lendSelected=[];
+  const vm=Object.fromEntries(vs.map(x=>[String(x.id),x.fields.Fahrzeugname||x.fields.Title])),pm=Object.fromEntries(ps.map(x=>[String(x.id),x.fields.Anzeigename||x.fields.Title]));
+  app.innerHTML=`<div class="card"><button class="primary" onclick="openNewLending()">Neue Überlassung</button></div>
+  <div class="card"><div class="section first">Vorhandene Überlassungen</div>${ls.map(x=>{const members=ups.filter(p=>String(p.fields.UeberlassungId)===String(x.id)&&p.fields.Aktiv!==false);return `<button class="menu" onclick="editLending('${x.id}')"><b>${esc(vm[String(x.fields.FahrzeugId)]||'Fahrzeug')}</b><span>${members.map(m=>esc(pm[String(m.fields.PersonId)]||'')).join(', ')||esc(pm[String(x.fields.LeiherPersonId)]||'')}</span><span class="muted">${fmtDate(x.fields.Beginn)} bis ${fmtDate(x.fields.Ende)} · ${esc(x.fields.Status||'')}</span></button>`}).join('')||'<p class="muted">Keine Überlassung.</p>'}</div>`;
+ }catch(e){failBox(e)}
+}
+function lendingEligiblePeople(){return (S.lendData?.ps||[]).filter(p=>p.fields.Aktiv!==false&&['Leiher','Gast'].includes(p.fields.Rolle))}
+function openNewLending(){S.editLendingId=null;S.lendSelected=[];renderLendingEditor(null)}
+function editLending(id){S.editLendingId=String(id);const d=S.lendData,x=d.ls.find(v=>String(v.id)===String(id));S.lendSelected=d.ups.filter(p=>String(p.fields.UeberlassungId)===String(id)&&p.fields.Aktiv!==false).map(p=>({personId:String(p.fields.PersonId),function:p.fields.Funktion||'Gast'}));renderLendingEditor(x)}
+function renderLendingEditor(x){
+ const d=S.lendData,selected=new Set((S.lendSelected||[]).map(x=>String(x.personId))),eligible=lendingEligiblePeople();
+ app.innerHTML=`<div class="card"><div class="section first">${x?'Überlassung bearbeiten':'Neue Überlassung'}</div>
+ <div class="field"><label>Fahrzeug</label><select id="leVehicle">${d.vs.filter(v=>v.fields.Aktiv!==false).map(v=>`<option value="${v.id}" ${x&&String(x.fields.FahrzeugId)===String(v.id)?'selected':''}>${esc(v.fields.Fahrzeugname||v.fields.Title)}</option>`).join('')}</select></div>
+ <div class="grid compact"><input id="leFrom" type="datetime-local"><input id="leTo" type="datetime-local"></div>
+ <div class="section">Personengruppe</div><div class="grid compact"><select id="leAddPerson"><option value="">– Leiher oder Gast auswählen –</option>${eligible.filter(p=>!selected.has(String(p.id))).map(p=>`<option value="${p.id}">${esc(p.fields.Anzeigename||p.fields.Title)} · ${esc(p.fields.Rolle)}</option>`).join('')}</select><button onclick="addLendingPersonSelection()">Person hinzufügen</button></div>
+ <div>${(S.lendSelected||[]).map((m,i)=>`<div class="line"><div>${esc((d.ps.find(p=>String(p.id)===String(m.personId))?.fields?.Anzeigename)||'')}</div><div><select onchange="S.lendSelected[${i}].function=this.value"><option ${m.function==='Leiher'?'selected':''}>Leiher</option><option ${m.function==='Gast'?'selected':''}>Gast</option><option ${m.function==='Fahrer'?'selected':''}>Fahrer</option><option ${m.function==='Skipper'?'selected':''}>Skipper</option></select></div></div>`).join('')||'<p class="muted">Noch niemand ausgewählt.</p>'}</div>
+ <textarea id="leNote" placeholder="Übergabenotiz">${esc(x?.fields?.UebergabeNotiz||'')}</textarea>
+ <button class="primary" onclick="saveLending103()">${x?'Änderungen speichern':'Überlassung anlegen'}</button></div>`;
+}
+function addLendingPersonSelection(){const id=leAddPerson.value;if(!id)return;const p=S.lendData.ps.find(x=>String(x.id)===String(id));S.lendSelected.push({personId:String(id),function:p.fields.Rolle==='Leiher'?'Leiher':'Gast'});renderLendingEditor(S.editLendingId?S.lendData.ls.find(x=>String(x.id)===String(S.editLendingId)):null)}
+async function saveLending103(){
+ if(!(S.lendSelected||[]).some(x=>x.function==='Leiher'))return alert('Mindestens eine Person muss als Leiher eingetragen sein.');
+ if(!leFrom.value)return alert('Beginn eingeben.');
+ try{
+  const api=await getCloud(),primary=S.lendSelected.find(x=>x.function==='Leiher'),fields={FahrzeugId:String(leVehicle.value),LeiherPersonId:String(primary.personId),Beginn:new Date(leFrom.value).toISOString(),Ende:leTo.value?new Date(leTo.value).toISOString():null,Status:S.editLendingId?(S.lendData.ls.find(x=>String(x.id)===String(S.editLendingId))?.fields?.Status||'Vorbereitet'):'Vorbereitet',UebergabeNotiz:leNote.value.trim(),Gruppenmodus:true,Testdaten:testFlag(),Aktiv:true};
+  let id=S.editLendingId;if(id){await api.updateItemByName('Fahrzeugueberlassungen',id,fields);for(const o of S.lendData.ups.filter(x=>String(x.fields.UeberlassungId)===String(id)))await api.deleteItemByName('UeberlassungsPersonen',o.id)}else{id=String((await api.createItemByName('Fahrzeugueberlassungen',fields)).id)}
+  for(const m of S.lendSelected)await api.createItemByName('UeberlassungsPersonen',{UeberlassungId:String(id),PersonId:String(m.personId),Funktion:m.function,QualifikationStatus:'zu prüfen',Aktiv:true,Testdaten:testFlag()});
+  await lending();
+ }catch(e){alert(e.message)}
+}
+
+
 function render(){
   if(S.vehicle) S.vehicle.profile=normalizeProfile(S.vehicle.profile||S.vehicle.profileLabel);
-  ({login,main,start,vehicle,usage,setup,cockpit,event,stay,dayend,history:usageHistory,configuration,vehiclesconfig,vehicleedit,vehicleconfigure,usagecatalog,places,persons,personedit,persondetail,animals,areas,areaedit,areadetail,travelcheck,usageDetail,m365setup,workshop,lending,settings,control,supply,measure,gps,media,crewchange}[S.view]||placeholder)()
+  ({login,main,start,vehicle,usage,setup,cockpit,event,stay,dayend,history:usageHistory,configuration,vehiclesconfig,vehicleedit,vehicleconfigure,usagecatalog,places,persons,personedit,persondetail,animals,areas,areaedit,areadetail,travelcheck,usageDetail,waterski,m365setup,workshop,lending,settings,control,supply,measure,gps,media,crewchange}[S.view]||placeholder)()
 }
 bootstrap();
