@@ -1,5 +1,5 @@
 {
-  "version": "0.7.0",
+  "version": "0.8.0",
   "target": "SharePoint Online",
   "relationStrategy": "Stable GUID text IDs in Phase 1; no fragile SharePoint lookup coupling",
   "lists": [
@@ -107,6 +107,12 @@
             "Beifahrer",
             "Gast"
           ]
+        },
+        {
+          "internalName": "Aktiv",
+          "displayName": "Aktiv",
+          "type": "Boolean",
+          "required": false
         }
       ]
     },
@@ -166,6 +172,12 @@
           "internalName": "GeprueftAm",
           "displayName": "GeprueftAm",
           "type": "DateTime",
+          "required": false
+        },
+        {
+          "internalName": "Aktiv",
+          "displayName": "Aktiv",
+          "type": "Boolean",
           "required": false
         }
       ]
@@ -339,6 +351,12 @@
           "displayName": "Einheit",
           "type": "Text",
           "required": false
+        },
+        {
+          "internalName": "Aktiv",
+          "displayName": "Aktiv",
+          "type": "Boolean",
+          "required": false
         }
       ]
     },
@@ -375,6 +393,12 @@
           "displayName": "Aktiv",
           "type": "Boolean",
           "required": false
+        },
+        {
+          "internalName": "KomponentenTyp",
+          "displayName": "Komponententyp",
+          "type": "Text",
+          "required": true
         }
       ]
     },
@@ -583,6 +607,12 @@
           "displayName": "GueltigBis",
           "type": "DateTime",
           "required": false
+        },
+        {
+          "internalName": "Aktiv",
+          "displayName": "Aktiv",
+          "type": "Boolean",
+          "required": false
         }
       ]
     },
@@ -662,6 +692,30 @@
           "internalName": "GeplanterEndort",
           "displayName": "Geplanter Endort",
           "type": "Text"
+        },
+        {
+          "internalName": "GeplanterStartOrtId",
+          "displayName": "Geplanter Start Ort-ID",
+          "type": "Text",
+          "required": false
+        },
+        {
+          "internalName": "GeplanterStartStandortId",
+          "displayName": "Geplanter Start Standort-ID",
+          "type": "Text",
+          "required": false
+        },
+        {
+          "internalName": "GeplanterEndOrtId",
+          "displayName": "Geplanter Endort Ort-ID",
+          "type": "Text",
+          "required": false
+        },
+        {
+          "internalName": "GeplanterEndStandortId",
+          "displayName": "Geplanter Endort Standort-ID",
+          "type": "Text",
+          "required": false
         }
       ]
     },
@@ -752,6 +806,30 @@
           "displayName": "Status",
           "type": "Text",
           "required": true
+        },
+        {
+          "internalName": "StartOrtId",
+          "displayName": "Start Ort-ID",
+          "type": "Text",
+          "required": false
+        },
+        {
+          "internalName": "StartStandortId",
+          "displayName": "Start Standort-ID",
+          "type": "Text",
+          "required": false
+        },
+        {
+          "internalName": "ZielOrtId",
+          "displayName": "Ziel Ort-ID",
+          "type": "Text",
+          "required": false
+        },
+        {
+          "internalName": "ZielStandortId",
+          "displayName": "Ziel Standort-ID",
+          "type": "Text",
+          "required": false
         }
       ]
     },
@@ -1625,6 +1703,48 @@
           "displayName": "Datum",
           "type": "DateTime",
           "required": true
+        },
+        {
+          "internalName": "Aktiv",
+          "displayName": "Aktiv",
+          "type": "Boolean",
+          "required": false
+        },
+        {
+          "internalName": "IntervallArt",
+          "displayName": "Intervallart",
+          "type": "Choice",
+          "required": false,
+          "choices": [
+            "Einmalig",
+            "Monatlich",
+            "Alle X Monate",
+            "Jährlich"
+          ]
+        },
+        {
+          "internalName": "IntervallWert",
+          "displayName": "Intervallwert",
+          "type": "Number",
+          "required": false
+        },
+        {
+          "internalName": "Startdatum",
+          "displayName": "Startdatum",
+          "type": "DateTime",
+          "required": false
+        },
+        {
+          "internalName": "Enddatum",
+          "displayName": "Enddatum",
+          "type": "DateTime",
+          "required": false
+        },
+        {
+          "internalName": "NaechsteFaelligkeit",
+          "displayName": "Nächste Fälligkeit",
+          "type": "DateTime",
+          "required": false
         }
       ]
     },
@@ -1734,6 +1854,157 @@
           "internalName": "GeplantesDatum",
           "displayName": "Geplantes Datum",
           "type": "DateTime"
+        },
+        {
+          "internalName": "OrtId",
+          "displayName": "Ort-ID",
+          "type": "Text",
+          "required": false
+        },
+        {
+          "internalName": "StandortId",
+          "displayName": "Standort-ID",
+          "type": "Text",
+          "required": false
+        }
+      ]
+    },
+    {
+      "internalName": "Orte",
+      "displayName": "Orte",
+      "fields": [
+        {
+          "internalName": "Name",
+          "displayName": "Ort",
+          "type": "Text",
+          "required": true
+        },
+        {
+          "internalName": "Land",
+          "displayName": "Land",
+          "type": "Text",
+          "required": false
+        },
+        {
+          "internalName": "GebietId",
+          "displayName": "Gebiet-ID",
+          "type": "Text",
+          "required": false
+        },
+        {
+          "internalName": "Breitengrad",
+          "displayName": "Breitengrad",
+          "type": "Number",
+          "required": false
+        },
+        {
+          "internalName": "Laengengrad",
+          "displayName": "Längengrad",
+          "type": "Number",
+          "required": false
+        },
+        {
+          "internalName": "Favorit",
+          "displayName": "Favorit",
+          "type": "Boolean",
+          "required": false
+        },
+        {
+          "internalName": "Verwendungen",
+          "displayName": "Verwendungen",
+          "type": "Number",
+          "required": false
+        },
+        {
+          "internalName": "ZuletztVerwendet",
+          "displayName": "Zuletzt verwendet",
+          "type": "DateTime",
+          "required": false
+        },
+        {
+          "internalName": "Aktiv",
+          "displayName": "Aktiv",
+          "type": "Boolean",
+          "required": false
+        }
+      ]
+    },
+    {
+      "internalName": "Standorte",
+      "displayName": "Standorte",
+      "fields": [
+        {
+          "internalName": "OrtId",
+          "displayName": "Ort-ID",
+          "type": "Text",
+          "required": false
+        },
+        {
+          "internalName": "Name",
+          "displayName": "Standort",
+          "type": "Text",
+          "required": true
+        },
+        {
+          "internalName": "Standorttyp",
+          "displayName": "Standorttyp",
+          "type": "Choice",
+          "required": true,
+          "choices": [
+            "Hafen",
+            "Marina",
+            "Liegeplatz",
+            "Ankerplatz",
+            "Mooring",
+            "Stellplatz",
+            "Campingplatz",
+            "Parkplatz",
+            "Tankstelle",
+            "Werkstatt",
+            "Sonstiges"
+          ]
+        },
+        {
+          "internalName": "Adresse",
+          "displayName": "Adresse",
+          "type": "Text",
+          "required": false
+        },
+        {
+          "internalName": "Breitengrad",
+          "displayName": "Breitengrad",
+          "type": "Number",
+          "required": false
+        },
+        {
+          "internalName": "Laengengrad",
+          "displayName": "Längengrad",
+          "type": "Number",
+          "required": false
+        },
+        {
+          "internalName": "Favorit",
+          "displayName": "Favorit",
+          "type": "Boolean",
+          "required": false
+        },
+        {
+          "internalName": "Verwendungen",
+          "displayName": "Verwendungen",
+          "type": "Number",
+          "required": false
+        },
+        {
+          "internalName": "ZuletztVerwendet",
+          "displayName": "Zuletzt verwendet",
+          "type": "DateTime",
+          "required": false
+        },
+        {
+          "internalName": "Aktiv",
+          "displayName": "Aktiv",
+          "type": "Boolean",
+          "required": false
         }
       ]
     }
