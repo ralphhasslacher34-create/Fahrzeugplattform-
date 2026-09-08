@@ -1,0 +1,14 @@
+{
+  "version": "1.0.5.3",
+  "target": "SharePoint Online",
+  "relationStrategy": "Additive Phase-1 correction separating maintenance and replacement rules for components",
+  "lists": [
+    {
+      "internalName": "Wartungsplaene",
+      "displayName": "Wartungsplaene",
+      "fields": [
+        {"internalName":"RegelTyp","displayName":"Regeltyp","type":"Choice","required":false,"choices":["Wartung","Austausch"]}
+      ]
+    }
+  ]
+}
