@@ -1,5 +1,5 @@
 {
-  "version": "0.3.0",
+  "version": "0.7.0",
   "target": "SharePoint Online",
   "relationStrategy": "Stable GUID text IDs in Phase 1; no fragile SharePoint lookup coupling",
   "lists": [
@@ -642,6 +642,26 @@
           "displayName": "GeplantesZiel",
           "type": "Text",
           "required": false
+        },
+        {
+          "internalName": "GeplanterBeginn",
+          "displayName": "Geplanter Beginn",
+          "type": "DateTime"
+        },
+        {
+          "internalName": "GeplantesEndeDatum",
+          "displayName": "Geplantes Ende",
+          "type": "DateTime"
+        },
+        {
+          "internalName": "GeplanterStartort",
+          "displayName": "Geplanter Startort",
+          "type": "Text"
+        },
+        {
+          "internalName": "GeplanterEndort",
+          "displayName": "Geplanter Endort",
+          "type": "Text"
         }
       ]
     },
@@ -1652,6 +1672,68 @@
             "Aktiv",
             "Beendet"
           ]
+        }
+      ]
+    },
+    {
+      "internalName": "BefaehigungsKatalog",
+      "displayName": "BefaehigungsKatalog",
+      "fields": [
+        {
+          "internalName": "Name",
+          "displayName": "Name",
+          "type": "Text",
+          "required": true
+        },
+        {
+          "internalName": "Kategorie",
+          "displayName": "Kategorie",
+          "type": "Choice",
+          "choices": [
+            "Führerschein",
+            "Bootsführerschein",
+            "Funkzeugnis",
+            "Patent",
+            "Sonstiges"
+          ]
+        },
+        {
+          "internalName": "Land",
+          "displayName": "Land",
+          "type": "Text"
+        },
+        {
+          "internalName": "Aktiv",
+          "displayName": "Aktiv",
+          "type": "Boolean"
+        }
+      ]
+    },
+    {
+      "internalName": "NutzungsZwischenziele",
+      "displayName": "NutzungsZwischenziele",
+      "fields": [
+        {
+          "internalName": "NutzungId",
+          "displayName": "Nutzung-ID",
+          "type": "Text",
+          "required": true
+        },
+        {
+          "internalName": "Sortierung",
+          "displayName": "Sortierung",
+          "type": "Number"
+        },
+        {
+          "internalName": "Ort",
+          "displayName": "Ort / Ziel",
+          "type": "Text",
+          "required": true
+        },
+        {
+          "internalName": "GeplantesDatum",
+          "displayName": "Geplantes Datum",
+          "type": "DateTime"
         }
       ]
     }
