@@ -73,3 +73,6 @@ Nach Worker-Update sollte `/health` zusätzlich `"serviceVersion":"1.0.6.2"` lie
 ## Prüfung
 
 Siehe `TESTPLAN_1.0.6.2.md`.
+
+## Korrektur nach erstem Praxistest
+- Start/Planung: JavaScript-Referenzfehler `Status is not defined` behoben (`Status: status`).

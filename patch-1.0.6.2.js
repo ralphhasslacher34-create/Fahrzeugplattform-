@@ -125,7 +125,7 @@ setupBase=async function(){const r=await fp1062SetupBase();await fp1062EnhanceSe
 
 function fp1062PlanFields({status='Geplant',now=new Date().toISOString()}={}){
   const multi=!!S.usage?.multi,orts=S.locationData?.orts||[],sites=S.locationData?.sites||[],ps=multi?locValue('planStart',orts,sites):locValue('dayStart',orts,sites),pe=multi?locValue('planEnd',orts,sites):locValue('dayGoal',orts,sites),name=(document.getElementById('usageName1062')?.value||'').trim()||fp1062DefaultUsageName(now),from=multi?document.getElementById('planFrom')?.value:'',to=multi?document.getElementById('planTo')?.value:'';
-  const f={Title:name,Nutzungsname:name,ErstgeplantAm1062:now,PlanungGeaendertAm1062:now,FahrzeugId:String(S.vehicle.id),BenutzerId:'current',NutzungsartId:String(S.usage.id),Status,GeplanterStartort:ps.text,GeplanterEndort:pe.text,GeplantesZiel:pe.text,GeplanterStartOrtId:ps.ortId,GeplanterStartStandortId:ps.standortId,GeplanterEndOrtId:pe.ortId,GeplanterEndStandortId:pe.standortId,Testdaten:testFlag()};
+  const f={Title:name,Nutzungsname:name,ErstgeplantAm1062:now,PlanungGeaendertAm1062:now,FahrzeugId:String(S.vehicle.id),BenutzerId:'current',NutzungsartId:String(S.usage.id),Status:status,GeplanterStartort:ps.text,GeplanterEndort:pe.text,GeplantesZiel:pe.text,GeplanterStartOrtId:ps.ortId,GeplanterStartStandortId:ps.standortId,GeplanterEndOrtId:pe.ortId,GeplanterEndStandortId:pe.standortId,Testdaten:testFlag()};
   if(multi){f.GeplanterBeginn=fp1062Iso(from);f.GeplantesEndeDatum=fp1062Iso(to)}
   return {f,from,to,ps,pe,name};
 }
