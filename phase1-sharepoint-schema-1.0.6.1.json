@@ -1,0 +1,27 @@
+{
+  "version": "1.0.6.1",
+  "target": "SharePoint Online",
+  "relationStrategy": "Additive route and separated manual/automatic travel-check evaluation fields; no destructive schema changes",
+  "lists": [
+    {
+      "internalName": "Reisechecks",
+      "displayName": "Reisechecks",
+      "fields": [
+        {"internalName":"CheckModus1061","displayName":"Checkmodus 1.0.6.1","type":"Text","required":false},
+        {"internalName":"RouteSnapshot1061","displayName":"Routen-Snapshot 1.0.6.1","type":"Note","required":false},
+        {"internalName":"RoutingOptionen1061","displayName":"Routingoptionen 1.0.6.1","type":"Note","required":false}
+      ]
+    },
+    {
+      "internalName": "ReisecheckPunkte",
+      "displayName": "ReisecheckPunkte",
+      "fields": [
+        {"internalName":"AutomatikStatus1061","displayName":"Automatikstatus 1.0.6.1","type":"Text","required":false},
+        {"internalName":"ManuellStatus1061","displayName":"Manueller Status 1.0.6.1","type":"Text","required":false},
+        {"internalName":"ManuelleBegruendung1061","displayName":"Manuelle Begründung 1.0.6.1","type":"Note","required":false},
+        {"internalName":"ManuellBewertetAm1061","displayName":"Manuell bewertet am 1.0.6.1","type":"DateTime","required":false},
+        {"internalName":"ManuellBewertetVon1061","displayName":"Manuell bewertet von 1.0.6.1","type":"Text","required":false}
+      ]
+    }
+  ]
+}
