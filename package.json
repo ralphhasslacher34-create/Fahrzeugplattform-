@@ -1,0 +1,12 @@
+{
+  "name": "mobimory-research-service",
+  "private": true,
+  "version": "1.0.6.2",
+  "scripts": {
+    "deploy": "wrangler deploy",
+    "check": "wrangler deploy --dry-run"
+  },
+  "devDependencies": {
+    "wrangler": "^4.68.0"
+  }
+}

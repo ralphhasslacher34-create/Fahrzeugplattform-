@@ -1,0 +1,101 @@
+// MOBIMORY Research Service - Cloudflare Worker - 1.0.6.2
+// Secrets: OPENAI_API_KEY, MOBIMORY_TOKEN
+// Vars: OPENAI_MODEL (default gpt-5.6-terra), ALLOWED_ORIGINS
+
+const JSON_HEADERS={'content-type':'application/json; charset=utf-8','cache-control':'no-store'};
+function cors(request,env){
+  const origin=request.headers.get('Origin')||'',allowed=String(env.ALLOWED_ORIGINS||'').split(',').map(x=>x.trim()).filter(Boolean),ok=!allowed.length||allowed.includes(origin);
+  return {ok,headers:{...JSON_HEADERS,'Access-Control-Allow-Origin':ok?(origin||'*'):'null','Vary':'Origin','Access-Control-Allow-Headers':'Content-Type, X-Mobimory-Token','Access-Control-Allow-Methods':'GET, POST, OPTIONS','Access-Control-Max-Age':'86400'}};
+}
+function reply(obj,status,headers){return new Response(JSON.stringify(obj),{status,headers})}
+function outputText(data){
+  if(typeof data?.output_text==='string')return data.output_text;
+  for(const item of data?.output||[])if(item?.type==='message')for(const c of item?.content||[])if(c?.type==='output_text'&&typeof c.text==='string')return c.text;
+  return '';
+}
+const RESEARCH_SCHEMA={
+  type:'object',additionalProperties:false,
+  properties:{
+    summary:{type:'string'},
+    researchStatus:{type:'string',enum:['vollständig','teilweise','fehlerhaft']},
+    warnings:{type:'array',items:{type:'string'}},
+    route:{
+      type:'object',additionalProperties:false,
+      properties:{
+        mode:{type:'string',enum:['free','planned']},
+        routingStatus:{type:'string',enum:['nicht erforderlich','plausibel','prüfen']},
+        summary:{type:'string'},
+        countries:{type:'array',items:{type:'object',additionalProperties:false,properties:{name:{type:'string'},code:{type:'string'},schengenStatus:{type:'string',enum:['Schengen','Nicht-Schengen','Sonderstatus','Unklar']}},required:['name','code','schengenStatus']}},
+        borders:{type:'array',items:{type:'object',additionalProperties:false,properties:{fromCountry:{type:'string'},toCountry:{type:'string'},classification:{type:'string',enum:['Schengen-Binnengrenze','Schengen-Außengrenze','Außengrenze außerhalb Schengen','Sonderfall','Unklar']},note:{type:'string'}},required:['fromCountry','toCountry','classification','note']}},
+        assumptions:{type:'array',items:{type:'string'}},
+        routeWarnings:{type:'array',items:{type:'string'}}
+      },
+      required:['mode','routingStatus','summary','countries','borders','assumptions','routeWarnings']
+    },
+    requirements:{type:'array',items:{type:'object',additionalProperties:false,properties:{
+      id:{type:'string'},area:{type:'string'},category:{type:'string',enum:['Pflicht','Wichtig','Empfohlen','Hinweis']},subjectKey:{type:'string'},subjectType:{type:'string',enum:['Person','Fahrzeug','Tier','Reise']},trafficMode:{type:'string'},requirement:{type:'string'},proofKey:{type:'string'},status:{type:'string',enum:['Erfüllt','Fehlt','Prüfen','Nicht relevant']},evidence:{type:'string'},explanation:{type:'string'},confidence:{type:'string',enum:['hoch','mittel','niedrig']},conflict:{type:'boolean'},sources:{type:'array',items:{type:'object',additionalProperties:false,properties:{title:{type:'string'},url:{type:'string'},publisher:{type:'string'},official:{type:'boolean'},updated:{type:'string'}},required:['title','url','publisher','official','updated']}}
+    },required:['id','area','category','subjectKey','subjectType','trafficMode','requirement','proofKey','status','evidence','explanation','confidence','conflict','sources']}}
+  },
+  required:['summary','researchStatus','warnings','route','requirements']
+};
+function instructions(){return `Du bist der Online-Recherchekern von MOBIMORY, einer Fahrzeug- und Reiseplattform.
+
+AUFGABE
+Recherchiere fuer die uebergebene konkrete Reise die aktuell geltenden rechtlichen, behoerdlichen und wichtigen praktischen Anforderungen. Nutze zwingend Websuche. Priorisiere offizielle Quellen: Ministerien, Behoerden, staatliche Portale, EU-Institutionen, offizielle Wasserstrassen-/Hafen-/Kommunalstellen und offizielle Betreiber. Hersteller-, Club- oder Tourismusseiten nur ergaenzend, nicht als alleinige Grundlage einer Pflicht.
+
+ZWEI CHECKMODI
+1. trip.checkMode='free': Pruefe die vom Nutzer direkt ausgewaehlten Gebiete/Reviere. route.mode='free', routingStatus='nicht erforderlich'.
+2. trip.checkMode='planned-usage': Analysiere zusaetzlich die geplante Route aus trip.routePlan.waypoints in der angegebenen Reihenfolge. Beruecksichtige die Routenpraeferenzen (Autobahnen, Maut, Faehren, zu vermeidende Laender und Freitext). Nutze trip.routePlan.locationContext als zusaetzliche Plausibilitaetshilfe. Ermittele nicht nur die Laender der Wegpunkte, sondern nur solche Transitlaender, fuer die es eine belastbare Routenplausibilitaet gibt. Wenn die tatsaechliche Routenfuehrung nicht belastbar aus aktuellen Quellen ableitbar ist, kennzeichne routingStatus='prüfen' und nenne die Annahme. Behaupte keine exakte Turn-by-Turn-Route.
+
+GRENZEN / SCHENGEN
+Bei geplanter Route erhaeltst du strukturierte Wegpunkte mit Standort, Ort, Land, Adresse und ggf. GPS. Verwende diese Daten vorrangig und verwechsle einen Standortnamen niemals mit dem Ortsnamen.
+- Liegen alle eindeutig aufgeloesten Wegpunkte im selben Land und gibt es keinen belastbaren Hinweis, dass die sinnvolle Route dieses Land verlassen muss, behandle die Reise als rein national: route.countries enthaelt nur dieses Land, route.borders bleibt leer. Erzeuge dann KEINE Schengen-, Grenz-, Einreise- oder auslaendischen Tier-/Personenanforderungen allein aus hypothetischen Umwegen.
+- Nur wenn die tatsaechlich plausible Route mehrere Laender beruehrt, liste die betroffenen Laender und Grenzuebertritte in Reihenfolge. Unterscheide nach aktuell geltendem Status zwischen Schengen-Binnengrenze, Schengen-Aussengrenze, Aussengrenze ausserhalb Schengen, Sonderfall oder Unklar.
+- Wenn die Route oder ein notwendiges Transitland nicht belastbar feststellbar ist, setze routingStatus='prüfen', beschreibe die konkrete Unsicherheit in routeWarnings/assumptions und erzeuge KEINE hypothetischen Grenz- oder Auslandsanforderungen. Die Unsicherheit selbst darf als Reise-Hinweis mit status='Prüfen' erscheinen.
+Zeitweilige Kontrollen an einer Schengen-Binnengrenze machen daraus keine Schengen-Aussengrenze; sie koennen aber bei einer tatsaechlich betroffenen Grenze als wichtiger Hinweis/Anforderung erscheinen. Bei Sondergebieten und strittigem/wechselndem Status sichtbar 'Sonderstatus' bzw. 'Prüfen' verwenden.
+
+PRUEFBEREICHE
+Je nach Fahrzeug/Verkehrsart/Reiseziel u. a.: Fahrer-/Skipperbefaehigungen, Fahrzeug-/Bootsdokumente, Registrierung, Versicherung, vorgeschriebene Ausruestung, Sicherheitsmittel, Maut/Vignette/Umweltzonen, Gewichts-/Abmessungsregeln, besondere Revierregeln, Funk/Patente wenn relevant, Grenz-/Einreisebestimmungen fuer Personen und Tiere, Mikrochip, Heimtierausweis, Impfungen, Titer, Behandlungen, Gesundheitszeugnisse, Einfuhrregeln und zeitabhaengige Anforderungen. Keine irrelevanten Kategorien erzwingen.
+
+BEWERTUNG
+- Nur 'Erfüllt', wenn die anonymisiert mitgelieferten Daten die konkrete Anforderung eindeutig erfuellen und der Nachweis ueber den gesamten Reisezeitraum gueltig ist.
+- Fehlt ein erforderlicher Nachweis eindeutig: 'Fehlt'.
+- Bei unvollstaendiger, widerspruechlicher oder unsicherer Rechts-/Quellenlage: 'Prüfen'.
+- 'Nicht relevant' nur bei klarer Nichtanwendbarkeit.
+- BE erfuellt eine B-Anforderung. Keine weiteren Fuehrerscheinhierarchien pauschal annehmen, wenn sie nicht aus dem konkreten Recht/Datensatz sicher hervorgehen.
+- Wenn Quellen widersprechen: conflict=true und status='Prüfen'.
+- Pflicht/Wichtig sollen mindestens eine belastbare Quelle enthalten. Wenn keine offizielle Quelle gefunden wird, nicht als abschliessend erfuellt bewerten.
+
+SUBJEKTE
+Die Eingabe enthaelt nur anonyme Schluessel: vehicle, trip, P1/P2..., A1/A2.... Verwende exakt diese subjectKey-Werte. Anforderungen an jede Person oder jedes Tier bitte pro betroffenen Schluessel einzeln ausgeben; Anforderungen an die Reise als Ganzes mit subjectKey='trip', an das Fahrzeug mit 'vehicle'.
+
+QUELLEN
+URLs muessen aus der aktuellen Webrecherche stammen. official=true nur bei tatsaechlich offizieller/behoerdlicher Quelle. updated enthaelt, falls erkennbar, Publikations-/Aktualisierungsstand; sonst leere Zeichenkette.
+
+AUSGABE
+Liefere ausschliesslich die vorgegebene strukturierte JSON-Ausgabe. Keine erfundenen Vorschriften oder URLs.`}
+function schema(){return RESEARCH_SCHEMA}
+async function callOpenAI(env,input,toolType){
+  const model=env.OPENAI_MODEL||'gpt-5.6-terra',body={model,store:false,instructions:instructions(),input:JSON.stringify(input),tools:[{type:toolType}],tool_choice:'required',include:['web_search_call.action.sources'],reasoning:{effort:'medium'},max_output_tokens:14000,text:{format:{type:'json_schema',name:'mobimory_reisecheck_1062',strict:true,schema:schema()}}};
+  const r=await fetch('https://api.openai.com/v1/responses',{method:'POST',headers:{'Authorization':`Bearer ${env.OPENAI_API_KEY}`,'Content-Type':'application/json'},body:JSON.stringify(body)}),data=await r.json().catch(()=>({}));return {r,data,model};
+}
+export default {async fetch(request,env){
+  const c=cors(request,env);if(request.method==='OPTIONS')return new Response(null,{status:c.ok?204:403,headers:c.headers});if(!c.ok)return reply({error:'Origin nicht erlaubt.'},403,c.headers);
+  const url=new URL(request.url);
+  if(url.pathname==='/health'&&request.method==='GET')return reply({ok:true,provider:'OpenAI Responses API + Web Search',model:env.OPENAI_MODEL||'gpt-5.6-terra',configured:!!env.OPENAI_API_KEY,serviceVersion:'1.0.6.2'},200,c.headers);
+  if(url.pathname!=='/research'||request.method!=='POST')return reply({error:'Not found'},404,c.headers);
+  if(!env.OPENAI_API_KEY)return reply({error:'OPENAI_API_KEY ist im Research Service nicht gesetzt.'},503,c.headers);
+  if(!env.MOBIMORY_TOKEN)return reply({error:'MOBIMORY_TOKEN ist im Research Service nicht gesetzt.'},503,c.headers);
+  if(request.headers.get('X-Mobimory-Token')!==env.MOBIMORY_TOKEN)return reply({error:'Research-Service-Token ungueltig.'},401,c.headers);
+  let input;try{input=await request.json()}catch{return reply({error:'Ungueltiges JSON.'},400,c.headers)}
+  const trip=input?.trip||{},hasFree=trip.checkMode!=='planned-usage'&&Array.isArray(trip.areas)&&trip.areas.length>0,hasRoute=trip.checkMode==='planned-usage'&&Array.isArray(trip.routePlan?.waypoints)&&trip.routePlan.waypoints.length>=2;
+  if(!trip.start||!trip.end||!input?.vehicle||(!hasFree&&!hasRoute))return reply({error:'Reiseparameter unvollstaendig. Freier Check braucht Gebiet; geplanter Check braucht Start und Ziel.'},400,c.headers);
+  try{
+    let call=await callOpenAI(env,input,'web_search');
+    if(!call.r.ok&&call.r.status===400){const msg=JSON.stringify(call.data);if(/web_search/i.test(msg))call=await callOpenAI(env,input,'web_search_preview')}
+    if(!call.r.ok)return reply({error:call.data?.error?.message||`OpenAI HTTP ${call.r.status}`,details:call.data?.error?.type||''},502,c.headers);
+    const text=outputText(call.data);if(!text)return reply({error:'OpenAI hat keine strukturierte Textausgabe geliefert.'},502,c.headers);
+    let result;try{result=JSON.parse(text)}catch{return reply({error:'Strukturierte Rechercheantwort war kein gueltiges JSON.',raw:text.slice(0,500)},502,c.headers)}
+    return reply({ok:true,provider:'OpenAI Responses API + Web Search',model:call.model,requestId:call.data.id||'',researchedAt:new Date().toISOString(),usage:call.data.usage||null,result},200,c.headers);
+  }catch(e){return reply({error:e?.message||String(e)},500,c.headers)}
+}};

@@ -1,0 +1,34 @@
+{
+  "version": "1.0.6.2",
+  "target": "SharePoint Online",
+  "relationStrategy": "Additive planning, counter confirmation and motor-event fields; no destructive schema changes",
+  "lists": [
+    {
+      "internalName": "Nutzungen",
+      "displayName": "Nutzungen",
+      "fields": [
+        {"internalName":"Nutzungsname","displayName":"Name der Nutzung","type":"Text","required":false},
+        {"internalName":"ErstgeplantAm1062","displayName":"Erstmals geplant am 1.0.6.2","type":"DateTime","required":false},
+        {"internalName":"PlanungGeaendertAm1062","displayName":"Planung geändert am 1.0.6.2","type":"DateTime","required":false}
+      ]
+    },
+    {
+      "internalName": "Ereignisse",
+      "displayName": "Ereignisse",
+      "fields": [
+        {"internalName":"KomponenteId1062","displayName":"Motor-/Aggregat-Komponente 1.0.6.2","type":"Text","required":false},
+        {"internalName":"AggregatName1062","displayName":"Motor-/Aggregatname 1.0.6.2","type":"Text","required":false},
+        {"internalName":"MotorAktion1062","displayName":"Motoraktion 1.0.6.2","type":"Choice","required":false,"choices":["gestartet","gestoppt"]},
+        {"internalName":"EreignisQuelle1062","displayName":"Ereignisquelle 1.0.6.2","type":"Text","required":false},
+        {"internalName":"GenauigkeitM1062","displayName":"GPS-Genauigkeit m 1.0.6.2","type":"Number","required":false}
+      ]
+    },
+    {
+      "internalName": "Messwerte",
+      "displayName": "Messwerte",
+      "fields": [
+        {"internalName":"Notiz","displayName":"Notiz","type":"Note","required":false}
+      ]
+    }
+  ]
+}
