@@ -1,0 +1,78 @@
+{
+  "version": "1.0.6.4",
+  "target": "SharePoint Online",
+  "relationStrategy": "Additive cockpit, tank and waterski setup extension; no destructive schema changes",
+  "lists": [
+    {
+      "internalName": "Nutzungen",
+      "displayName": "Nutzungen",
+      "fields": [
+        {"internalName":"TatsaechlichesZiel1064","displayName":"Tatsächliches Endziel 1.0.6.4","type":"Text","required":false}
+      ]
+    },
+    {
+      "internalName": "Tankmodelle1064",
+      "displayName": "Tankmodelle 1.0.6.4",
+      "fields": [
+        {"internalName":"FahrzeugId","displayName":"Fahrzeug-ID","type":"Text","required":true},
+        {"internalName":"Energieart","displayName":"Energieart","type":"Text","required":true},
+        {"internalName":"KapazitaetL","displayName":"Kapazität Liter","type":"Number","required":true},
+        {"internalName":"BasisMengeL","displayName":"Basismenge Liter","type":"Number","required":true},
+        {"internalName":"BasisBhSumme","displayName":"BH-Summe bei Basis","type":"Number","required":true},
+        {"internalName":"VerbrauchLProBh","displayName":"Verbrauch Liter pro Motor-BH","type":"Number","required":true},
+        {"internalName":"Quelle","displayName":"Quelle","type":"Text","required":false},
+        {"internalName":"AktualisiertAm","displayName":"Aktualisiert am","type":"DateTime","required":true},
+        {"internalName":"Aktiv","displayName":"Aktiv","type":"Boolean","required":false},
+        {"internalName":"Testdaten","displayName":"Testdaten","type":"Boolean","required":false}
+      ]
+    },
+    {
+      "internalName": "WasserskiSetups1064",
+      "displayName": "Wasserski-Setups 1.0.6.4",
+      "fields": [
+        {"internalName":"PersonId","displayName":"Läufer Person-ID","type":"Text","required":true},
+        {"internalName":"Disziplin","displayName":"Disziplin","type":"Text","required":true},
+        {"internalName":"Bezeichnung","displayName":"Bezeichnung","type":"Text","required":false},
+        {"internalName":"LeinenlaengeM","displayName":"Leinenlänge m","type":"Number","required":false},
+        {"internalName":"Sportgeraet","displayName":"Ski / Board","type":"Text","required":false},
+        {"internalName":"GeschwindigkeitKmh","displayName":"Geschwindigkeit km/h","type":"Number","required":false},
+        {"internalName":"DrehzahlRPM","displayName":"Drehzahl rpm","type":"Number","required":false},
+        {"internalName":"Verwendungen","displayName":"Verwendungen","type":"Number","required":false},
+        {"internalName":"ZuletztVerwendet","displayName":"Zuletzt verwendet","type":"DateTime","required":false},
+        {"internalName":"Aktiv","displayName":"Aktiv","type":"Boolean","required":false},
+        {"internalName":"Testdaten","displayName":"Testdaten","type":"Boolean","required":false}
+      ]
+    },
+    {
+      "internalName": "WasserskiRuns",
+      "displayName": "Wasserski-Runs",
+      "fields": [
+        {"internalName":"Disziplin1064","displayName":"Disziplin 1.0.6.4","type":"Text","required":false},
+        {"internalName":"SetupId1064","displayName":"Setup-ID 1.0.6.4","type":"Text","required":false},
+        {"internalName":"LeinenlaengeM1064","displayName":"Leinenlänge m 1.0.6.4","type":"Number","required":false},
+        {"internalName":"Sportgeraet1064","displayName":"Ski / Board 1.0.6.4","type":"Text","required":false},
+        {"internalName":"GeschwindigkeitKmh1064","displayName":"Geschwindigkeit km/h 1.0.6.4","type":"Number","required":false},
+        {"internalName":"DrehzahlRPM1064","displayName":"Drehzahl rpm 1.0.6.4","type":"Number","required":false},
+        {"internalName":"SetupGespeichert1064","displayName":"Setupentscheidung abgeschlossen 1.0.6.4","type":"Boolean","required":false},
+        {"internalName":"StartBreitengrad1064","displayName":"Run Start Breitengrad 1.0.6.4","type":"Number","required":false},
+        {"internalName":"StartLaengengrad1064","displayName":"Run Start Längengrad 1.0.6.4","type":"Number","required":false},
+        {"internalName":"StartGenauigkeitM1064","displayName":"Run Start GPS-Genauigkeit m 1.0.6.4","type":"Number","required":false},
+        {"internalName":"EndeBreitengrad1064","displayName":"Run Ende Breitengrad 1.0.6.4","type":"Number","required":false},
+        {"internalName":"EndeLaengengrad1064","displayName":"Run Ende Längengrad 1.0.6.4","type":"Number","required":false},
+        {"internalName":"EndeGenauigkeitM1064","displayName":"Run Ende GPS-Genauigkeit m 1.0.6.4","type":"Number","required":false}
+      ]
+    },
+    {
+      "internalName": "WasserskiRunEtappen",
+      "displayName": "Wasserski-Run-Etappen",
+      "fields": [
+        {"internalName":"StartBreitengrad1064","displayName":"Etappe Start Breitengrad 1.0.6.4","type":"Number","required":false},
+        {"internalName":"StartLaengengrad1064","displayName":"Etappe Start Längengrad 1.0.6.4","type":"Number","required":false},
+        {"internalName":"StartGenauigkeitM1064","displayName":"Etappe Start GPS-Genauigkeit m 1.0.6.4","type":"Number","required":false},
+        {"internalName":"EndeBreitengrad1064","displayName":"Etappe Ende Breitengrad 1.0.6.4","type":"Number","required":false},
+        {"internalName":"EndeLaengengrad1064","displayName":"Etappe Ende Längengrad 1.0.6.4","type":"Number","required":false},
+        {"internalName":"EndeGenauigkeitM1064","displayName":"Etappe Ende GPS-Genauigkeit m 1.0.6.4","type":"Number","required":false}
+      ]
+    }
+  ]
+}
