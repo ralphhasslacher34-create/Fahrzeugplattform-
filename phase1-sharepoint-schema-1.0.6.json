@@ -1,0 +1,211 @@
+{
+  "version": "1.0.6",
+  "target": "SharePoint Online",
+  "relationStrategy": "Additive online Reisecheck research fields; no destructive schema changes",
+  "lists": [
+    {
+      "internalName": "Reisechecks",
+      "displayName": "Reisechecks",
+      "fields": [
+        {
+          "internalName": "Titel",
+          "displayName": "Titel",
+          "type": "Text",
+          "required": false
+        },
+        {
+          "internalName": "FahrzeugId",
+          "displayName": "FahrzeugId",
+          "type": "Text",
+          "required": false
+        },
+        {
+          "internalName": "ReiseBeginn",
+          "displayName": "Reisebeginn",
+          "type": "DateTime",
+          "required": false
+        },
+        {
+          "internalName": "ReiseEnde",
+          "displayName": "Reiseende",
+          "type": "DateTime",
+          "required": false
+        },
+        {
+          "internalName": "GebietIds",
+          "displayName": "Gebiets-IDs",
+          "type": "Note",
+          "required": false
+        },
+        {
+          "internalName": "PersonIds",
+          "displayName": "Personen-IDs",
+          "type": "Note",
+          "required": false
+        },
+        {
+          "internalName": "TierIds",
+          "displayName": "Tier-IDs",
+          "type": "Note",
+          "required": false
+        },
+        {
+          "internalName": "Verkehrsarten",
+          "displayName": "Verkehrsarten",
+          "type": "Text",
+          "required": false
+        },
+        {
+          "internalName": "OnlineRecherchiertAm",
+          "displayName": "Online recherchiert am",
+          "type": "DateTime",
+          "required": false
+        },
+        {
+          "internalName": "RechercheProvider",
+          "displayName": "Rechercheprovider",
+          "type": "Text",
+          "required": false
+        },
+        {
+          "internalName": "RechercheModell",
+          "displayName": "Recherchemodell",
+          "type": "Text",
+          "required": false
+        },
+        {
+          "internalName": "RechercheRequestId",
+          "displayName": "Recherche Request-ID",
+          "type": "Text",
+          "required": false
+        },
+        {
+          "internalName": "RechercheStatus",
+          "displayName": "Recherchestatus",
+          "type": "Text",
+          "required": false
+        },
+        {
+          "internalName": "RechercheSnapshot",
+          "displayName": "Recherche-Snapshot",
+          "type": "Note",
+          "required": false
+        },
+        {
+          "internalName": "QuellenSnapshot",
+          "displayName": "Quellen-Snapshot",
+          "type": "Note",
+          "required": false
+        },
+        {
+          "internalName": "RechercheFehler",
+          "displayName": "Recherchefehler",
+          "type": "Note",
+          "required": false
+        }
+      ]
+    },
+    {
+      "internalName": "ReisecheckPunkte",
+      "displayName": "ReisecheckPunkte",
+      "fields": [
+        {
+          "internalName": "GebietName",
+          "displayName": "Gebiet / Revier",
+          "type": "Text",
+          "required": false
+        },
+        {
+          "internalName": "SubjektKey",
+          "displayName": "Subjekt-Schlüssel",
+          "type": "Text",
+          "required": false
+        },
+        {
+          "internalName": "SubjektName",
+          "displayName": "Subjektname",
+          "type": "Text",
+          "required": false
+        },
+        {
+          "internalName": "Kategorie106",
+          "displayName": "Kategorie 1.0.6",
+          "type": "Text",
+          "required": false
+        },
+        {
+          "internalName": "Status106",
+          "displayName": "Status 1.0.6",
+          "type": "Text",
+          "required": false
+        },
+        {
+          "internalName": "Verkehrsart",
+          "displayName": "Verkehrsart",
+          "type": "Text",
+          "required": false
+        },
+        {
+          "internalName": "NachweisArt",
+          "displayName": "Prüfschlüssel / Nachweis",
+          "type": "Text",
+          "required": false
+        },
+        {
+          "internalName": "Begruendung",
+          "displayName": "Begründung",
+          "type": "Note",
+          "required": false
+        },
+        {
+          "internalName": "QuelleTitel",
+          "displayName": "Quellentitel",
+          "type": "Text",
+          "required": false
+        },
+        {
+          "internalName": "QuelleUrl",
+          "displayName": "Quellen-URL",
+          "type": "Note",
+          "required": false
+        },
+        {
+          "internalName": "QuellePublisher",
+          "displayName": "Quellen-Herausgeber",
+          "type": "Text",
+          "required": false
+        },
+        {
+          "internalName": "QuelleStand",
+          "displayName": "Quellenstand",
+          "type": "Text",
+          "required": false
+        },
+        {
+          "internalName": "QuelleOffiziell",
+          "displayName": "Quelle offiziell",
+          "type": "Boolean",
+          "required": false
+        },
+        {
+          "internalName": "Confidence",
+          "displayName": "Recherche-Sicherheit",
+          "type": "Text",
+          "required": false
+        },
+        {
+          "internalName": "Konflikt",
+          "displayName": "Quellenkonflikt",
+          "type": "Boolean",
+          "required": false
+        },
+        {
+          "internalName": "AutomatischBewertet",
+          "displayName": "Automatisch bewertet",
+          "type": "Boolean",
+          "required": false
+        }
+      ]
+    }
+  ]
+}
