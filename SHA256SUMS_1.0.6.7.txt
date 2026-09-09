@@ -1,0 +1,5 @@
+7217e1cf33277eeb925f4bc7408197cd1b9540a3778b17b1cca3867b0b31ab52  patch-1.0.6.7.js
+b7222dfbbfc765fe4833bb3b8b84abddba09d42f3e5e11d0dacb0ade3f6018f8  index.html
+b7222dfbbfc765fe4833bb3b8b84abddba09d42f3e5e11d0dacb0ade3f6018f8  index-1.0.6.7.html
+2d4d80cd5be31f07d964b7bd917a832def2272650d8dd9ecae814739abe6dba9  README_1.0.6.7_UPDATE.md
+26cdd3ff4db953d50ba7be2880443668edccf8eb6dfafe80e97fa2dfc3758a5f  TESTPLAN_1.0.6.7.md
