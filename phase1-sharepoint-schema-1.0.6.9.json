@@ -1,0 +1,23 @@
+{
+  "version": "1.0.6.9",
+  "target": "SharePoint Online",
+  "relationStrategy": "Additive multi-segment GPX planning; 1.0.6.8 usage-level GPX fields remain as optional overall/coarse route; no destructive changes",
+  "lists": [
+    {
+      "internalName": "NutzungsRoutenabschnitte",
+      "displayName": "Nutzungs-Routenabschnitte",
+      "fields": [
+        {"internalName":"NutzungId","displayName":"Nutzung-ID","type":"Text","required":true},
+        {"internalName":"Sortierung","displayName":"Sortierung","type":"Number","required":false},
+        {"internalName":"Abschnittsname1069","displayName":"Abschnittsname 1.0.6.9","type":"Text","required":false},
+        {"internalName":"GPXRouteJson1069","displayName":"GPX Route JSON 1.0.6.9","type":"Note","required":false},
+        {"internalName":"GPXDateiname1069","displayName":"GPX Dateiname 1.0.6.9","type":"Text","required":false},
+        {"internalName":"GPXImportiertAm1069","displayName":"GPX importiert am 1.0.6.9","type":"DateTime","required":false},
+        {"internalName":"GeplanterStart1069","displayName":"Geplanter Start 1.0.6.9","type":"DateTime","required":false},
+        {"internalName":"IstAktiv1069","displayName":"Aktueller Routenabschnitt 1.0.6.9","type":"Boolean","required":false},
+        {"internalName":"Aktiv","displayName":"Aktiv","type":"Boolean","required":false},
+        {"internalName":"Testdaten","displayName":"Testdaten","type":"Boolean","required":false}
+      ]
+    }
+  ]
+}
