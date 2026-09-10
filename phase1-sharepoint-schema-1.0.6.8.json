@@ -1,0 +1,163 @@
+{
+  "version": "1.0.6.8",
+  "target": "SharePoint Online",
+  "relationStrategy": "Additive Block-1 fields for GPX route, route-weather rules, vehicle speed master data and real GPS speed; no destructive changes",
+  "lists": [
+    {
+      "internalName": "Fahrzeuge",
+      "displayName": "Fahrzeuge",
+      "fields": [
+        {
+          "internalName": "VMinKmh1068",
+          "displayName": "V min km/h 1.0.6.8",
+          "type": "Number",
+          "required": false
+        },
+        {
+          "internalName": "VReiseKmh1068",
+          "displayName": "V Reise km/h 1.0.6.8",
+          "type": "Number",
+          "required": false
+        },
+        {
+          "internalName": "VMaxKmh1068",
+          "displayName": "V max km/h 1.0.6.8",
+          "type": "Number",
+          "required": false
+        },
+        {
+          "internalName": "VReiseHistorieKmh1068",
+          "displayName": "V Reise Historie km/h 1.0.6.8",
+          "type": "Number",
+          "required": false
+        },
+        {
+          "internalName": "Geschwindigkeitseinheit1068",
+          "displayName": "Geschwindigkeitseinheit 1.0.6.8",
+          "type": "Text",
+          "required": false
+        }
+      ]
+    },
+    {
+      "internalName": "Nutzungen",
+      "displayName": "Nutzungen",
+      "fields": [
+        {
+          "internalName": "GPXRouteJson1068",
+          "displayName": "GPX Route JSON 1.0.6.8",
+          "type": "Note",
+          "required": false
+        },
+        {
+          "internalName": "GPXDateiname1068",
+          "displayName": "GPX Dateiname 1.0.6.8",
+          "type": "Text",
+          "required": false
+        },
+        {
+          "internalName": "GPXImportiertAm1068",
+          "displayName": "GPX importiert am 1.0.6.8",
+          "type": "DateTime",
+          "required": false
+        },
+        {
+          "internalName": "WetterRegelTyp1068",
+          "displayName": "Wetterregel Typ 1.0.6.8",
+          "type": "Text",
+          "required": false
+        },
+        {
+          "internalName": "WetterRegelWert1068",
+          "displayName": "Wetterregel Wert 1.0.6.8",
+          "type": "Number",
+          "required": false
+        },
+        {
+          "internalName": "WetterRegelEinheit1068",
+          "displayName": "Wetterregel Einheit 1.0.6.8",
+          "type": "Text",
+          "required": false
+        },
+        {
+          "internalName": "RoutenabweichungM1068",
+          "displayName": "Routenabweichung Warnwert m 1.0.6.8",
+          "type": "Number",
+          "required": false
+        },
+        {
+          "internalName": "WetterStartzeit1068",
+          "displayName": "Wetter Berechnungsstart 1.0.6.8",
+          "type": "DateTime",
+          "required": false
+        }
+      ]
+    },
+    {
+      "internalName": "GPSPunkte",
+      "displayName": "GPSPunkte",
+      "fields": [
+        {
+          "internalName": "GeschwindigkeitKmh1068",
+          "displayName": "GPS Geschwindigkeit km/h 1.0.6.8",
+          "type": "Number",
+          "required": false
+        }
+      ]
+    },
+    {
+      "internalName": "NutzerWetterEinstellungen",
+      "displayName": "NutzerWetterEinstellungen",
+      "fields": [
+        {
+          "internalName": "BenutzerId1068",
+          "displayName": "Benutzer-ID 1.0.6.8",
+          "type": "Text",
+          "required": true
+        },
+        {
+          "internalName": "WetterRegelTyp1068",
+          "displayName": "Wetterregel Typ 1.0.6.8",
+          "type": "Text",
+          "required": false
+        },
+        {
+          "internalName": "WetterRegelWert1068",
+          "displayName": "Wetterregel Wert 1.0.6.8",
+          "type": "Number",
+          "required": false
+        },
+        {
+          "internalName": "WetterRegelEinheit1068",
+          "displayName": "Wetterregel Einheit 1.0.6.8",
+          "type": "Text",
+          "required": false
+        },
+        {
+          "internalName": "RoutenabweichungM1068",
+          "displayName": "Routenabweichung Warnwert m 1.0.6.8",
+          "type": "Number",
+          "required": false
+        },
+        {
+          "internalName": "RoutenabweichungEinheit1068",
+          "displayName": "Routenabweichung Einheit 1.0.6.8",
+          "type": "Text",
+          "required": false
+        },
+        {
+          "internalName": "AktualisiertAm1068",
+          "displayName": "Aktualisiert am 1.0.6.8",
+          "type": "DateTime",
+          "required": false
+        },
+        {
+          "internalName": "Aktiv",
+          "displayName": "Aktiv",
+          "type": "Boolean",
+          "required": false
+        }
+      ]
+    }
+  ]
+}
