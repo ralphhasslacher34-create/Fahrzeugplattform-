@@ -1,0 +1,40 @@
+{
+  "version": "1.1.0.0",
+  "target": "SharePoint Online",
+  "relationStrategy": "Additive master-data redesign. Legacy vehicle/component/property data remains untouched; new structured vehicle JSON plus component records are added without destructive migration.",
+  "lists": [
+    {
+      "internalName": "Fahrzeuge",
+      "displayName": "Fahrzeuge",
+      "fields": [
+        {"internalName":"StammdatenJson1100","displayName":"Stammdaten JSON 1.1.0.0","type":"Note","required":false},
+        {"internalName":"StammdatenStand1100","displayName":"Stammdaten Stand 1.1.0.0","type":"DateTime","required":false}
+      ]
+    },
+    {
+      "internalName": "Komponenten1100",
+      "displayName": "Komponenten 1.1.0.0",
+      "fields": [
+        {"internalName":"FahrzeugId","displayName":"Fahrzeug-ID","type":"Text","required":true},
+        {"internalName":"Komponententyp","displayName":"Komponententyp","type":"Text","required":true},
+        {"internalName":"Bezeichnung","displayName":"Bezeichnung","type":"Text","required":false},
+        {"internalName":"Position","displayName":"Einbauort / Position","type":"Text","required":false},
+        {"internalName":"Hersteller","displayName":"Hersteller","type":"Text","required":false},
+        {"internalName":"Modell","displayName":"Modell","type":"Text","required":false},
+        {"internalName":"Typ","displayName":"Typ","type":"Text","required":false},
+        {"internalName":"Seriennummer","displayName":"Seriennummer / Identifikation","type":"Text","required":false},
+        {"internalName":"ElternKomponenteId","displayName":"Übergeordnete Baugruppe","type":"Text","required":false},
+        {"internalName":"TechnischeMerkmaleJson","displayName":"Technische Merkmale JSON","type":"Note","required":false},
+        {"internalName":"VerbindungenJson","displayName":"Verbindungen JSON","type":"Note","required":false},
+        {"internalName":"LebenszyklusJson","displayName":"Lebenszyklus JSON","type":"Note","required":false},
+        {"internalName":"WartungJson","displayName":"Wartung und Prüfung JSON","type":"Note","required":false},
+        {"internalName":"KostenJson","displayName":"Kosten und Wert JSON","type":"Note","required":false},
+        {"internalName":"DokumenteJson","displayName":"Dokumente JSON","type":"Note","required":false},
+        {"internalName":"Status","displayName":"Status","type":"Text","required":false},
+        {"internalName":"Aktiv","displayName":"Aktiv","type":"Boolean","required":false},
+        {"internalName":"Testdaten","displayName":"Testdaten","type":"Boolean","required":false},
+        {"internalName":"AktualisiertAm1100","displayName":"Aktualisiert am 1.1.0.0","type":"DateTime","required":false}
+      ]
+    }
+  ]
+}
