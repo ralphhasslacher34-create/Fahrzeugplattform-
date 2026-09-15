@@ -1,7 +1,7 @@
 {
   "version": "1.1.0.0",
   "target": "SharePoint Online",
-  "relationStrategy": "Additive master-data redesign. Legacy vehicle/component/property data remains untouched; new structured vehicle JSON plus component records are added without destructive migration.",
+  "relationStrategy": "Additive master-data redesign from 1.0.6.15. One shared UI for create/edit. Legacy lists remain untouched but are no longer part of the vehicle master-data UI.",
   "lists": [
     {
       "internalName": "Fahrzeuge",
