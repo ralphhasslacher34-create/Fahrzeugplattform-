@@ -1,19 +1,17 @@
-# MOBIMORY 1.1.0.1-dev – Stammdaten Legacy-UI Fix
+# MOBIMORY 1.1.0.1-dev – Komponenten/Fahrzeug-Zuordnung sichtbar
 
-## Zweck
-1.1.0.1 ist ein reiner Fix auf 1.1.0.0.
+Basis: sauberer 1.1.0.0-Rebuild auf 1.0.6.15.
 
-Die neue Stammdatenstruktur 1.1–1.6 / 2.1–2.7 war bereits vorhanden, wurde aber unterhalb der alten Fahrzeugkonfiguration angehängt. Dieser Fix blendet die komplette alte Fahrzeugkonfiguration in dieser Ansicht aus und zeigt nur noch die neue Stammdatenstruktur.
+## Änderung
+In der Komponentenliste und in der Maske einer neuen/bestehenden Komponente wird oben eindeutig angezeigt, zu welchem Fahrzeug die Komponente gehört:
 
-## Wichtig
-- Keine Daten werden gelöscht.
-- Alte Listen und alte Testwerte bleiben technisch erhalten.
-- `GPS Intervall`, `Längeneinheit`, alte Prüf-/Austausch-/Merkmalsblöcke usw. werden in der Fahrzeug-Stammdatenansicht nicht mehr angezeigt.
-- Kein neues Microsoft-365-Setup nötig.
+- Zugeordnetes Fahrzeug
+- Fahrzeug: <Fahrzeugname>
+- darunter das Fahrzeugprofil, sofern vorhanden
+
+Die technische Zuordnung bleibt unverändert automatisch über `FahrzeugId`. Es gibt kein zusätzliches Fahrzeug-Auswahlfeld und keine Änderung am Datenmodell.
 
 ## Installation
-1. ZIP lokal entpacken.
-2. Die entpackten Dateien in das bestehende GitHub-Repository hochladen.
-3. `index.html` ersetzen.
-4. `patch-1.1.0.1.js` muss im Repository liegen.
-5. App neu laden; unten muss `1.1.0.1-dev` stehen.
+ZIP lokal entpacken und die entpackten Dateien in das bestehende GitHub-Repository hochladen. `index.html` ersetzen. `patch-1.1.0.1.js` zusätzlich hochladen.
+
+Kein neues Microsoft-365-Setup erforderlich.
