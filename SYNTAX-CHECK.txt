@@ -1,3 +1,1 @@
-node --check patch-1.1.0.3.js
-
-OK
+node --check patch-1.1.0.3a.js: OK

@@ -1,0 +1,14 @@
+MOBIMORY 1.1.0.3a-dev – HOTFIX
+=================================
+
+Korrektur 1:
+- Die Liste "Nutzungen" besitzt kein beschreibbares Feld "Aktiv".
+- Das Planungsarchiv verwendet deshalb keine Aktiv-Spalte mehr.
+- Archivzustand wird über [PLANUNGSARCHIV] im Titel erkannt.
+- Geplanter Start und bekannte geplante Endfelder werden weiterhin geleert.
+- Kein Microsoft-365-Setup und keine Schemaänderung erforderlich.
+
+Korrektur 2:
+- Die sichtbare Versionsanzeige bleibt nach Rendern bei 1.1.0.3a-dev.
+
+Die 16 Punkte des 1.1.0.3-TODO-Builds bleiben enthalten.
