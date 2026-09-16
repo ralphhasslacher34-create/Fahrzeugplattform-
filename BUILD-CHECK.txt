@@ -1,0 +1,26 @@
+MOBIMORY 1.1.0.3-dev – BUILD-CHECK
+========================================
+
+[1] Personen unverändert: JA – Patch greift nicht in persons() ein.
+[2] Reisecheck aus Konfiguration: JA.
+[3] Reisecheck Kachel Startseite: JA.
+[4] Microsoft 365 nach Einstellungen / Daten: JA.
+[5] Konfiguration sonst unverändert: JA.
+[6] Geplante, nie gestartete Nutzung: Archiv oder endgültig löschen: JA.
+[7] Planungsarchiv: Inhalte bleiben; geplante Datumsfelder werden geleert; Wiederherstellung möglich: JA.
+[8] Geplante Überlassung im Reisecheck auswählbar: JA.
+[9] Überlassung -> neue Reise oder geplante Nutzung: JA.
+[10] Erste Eignungsprüfung in Überlassung: JA, live nach Fahrzeug/Skipper-Auswahl.
+[11] Straße: Fahrerlaubnis-Grundprüfung: JA.
+[12] Wasser: Fahrzeug + Komponenten/Ausrüstung + Revier: JA.
+[13] Motorboot Binnen ODER See = Grundbefähigung: JA.
+[14] Funkanlage: Funkbefähigung Skipper oder ausgewählte Crew: JA.
+[15] Revierprüfung erst im Reisecheck: JA.
+[16] Gesamtworkflow Überlassung -> Reisecheck -> konkrete Prüfung: JA.
+
+Sicherheitslogik:
+- Endgültig löschen wird blockiert, sobald Beginn/Ende, operative Ereignisse oder GPS-Historie vorhanden sind.
+- Beim Archivieren werden GeplanterBeginn und bekannte geplante Endfelder geleert.
+- Archivierte Planungen werden mit [PLANUNGSARCHIV] markiert und Aktiv=false gesetzt.
+- Beim Wiederherstellen bleiben Start/Ende leer; neue Daten müssen vergeben werden.
+- Bestehende Personen-, Fahrzeug- und Komponenten-Stammdaten werden nicht verändert.
