@@ -1,12 +1,32 @@
-MOBIMORY 1.1.0.3c-dev – PUNKT 8 HOTFIX
+MOBIMORY 1.1.0.3d-dev – REISECHECK / ASSISTENT
+=================================================
 
-- Reisecheck erkennt die tatsächlich vom vorhandenen Verleih-Code verwendete Datenquelle.
-- Zusätzlich wird die im Verleihmodus sichtbare Überlassung mit Status „Vorbereitet“ als Fallback-Snapshot gemerkt.
-- Vorhandene Überlassungen werden nicht verändert.
-- Punkte 1–7 und der 1.1.0.3b-Fahrer/Skipper-Fix bleiben enthalten.
-- Kein Microsoft-365-Setup nötig.
+Behoben / ergänzt:
+- Bei ausgewählter Überlassung wird der alte Reisecheck-Zustand ausgeblendet.
+- Fahrzeug und Fahrer/Skipper der Überlassung bilden die feste Basis.
+- Keine intuitive Sackgasse mehr „Schritt für Schritt“:
+  1 Reisedaten
+  2 Route / Revier
+  3 Crew
+  4 Prüfen
+- Geplante Nutzung kann alternativ übernommen werden.
+- Route/Karte kann importiert werden:
+  GPX, GeoJSON/JSON, KML.
+- Importierte Route wird auf Karte dargestellt, sofern Leaflet/OSM verfügbar ist.
+- Revier bleibt zusätzlich erfassbar, weil eine Routendatei die rechtliche Reviereinordnung
+  nicht zuverlässig enthält.
+- Vor „Reise jetzt prüfen“ wird Fahrzeug/Person/Crew/Revier nochmals lokal geprüft.
+- Danach werden die Werte in den bestehenden Reisecheck übertragen; alte automatische
+  Ergebnisse werden vorher entfernt.
+- Ohne ausgewählte Überlassung bleibt der bisherige freie Reisecheck verfügbar.
 
-TEST:
-1. Verleihmodus öffnen; Überlassung muss unter „Vorhandene Überlassungen“ sichtbar sein.
-2. Danach Reisecheck öffnen.
-3. Die geplante Überlassung muss im Auswahlfeld erscheinen.
+TESTFALL:
+1. Überlassung LMC / Janine auswählen.
+2. „Neue Reise anlegen und prüfen“.
+3. Zeitraum -> Weiter.
+4. Revier oder Route/Karte -> Weiter.
+5. Crew -> Weiter.
+6. Zusammenfassung muss LMC/Wohnmobil und Janine zeigen.
+7. „Reise jetzt prüfen“.
+8. Der nachfolgende bestehende Reisecheck darf NICHT mehr den alten 10,05-m-Motorboot-
+   Datensatz als Grundlage verwenden.
