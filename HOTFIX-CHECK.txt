@@ -1,14 +1,12 @@
-MOBIMORY 1.1.0.3b-dev – FAHRER/SKIPPER-HOTFIX
-=================================================
+MOBIMORY 1.1.0.3c-dev – PUNKT 8 HOTFIX
 
-Behoben:
-- Die Überlassungsmaske hat kein separates Eingabefeld "Fahrer / Skipper".
-- Die Grundprüfung liest jetzt die tatsächliche Fahrfunktion aus der Personengruppe.
-- Person mit Fahrfunktion "Skipper" bzw. "Fahrer" wird automatisch erkannt.
-- Fahrzeug wird aus der bestehenden Fahrzeugauswahl erkannt.
-- Motorboot + Skipper ohne Bootsführerschein => Grundbefähigung NICHT erfüllt.
-- Die vorhandene Anzeige "Skipper festgelegt" wird nicht mehr als pauschale Eignungsfreigabe dargestellt:
-  bei fehlender Grundbefähigung => rot "Skipper ausgewählt · Grundbefähigung nicht erfüllt".
-- Revier bleibt weiterhin ausdrücklich Sache des Reisechecks.
-- Punkte 1–7 und der Archiv-Hotfix aus 1.1.0.3a bleiben enthalten.
-- Keine Schemaänderung / kein Microsoft-365-Setup nötig.
+- Reisecheck erkennt die tatsächlich vom vorhandenen Verleih-Code verwendete Datenquelle.
+- Zusätzlich wird die im Verleihmodus sichtbare Überlassung mit Status „Vorbereitet“ als Fallback-Snapshot gemerkt.
+- Vorhandene Überlassungen werden nicht verändert.
+- Punkte 1–7 und der 1.1.0.3b-Fahrer/Skipper-Fix bleiben enthalten.
+- Kein Microsoft-365-Setup nötig.
+
+TEST:
+1. Verleihmodus öffnen; Überlassung muss unter „Vorhandene Überlassungen“ sichtbar sein.
+2. Danach Reisecheck öffnen.
+3. Die geplante Überlassung muss im Auswahlfeld erscheinen.
