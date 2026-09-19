@@ -1,0 +1,76 @@
+{
+  "version": "1.1.0.4",
+  "target": "SharePoint Online",
+  "relationStrategy": "Additive Smart Capture / document schema library. Existing data remains untouched.",
+  "lists": [
+    {
+      "internalName": "Personen",
+      "displayName": "Personen",
+      "fields": [
+        {"internalName":"Vorname1104","displayName":"Vorname Smart Capture","type":"Text","required":false},
+        {"internalName":"Nachname1104","displayName":"Nachname Smart Capture","type":"Text","required":false},
+        {"internalName":"Geburtsdatum1104","displayName":"Geburtsdatum Smart Capture","type":"DateTime","required":false},
+        {"internalName":"Wohnort1104","displayName":"Wohnort Smart Capture","type":"Text","required":false},
+        {"internalName":"IdentityAnchorJson1104","displayName":"Identity Anchor JSON","type":"Note","required":false},
+        {"internalName":"IdentityAnchorHash1104","displayName":"Identity Anchor Hash","type":"Text","required":false},
+        {"internalName":"IdentityGeprueftAm1104","displayName":"Identität geprüft am","type":"DateTime","required":false},
+        {"internalName":"PersonZusatzdatenJson1104","displayName":"Zusätzliche Personendaten JSON","type":"Note","required":false}
+      ]
+    },
+    {
+      "internalName": "Fahrzeuge",
+      "displayName": "Fahrzeuge",
+      "fields": [
+        {"internalName":"SmartCaptureQuelle1104","displayName":"Smart Capture Quelle","type":"Text","required":false},
+        {"internalName":"SmartCaptureStand1104","displayName":"Smart Capture Stand","type":"DateTime","required":false}
+      ]
+    },
+    {
+      "internalName": "SmartCaptureConfig1104",
+      "displayName": "Smart Capture Konfiguration",
+      "fields": [
+        {"internalName":"ConfigKey","displayName":"Konfigurationsschlüssel","type":"Text","required":true},
+        {"internalName":"ConfigJson","displayName":"Konfiguration JSON","type":"Note","required":true},
+        {"internalName":"AktualisiertAm","displayName":"Aktualisiert am","type":"DateTime","required":false},
+        {"internalName":"Aktiv","displayName":"Aktiv","type":"Boolean","required":false}
+      ]
+    },
+    {
+      "internalName": "DokumentSchemas1104",
+      "displayName": "Dokument-Schemata Smart Capture",
+      "fields": [
+        {"internalName":"SchemaKey","displayName":"Schema-Key","type":"Text","required":true},
+        {"internalName":"Dokumentart","displayName":"Dokumentart","type":"Text","required":true},
+        {"internalName":"Land","displayName":"Land","type":"Text","required":false},
+        {"internalName":"Bereich","displayName":"Bereich","type":"Text","required":false},
+        {"internalName":"Status","displayName":"Status","type":"Text","required":false},
+        {"internalName":"SchemaJson","displayName":"Schema JSON","type":"Note","required":false},
+        {"internalName":"QuelleUrl","displayName":"Quell-URL","type":"Text","required":false},
+        {"internalName":"QuelleTitel","displayName":"Quelltitel","type":"Text","required":false},
+        {"internalName":"AktualisiertAm","displayName":"Aktualisiert am","type":"DateTime","required":false},
+        {"internalName":"Aktiv","displayName":"Aktiv","type":"Boolean","required":false}
+      ]
+    },
+    {
+      "internalName": "SmartCaptureDokumente1104",
+      "displayName": "Smart Capture Dokumentnachweise",
+      "fields": [
+        {"internalName":"BezugTyp","displayName":"Bezugstyp","type":"Text","required":true},
+        {"internalName":"BezugId","displayName":"Bezugs-ID","type":"Text","required":true},
+        {"internalName":"SchemaKey","displayName":"Schema-Key","type":"Text","required":false},
+        {"internalName":"Dokumentart","displayName":"Dokumentart","type":"Text","required":false},
+        {"internalName":"Land","displayName":"Land","type":"Text","required":false},
+        {"internalName":"Dokumentnummer","displayName":"Dokumentnummer","type":"Text","required":false},
+        {"internalName":"GueltigVon","displayName":"Gültig von","type":"DateTime","required":false},
+        {"internalName":"GueltigBis","displayName":"Gültig bis","type":"DateTime","required":false},
+        {"internalName":"IdentityHash","displayName":"Identity Hash","type":"Text","required":false},
+        {"internalName":"ExtrahiertJson","displayName":"Extrahierte Daten JSON","type":"Note","required":false},
+        {"internalName":"OcrText","displayName":"OCR-Rohtext","type":"Note","required":false},
+        {"internalName":"KopieRef","displayName":"Dokumentkopie Referenz","type":"Text","required":false},
+        {"internalName":"ErkanntAm","displayName":"Erkannt am","type":"DateTime","required":false},
+        {"internalName":"GeprueftAm","displayName":"Geprüft am","type":"DateTime","required":false},
+        {"internalName":"Aktiv","displayName":"Aktiv","type":"Boolean","required":false}
+      ]
+    }
+  ]
+}
