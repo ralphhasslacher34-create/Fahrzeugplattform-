@@ -1,137 +1,353 @@
 {
-  "version": "1.1.0.4",
-  "updated": "2026-09-17",
+  "version": "1.1.0.4d",
+  "updated": "2026-09-19",
   "schemas": [
     {
-      "key":"DE_FEV_FUEHRERSCHEIN_EU",
-      "country":"DE",
-      "domain":"person",
-      "documentType":"Deutscher EU-Kartenführerschein",
-      "status":"ready",
-      "appliesTo":["road_user"],
-      "detect":["FÜHRERSCHEIN","DRIVING LICENCE","BUNDESREPUBLIK DEUTSCHLAND","4A","4B","4C"],
-      "sourceTitle":"Fahrerlaubnis-Verordnung – Anlage 8",
-      "sourceUrl":"https://www.gesetze-im-internet.de/fev_2010/anlage_8.html",
-      "fields":{"1":"Nachname","2":"Vorname","3":"Geburtsdatum und Geburtsort","4a":"Ausstellungsdatum","4b":"Ablaufdatum Dokument","4c":"Ausstellungsbehörde","5":"Führerscheinnummer","9":"Fahrerlaubnisklassen","10":"Erteilungsdatum je Klasse","11":"Gültig bis je Klasse","12":"Beschränkungen/Zusatzangaben"},
-      "extractor":"de-driving-licence"
+      "key": "DE_FEV_FUEHRERSCHEIN_EU",
+      "country": "DE",
+      "domain": "person",
+      "documentType": "Deutscher EU-Kartenführerschein",
+      "status": "ready",
+      "appliesTo": [
+        "road_user"
+      ],
+      "detect": [
+        "FÜHRERSCHEIN",
+        "DRIVING LICENCE",
+        "BUNDESREPUBLIK DEUTSCHLAND",
+        "4A",
+        "4B",
+        "4C"
+      ],
+      "sourceTitle": "Fahrerlaubnis-Verordnung – Anlage 8",
+      "sourceUrl": "https://www.gesetze-im-internet.de/fev_2010/anlage_8.html",
+      "fields": {
+        "1": "Nachname",
+        "2": "Vorname",
+        "3": "Geburtsdatum und Geburtsort",
+        "4a": "Ausstellungsdatum",
+        "4b": "Ablaufdatum Dokument",
+        "4c": "Ausstellungsbehörde",
+        "5": "Führerscheinnummer",
+        "9": "Fahrerlaubnisklassen",
+        "10": "Erteilungsdatum je Klasse",
+        "11": "Gültig bis je Klasse",
+        "12": "Beschränkungen/Zusatzangaben"
+      },
+      "capture": {
+        "structureStatus": "official",
+        "pages": [
+          {
+            "key": "front",
+            "label": "Vorderseite",
+            "required": true,
+            "purpose": "Identität, Dokumentdaten, Klassenübersicht"
+          },
+          {
+            "key": "back",
+            "label": "Rückseite",
+            "required": true,
+            "purpose": "Fahrerlaubnisklassen, Gültigkeiten, Beschränkungen"
+          }
+        ]
+      },
+      "extractor": "de-driving-licence"
     },
     {
-      "key":"DE_FZV_ZB_I",
-      "country":"DE",
-      "domain":"vehicle",
-      "documentType":"Zulassungsbescheinigung Teil I / Fahrzeugschein",
-      "status":"ready",
-      "appliesTo":["road_vehicle"],
-      "detect":["ZULASSUNGSBESCHEINIGUNG TEIL I","FAHRZEUGSCHEIN","D.1","D.2","D.3","P.1","P.2"],
-      "sourceTitle":"Fahrzeug-Zulassungsverordnung – Anlage 6",
-      "sourceUrl":"https://www.gesetze-im-internet.de/fzv_2023/anlage_6.html",
-      "fields":{"A":"Kennzeichen","B":"Erstzulassung","D.1":"Marke","D.2":"Typ/Variante/Version","D.3":"Handelsbezeichnung","E":"FIN","F.1":"Technisch zulässige Gesamtmasse","F.2":"Zulässige Gesamtmasse im Zulassungsstaat","G":"Leermasse","J":"Fahrzeugklasse","O.1":"Anhängelast gebremst","O.2":"Anhängelast ungebremst","P.1":"Hubraum","P.2/P.4":"Nennleistung/Nenndrehzahl","P.3":"Kraftstoff/Energiequelle","S.1":"Sitzplätze","T":"Höchstgeschwindigkeit","18":"Länge","19":"Breite","20":"Höhe","22":"Bemerkungen/Ausnahmen"},
-      "extractor":"de-zb1"
+      "key": "DE_FZV_ZB_I",
+      "country": "DE",
+      "domain": "vehicle",
+      "documentType": "Zulassungsbescheinigung Teil I / Fahrzeugschein",
+      "status": "ready",
+      "appliesTo": [
+        "road_vehicle"
+      ],
+      "detect": [
+        "ZULASSUNGSBESCHEINIGUNG TEIL I",
+        "FAHRZEUGSCHEIN",
+        "D.1",
+        "D.2",
+        "D.3",
+        "P.1",
+        "P.2"
+      ],
+      "sourceTitle": "Fahrzeug-Zulassungsverordnung – Anlage 6",
+      "sourceUrl": "https://www.gesetze-im-internet.de/fzv_2023/anlage_6.html",
+      "fields": {
+        "A": "Kennzeichen",
+        "B": "Erstzulassung",
+        "D.1": "Marke",
+        "D.2": "Typ/Variante/Version",
+        "D.3": "Handelsbezeichnung",
+        "E": "FIN",
+        "F.1": "Technisch zulässige Gesamtmasse",
+        "F.2": "Zulässige Gesamtmasse im Zulassungsstaat",
+        "G": "Leermasse",
+        "J": "Fahrzeugklasse",
+        "O.1": "Anhängelast gebremst",
+        "O.2": "Anhängelast ungebremst",
+        "P.1": "Hubraum",
+        "P.2/P.4": "Nennleistung/Nenndrehzahl",
+        "P.3": "Kraftstoff/Energiequelle",
+        "S.1": "Sitzplätze",
+        "T": "Höchstgeschwindigkeit",
+        "18": "Länge",
+        "19": "Breite",
+        "20": "Höhe",
+        "22": "Bemerkungen/Ausnahmen"
+      },
+      "capture": {
+        "structureStatus": "official",
+        "pages": [
+          {
+            "key": "front",
+            "label": "Vorderseite",
+            "required": true,
+            "purpose": "Fahrzeug- und Halterdaten"
+          },
+          {
+            "key": "back",
+            "label": "Rückseite",
+            "required": true,
+            "purpose": "amtliche Eintragungen und Felddefinitionen"
+          }
+        ]
+      },
+      "extractor": "de-zb1"
     },
     {
-      "key":"DE_FZV_ZB_II",
-      "country":"DE",
-      "domain":"vehicle",
-      "documentType":"Zulassungsbescheinigung Teil II / Fahrzeugbrief",
-      "status":"ready",
-      "appliesTo":["road_vehicle"],
-      "detect":["ZULASSUNGSBESCHEINIGUNG TEIL II","FAHRZEUGBRIEF","FAHRZEUG-IDENTIFIZIERUNGSNUMMER"],
-      "sourceTitle":"Fahrzeug-Zulassungsverordnung – Anlage 8",
-      "sourceUrl":"https://www.gesetze-im-internet.de/fzv_2023/anlage_8.html",
-      "fields":{"A":"Kennzeichen","B":"Erstzulassung","D.1":"Marke","D.2":"Typ/Variante/Version","D.3":"Handelsbezeichnung","E":"FIN","J":"Fahrzeugklasse","P.1":"Hubraum","P.2/P.4":"Nennleistung/Nenndrehzahl","P.3":"Kraftstoff/Energiequelle","K":"EG-Typgenehmigung/ABE"},
-      "extractor":"de-zb2"
+      "key": "DE_FZV_ZB_II",
+      "country": "DE",
+      "domain": "vehicle",
+      "documentType": "Zulassungsbescheinigung Teil II / Fahrzeugbrief",
+      "status": "ready",
+      "appliesTo": [
+        "road_vehicle"
+      ],
+      "detect": [
+        "ZULASSUNGSBESCHEINIGUNG TEIL II",
+        "FAHRZEUGBRIEF",
+        "FAHRZEUG-IDENTIFIZIERUNGSNUMMER"
+      ],
+      "sourceTitle": "Fahrzeug-Zulassungsverordnung – Anlage 8",
+      "sourceUrl": "https://www.gesetze-im-internet.de/fzv_2023/anlage_8.html",
+      "fields": {
+        "A": "Kennzeichen",
+        "B": "Erstzulassung",
+        "D.1": "Marke",
+        "D.2": "Typ/Variante/Version",
+        "D.3": "Handelsbezeichnung",
+        "E": "FIN",
+        "J": "Fahrzeugklasse",
+        "P.1": "Hubraum",
+        "P.2/P.4": "Nennleistung/Nenndrehzahl",
+        "P.3": "Kraftstoff/Energiequelle",
+        "K": "EG-Typgenehmigung/ABE"
+      },
+      "capture": {
+        "structureStatus": "official",
+        "pages": [
+          {
+            "key": "front",
+            "label": "Bedruckte Vorderseite",
+            "required": true,
+            "purpose": "Fahrzeug- und Eigentümerdaten"
+          }
+        ]
+      },
+      "extractor": "de-zb2"
     },
     {
-      "key":"DE_SPFV_SBF",
-      "country":"DE",
-      "domain":"person",
-      "documentType":"Amtlicher Sportbootführerschein",
-      "status":"ready-basic",
-      "appliesTo":["water_user"],
-      "detect":["SPORTBOOTFÜHRERSCHEIN","SPORT BOAT LICENCE","BINNEN","SEE"],
-      "sourceTitle":"Sportbootführerscheinverordnung – Anlage 1",
-      "sourceUrl":"https://www.gesetze-im-internet.de/spfv/anlage_1.html",
-      "fields":{"identity":"Name/Vorname/Geburtsdaten","scope":"Geltungsbereich Binnen/See","number":"Dokumentnummer"},
-      "extractor":"de-sbf"
+      "key": "DE_SPFV_SBF",
+      "country": "DE",
+      "domain": "person",
+      "documentType": "Amtlicher Sportbootführerschein",
+      "status": "ready-basic",
+      "appliesTo": [
+        "water_user"
+      ],
+      "detect": [
+        "SPORTBOOTFÜHRERSCHEIN",
+        "SPORT BOAT LICENCE",
+        "BINNEN",
+        "SEE"
+      ],
+      "sourceTitle": "Sportbootführerscheinverordnung – Anlage 1",
+      "sourceUrl": "https://www.gesetze-im-internet.de/spfv/anlage_1.html",
+      "fields": {
+        "identity": "Name/Vorname/Geburtsdaten",
+        "scope": "Geltungsbereich Binnen/See",
+        "number": "Dokumentnummer"
+      },
+      "capture": {
+        "structureStatus": "official",
+        "pages": [
+          {
+            "key": "front",
+            "label": "Vorderseite",
+            "required": true,
+            "purpose": "Person und Berechtigung"
+          },
+          {
+            "key": "back",
+            "label": "Rückseite",
+            "required": true,
+            "purpose": "weitere Angaben/Erläuterungen"
+          }
+        ]
+      },
+      "extractor": "de-sbf"
     },
     {
-      "key":"DE_UBI",
-      "country":"DE",
-      "domain":"person",
-      "documentType":"UKW-Sprechfunkzeugnis Binnenschifffahrtsfunk (UBI)",
-      "status":"ready-basic",
-      "appliesTo":["water_user"],
-      "detect":["UKW-SPRECHFUNKZEUGNIS","BINNENSCHIFFFAHRTSFUNK","UBI"],
-      "sourceTitle":"Binnenschifffahrt-Sprechfunkverordnung – Anlage 1/2",
-      "sourceUrl":"https://www.gesetze-im-internet.de/binschsprfunkv_2003/anlage_1.html",
-      "fields":{"identity":"Inhaber","qualification":"UBI"},
-      "extractor":"de-ubi"
+      "key": "DE_UBI",
+      "country": "DE",
+      "domain": "person",
+      "documentType": "UKW-Sprechfunkzeugnis Binnenschifffahrtsfunk (UBI)",
+      "status": "ready-basic",
+      "appliesTo": [
+        "water_user"
+      ],
+      "detect": [
+        "UKW-SPRECHFUNKZEUGNIS",
+        "BINNENSCHIFFFAHRTSFUNK",
+        "UBI"
+      ],
+      "sourceTitle": "Binnenschifffahrt-Sprechfunkverordnung – Anlage 1/2",
+      "sourceUrl": "https://www.gesetze-im-internet.de/binschsprfunkv_2003/anlage_1.html",
+      "fields": {
+        "identity": "Inhaber",
+        "qualification": "UBI"
+      },
+      "capture": {
+        "structureStatus": "pending",
+        "pages": []
+      },
+      "extractor": "de-ubi"
     },
     {
-      "key":"DE_SRC",
-      "country":"DE",
-      "domain":"person",
-      "documentType":"Short Range Certificate (SRC)",
-      "status":"planned",
-      "appliesTo":["water_user"],
-      "detect":["SHORT RANGE CERTIFICATE","SRC"],
-      "fields":{},
-      "extractor":"generic-person-qualification"
+      "key": "DE_SRC",
+      "country": "DE",
+      "domain": "person",
+      "documentType": "Short Range Certificate (SRC)",
+      "status": "planned",
+      "appliesTo": [
+        "water_user"
+      ],
+      "detect": [
+        "SHORT RANGE CERTIFICATE",
+        "SRC"
+      ],
+      "fields": {},
+      "capture": {
+        "structureStatus": "pending",
+        "pages": []
+      },
+      "extractor": "generic-person-qualification"
     },
     {
-      "key":"DE_LRC",
-      "country":"DE",
-      "domain":"person",
-      "documentType":"Long Range Certificate (LRC)",
-      "status":"planned",
-      "appliesTo":["water_user"],
-      "detect":["LONG RANGE CERTIFICATE","LRC"],
-      "fields":{},
-      "extractor":"generic-person-qualification"
+      "key": "DE_LRC",
+      "country": "DE",
+      "domain": "person",
+      "documentType": "Long Range Certificate (LRC)",
+      "status": "planned",
+      "appliesTo": [
+        "water_user"
+      ],
+      "detect": [
+        "LONG RANGE CERTIFICATE",
+        "LRC"
+      ],
+      "fields": {},
+      "capture": {
+        "structureStatus": "pending",
+        "pages": []
+      },
+      "extractor": "generic-person-qualification"
     },
     {
-      "key":"DE_IBS",
-      "country":"DE",
-      "domain":"vehicle",
-      "documentType":"Internationaler Bootsschein (IBS)",
-      "status":"planned",
-      "appliesTo":["water_vehicle"],
-      "detect":["INTERNATIONALER BOOTSSCHEIN","INTERNATIONAL CERTIFICATE FOR PLEASURE CRAFT","IBS"],
-      "fields":{},
-      "extractor":"generic-watercraft"
+      "key": "DE_IBS",
+      "country": "DE",
+      "domain": "vehicle",
+      "documentType": "Internationaler Bootsschein (IBS)",
+      "status": "planned",
+      "appliesTo": [
+        "water_vehicle"
+      ],
+      "detect": [
+        "INTERNATIONALER BOOTSSCHEIN",
+        "INTERNATIONAL CERTIFICATE FOR PLEASURE CRAFT",
+        "IBS"
+      ],
+      "fields": {},
+      "capture": {
+        "structureStatus": "pending",
+        "pages": []
+      },
+      "extractor": "generic-watercraft"
     },
     {
-      "key":"DE_WSA_KLEINFAHRZEUG",
-      "country":"DE",
-      "domain":"vehicle",
-      "documentType":"WSA-Kennzeichnung / Ausweis Kleinfahrzeug",
-      "status":"planned",
-      "appliesTo":["water_vehicle"],
-      "detect":["KLEINFAHRZEUG","WASSERSTRASSEN- UND SCHIFFFAHRTSAMT","KENNZEICHEN"],
-      "fields":{},
-      "extractor":"generic-watercraft"
+      "key": "DE_WSA_KLEINFAHRZEUG",
+      "country": "DE",
+      "domain": "vehicle",
+      "documentType": "WSA-Kennzeichnung / Ausweis Kleinfahrzeug",
+      "status": "planned",
+      "appliesTo": [
+        "water_vehicle"
+      ],
+      "detect": [
+        "KLEINFAHRZEUG",
+        "WASSERSTRASSEN- UND SCHIFFFAHRTSAMT",
+        "KENNZEICHEN"
+      ],
+      "fields": {},
+      "capture": {
+        "structureStatus": "pending",
+        "pages": []
+      },
+      "extractor": "generic-watercraft"
     },
     {
-      "key":"EU_CE_WATERCRAFT",
-      "country":"EU",
-      "domain":"vehicle",
-      "documentType":"CE-/EU-Konformitätserklärung Sportboot",
-      "status":"planned",
-      "appliesTo":["water_vehicle"],
-      "detect":["DECLARATION OF CONFORMITY","KONFORMITÄTSERKLÄRUNG","WATERCRAFT","CIN","HIN"],
-      "fields":{},
-      "extractor":"generic-watercraft"
+      "key": "EU_CE_WATERCRAFT",
+      "country": "EU",
+      "domain": "vehicle",
+      "documentType": "CE-/EU-Konformitätserklärung Sportboot",
+      "status": "planned",
+      "appliesTo": [
+        "water_vehicle"
+      ],
+      "detect": [
+        "DECLARATION OF CONFORMITY",
+        "KONFORMITÄTSERKLÄRUNG",
+        "WATERCRAFT",
+        "CIN",
+        "HIN"
+      ],
+      "fields": {},
+      "capture": {
+        "structureStatus": "pending",
+        "pages": []
+      },
+      "extractor": "generic-watercraft"
     },
     {
-      "key":"DE_SCHIFFSREGISTER",
-      "country":"DE",
-      "domain":"vehicle",
-      "documentType":"Schiffsregister-Unterlage",
-      "status":"planned",
-      "appliesTo":["water_vehicle"],
-      "detect":["SCHIFFSREGISTER","SCHIFFSREGISTERBLATT"],
-      "fields":{},
-      "extractor":"generic-watercraft"
+      "key": "DE_SCHIFFSREGISTER",
+      "country": "DE",
+      "domain": "vehicle",
+      "documentType": "Schiffsregister-Unterlage",
+      "status": "planned",
+      "appliesTo": [
+        "water_vehicle"
+      ],
+      "detect": [
+        "SCHIFFSREGISTER",
+        "SCHIFFSREGISTERBLATT"
+      ],
+      "fields": {},
+      "capture": {
+        "structureStatus": "pending",
+        "pages": []
+      },
+      "extractor": "generic-watercraft"
     }
   ]
 }
